@@ -1,0 +1,9 @@
+﻿################################################################################
+# Este arquivo .gitignore foi criado automaticamente pelo Microsoft(R) Visual Studio.
+################################################################################
+
+/Odon.Track/.vs/Odon.Track
+/Odon.Track/Odon.Track.Api/bin/Debug/net8.0
+/Odon.Track/Odon.Track.Api/obj
+/Odon.Track/Odon.Track.Application/bin/Debug/net8.0
+/Odon.Track/Odon.Track.Application/obj
