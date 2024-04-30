@@ -11,7 +11,7 @@ namespace Odon.Track.Application.Services
         }
         public async Task<IActionResult> Auth()
         {
-            return Created();
+            return Ok();
         } 
     }
 }
