@@ -21,11 +21,9 @@ namespace Odon.Track.Api.Controllers
         public async Task<IActionResult> Auth() =>
             await _auth.Auth();
         [HttpGet]
-        public async Task<IActionResult> Teste([FromQuery] int valor)
+        public async Task<IActionResult> Teste()
         {
-            var teste = 2 / valor;
-
-            return Ok("Deu Certo!");
+            return Ok(new { message = "Deu Certo!" });
         }
     }
 }

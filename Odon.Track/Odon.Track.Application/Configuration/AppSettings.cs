@@ -12,8 +12,13 @@ namespace Odon.Track.Application.Configuration
             ConnDB = Environment.GetEnvironmentVariable("ConnDB");
             if (string.IsNullOrEmpty(ConnDB))
                 ConnDB = appSettingsSection["ConnDB"];
+
+            AllowOrigins = Environment.GetEnvironmentVariable("AllowOrigins");
+            if (string.IsNullOrEmpty(AllowOrigins))
+                AllowOrigins = appSettingsSection["AllowOrigins"];
         }
 
         public string? ConnDB { get; set; }
+        public string? AllowOrigins { get; set; }
     }
 }
