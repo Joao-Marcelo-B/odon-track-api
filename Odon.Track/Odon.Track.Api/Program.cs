@@ -29,16 +29,16 @@ services.AddControllers( config =>
                               config.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                           });
 
-services.AddCors(setup =>
-{
-    setup.AddPolicy("AllowOrigins", config =>
-    {
-        string[] lstAllowOrigins = appSettings.AllowOrigins!.Split(",");
-        config.WithOrigins(lstAllowOrigins)
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    });
-});
+//services.AddCors(setup =>
+//{
+//    setup.AddPolicy("AllowOrigins", config =>
+//    {
+//        string[] lstAllowOrigins = appSettings.AllowOrigins!.Split(",");
+//        config.WithOrigins(lstAllowOrigins)
+//            .AllowAnyHeader()
+//            .AllowAnyMethod();
+//    });
+//});
 
 var app = builder.Build();
 
@@ -51,5 +51,8 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler(error => error.UseCustomError());
 app.UseAuthorization();
 app.MapControllers();
-app.UseCors("AllowOrigins");
+app.UseCors(x => 
+            x.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
 app.Run();
