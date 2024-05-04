@@ -20,10 +20,10 @@ namespace Odon.Track.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Auth() =>
             await _auth.Auth();
-        
+        [HttpGet]
         public async Task<IActionResult> Teste()
         {
-            return Created();
+            return Ok("Deu Certo!");
         }
     }
 }
