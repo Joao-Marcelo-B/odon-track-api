@@ -24,7 +24,7 @@ namespace Odon.Track.Application.Responses
             return new CreatedResult("", "");
         }
 
-        public BadRequestObjectResult BadRequest(string message)
+        public BadRequestObjectResult BadRequest(object message)
         {
             return new BadRequestObjectResult(message);
         }
