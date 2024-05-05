@@ -3,6 +3,8 @@ using Odon.Track.Application.Core.Middleware;
 using Odon.Track.Application.Core.Injections.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
+using Odon.Track.Application.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;    
@@ -17,6 +19,12 @@ services.AddServices();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 services.AddLogging();
+
+services.AddDbContext<TesteContext>(
+                                    options =>
+                                    {
+                                        if (appSettings.ConnDB != null) options.UseMySQL(appSettings.ConnDB);
+                                    });
 
 services.AddControllers( config =>
                           {
