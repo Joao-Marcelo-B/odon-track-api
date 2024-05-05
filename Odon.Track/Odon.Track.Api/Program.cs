@@ -1,6 +1,8 @@
 using Odon.Track.Application.Configuration;
 using Odon.Track.Application.Core.Middleware;
 using Odon.Track.Application.Core.Injections.Extensions;
+using Microsoft.OpenApi.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;    
@@ -17,13 +19,22 @@ services.AddCustomCors(appSettings);
 services.AddCustomControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
+services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "OdonTrack API", Version = "v1" });
+    // Configure outras opções do Swagger aqui, se necessário
+});
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "OdonTrack API v1");
+        c.RoutePrefix = string.Empty; // Define a rota para a raiz da aplicação
+    });
 }
 
 app.UseExceptionHandler(error => error.UseCustomError());
