@@ -1,10 +1,6 @@
 using Odon.Track.Application.Configuration;
 using Odon.Track.Application.Core.Middleware;
 using Odon.Track.Application.Core.Injections.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using System.Text.Json.Serialization;
-using Odon.Track.Application.Data;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;    
@@ -14,39 +10,13 @@ IConfiguration configuration = new ConfigurationBuilder()
 
 AppSettings appSettings = new AppSettings(configuration);
 
-services.AddScoped<AppSettings>();
+services.AddCommon(configuration);
 services.AddServices();
+services.AddContexts(appSettings);
+services.AddCustomCors(appSettings);
+services.AddCustomControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
-services.AddLogging();
-
-services.AddDbContext<TesteContext>(
-                                    options =>
-                                    {
-                                        if (appSettings.ConnDB != null) options.UseMySQL(appSettings.ConnDB);
-                                    });
-
-services.AddControllers( config =>
-                          {
-                              config.Filters.Add(new ConsumesAttribute("application/json"));
-                              config.Filters.Add(new ProducesAttribute("application/json"));
-                          })
-                    .AddJsonOptions(
-                          config =>
-                          {
-                              config.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                          });
-
-//services.AddCors(setup =>
-//{
-//    setup.AddPolicy("AllowOrigins", config =>
-//    {
-//        string[] lstAllowOrigins = appSettings.AllowOrigins!.Split(",");
-//        config.WithOrigins(lstAllowOrigins)
-//            .AllowAnyHeader()
-//            .AllowAnyMethod();
-//    });
-//});
 
 var app = builder.Build();
 
@@ -57,10 +27,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseExceptionHandler(error => error.UseCustomError());
+app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors();
 app.MapControllers();
-app.UseCors(x => 
-            x.AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod());
 app.Run();

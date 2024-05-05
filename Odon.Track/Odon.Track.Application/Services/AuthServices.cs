@@ -9,9 +9,9 @@ namespace Odon.Track.Application.Services
         {
             return Ok();
         }
-        public async Task<IActionResult> Auth()
+        public async Task<IActionResult> Auth(int valor)
         {
-            return Ok();
+            return Ok(new { Teste = 10 / valor });
         } 
     }
 }
