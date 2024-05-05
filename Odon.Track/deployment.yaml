@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-api-odon-track
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-api-odon-track
+  template:
+    metadata:
+      labels:
+        app: app-api-odon-track
+    spec:
+      containers:
+      - name: app-api-odon-track
+        imagePullPolicy: IfNotPresent
+        image: app-api-odon-track-image:latest
+        ports:
+        - containerPort: 8080
