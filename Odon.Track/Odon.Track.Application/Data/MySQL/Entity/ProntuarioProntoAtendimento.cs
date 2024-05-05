@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebApplication1;
+namespace Odon.Track.Application.Data.MySQL.Entity;
 
 public partial class ProntuarioProntoAtendimento
 {

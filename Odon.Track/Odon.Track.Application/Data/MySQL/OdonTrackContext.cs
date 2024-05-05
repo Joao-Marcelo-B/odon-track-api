@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using WebApplication1;
+using Odon.Track.Application.Data.MySQL.Entity;
 
-namespace Odon.Track.Application.Data;
+namespace Odon.Track.Application.Data.MySQL;
 
 public partial class OdontrackContext : DbContext
 {
