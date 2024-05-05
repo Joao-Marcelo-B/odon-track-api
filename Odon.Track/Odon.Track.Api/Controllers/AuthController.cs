@@ -18,7 +18,7 @@ namespace Odon.Track.Api.Controllers
             await _auth.Singup();
 
         [HttpPost]
-        public async Task<IActionResult> Auth([FromQuery] int valor) =>
-            await _auth.Auth(valor);
+        public async Task<IActionResult> Auth() =>
+            await _auth.Auth();
     }
 }
