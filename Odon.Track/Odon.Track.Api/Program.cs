@@ -15,7 +15,8 @@ IConfiguration configuration = new ConfigurationBuilder()
 
 AppSettings appSettings = new AppSettings(configuration);
 
-//services.AddCommon(configuration);
+//services.AddCommon(configuration);  // Erro aqui
+services.AddLogging();
 services.AddServices();
 //services.AddContexts(appSettings);
 //services.AddCustomCors(appSettings);
