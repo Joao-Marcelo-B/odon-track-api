@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace Odon.Track.Application.Data.MySQL.Entity;
 
@@ -24,10 +25,10 @@ public partial class Usuario
     public byte[] PasswordHash { get; set; } = null!;
     [Column("password_salt")]
     public byte[] PasswordSalt { get; set; }
-
-    public virtual ICollection<Estudante> Estudantes { get; } = new List<Estudante>();
-
-    public virtual TipoUsuario IdTipoUsuarioNavigation { get; set; } = null!;
-
-    public virtual ICollection<Professor> Professors { get; } = new List<Professor>();
+    //[IgnoreDataMember]
+    //public virtual ICollection<Estudante> Estudantes { get; } = new List<Estudante>();
+    //[IgnoreDataMember]
+    //public virtual TipoUsuario IdTipoUsuarioNavigation { get; set; } = null!;
+    //[IgnoreDataMember]
+    //public virtual ICollection<Professor> Professors { get; } = new List<Professor>();
 }

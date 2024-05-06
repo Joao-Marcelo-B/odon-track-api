@@ -9,5 +9,5 @@ public partial class TipoUsuario
 
     public string? Descricao { get; set; }
 
-    public virtual ICollection<Usuario> Usuarios { get; } = new List<Usuario>();
+    //public virtual ICollection<Usuario> Usuarios { get; } = new List<Usuario>();
 }

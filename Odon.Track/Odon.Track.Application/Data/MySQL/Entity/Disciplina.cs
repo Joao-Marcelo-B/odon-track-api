@@ -9,5 +9,5 @@ public partial class Disciplina
 
     public string Nome { get; set; } = null!;
 
-    public virtual ICollection<Professor> IdProfessors { get; } = new List<Professor>();
+    //public virtual ICollection<Professor> IdProfessors { get; } = new List<Professor>();
 }

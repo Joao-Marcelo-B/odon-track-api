@@ -81,7 +81,7 @@ public partial class Prontuario
 
     public virtual Paciente IdPacienteNavigation { get; set; } = null!;
 
-    public virtual Professor IdProfessorVinculadoNavigation { get; set; } = null!;
+    //public virtual Professor IdProfessorVinculadoNavigation { get; set; } = null!;
 
     public virtual ICollection<ProntuarioEstudante> ProntuarioEstudantes { get; } = new List<ProntuarioEstudante>();
 

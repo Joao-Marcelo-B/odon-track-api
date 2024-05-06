@@ -25,7 +25,7 @@ public partial class Triagem
 
     public virtual Paciente IdPacienteNavigation { get; set; } = null!;
 
-    public virtual Professor IdProfessorVinculadoNavigation { get; set; } = null!;
+    //public virtual Professor IdProfessorVinculadoNavigation { get; set; } = null!;
 
     public virtual ICollection<NecessidadeTratamento> NecessidadeTratamentos { get; } = new List<NecessidadeTratamento>();
 }

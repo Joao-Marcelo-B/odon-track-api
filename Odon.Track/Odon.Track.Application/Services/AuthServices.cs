@@ -41,6 +41,7 @@ namespace Odon.Track.Application.Services
                 PasswordSalt = passwordSatl,
             };
             await _context.Usuarios.AddAsync(user);
+            await _context.SaveChangesAsync();
 
             if (request.TipoUsuario.Equals(2))
             {
@@ -48,14 +49,15 @@ namespace Odon.Track.Application.Services
                 {
                     IdUsuario = user.Id,
                     Nome = request.Nome,
-                    Matricula = request.Identificador,
                 };
                 await _context.Estudantes.AddAsync(estudante);
             } else if (request.TipoUsuario.Equals(1))
             {
                 var professor = new Professor()
                 {
-                    Nome = request.Nome
+                    Id = 1,
+                    Nome = request.Nome,
+                    IdUsuario = user.Id,
                 };
                 await _context.Professors.AddAsync(professor);
             }
