@@ -3,6 +3,7 @@ using Odon.Track.Application.Core.Middleware;
 using Odon.Track.Application.Core.Injections.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -12,13 +13,18 @@ IConfiguration configuration = new ConfigurationBuilder()
 
 AppSettings appSettings = new AppSettings(configuration);
 
-services.AddScoped<AppSettings>();
+services.AddCommon(configuration);
 services.AddServices();
+services.AddContexts(appSettings);
+services.AddEndpointsApiExplorer();
+services.AddCustomCors(appSettings);
+services.AddCustomControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
-services.AddLogging();
-
-
+services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "OdonTrack API", Version = "v1" });
+});
 
 services.AddControllers(config =>
 {
