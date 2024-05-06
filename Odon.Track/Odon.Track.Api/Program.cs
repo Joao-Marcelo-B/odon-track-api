@@ -17,13 +17,13 @@ AppSettings appSettings = new AppSettings(configuration);
 services.AddServices();
 services.AddContexts(appSettings);
 //services.AddCustomCors(appSettings);
-//services.AddCustomControllers();
+services.AddCustomControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
-//services.AddSwaggerGen(c =>
-//{
-//    c.SwaggerDoc("v1", new OpenApiInfo { Title = "OdonTrack API", Version = "v1" });
-//});
+services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "OdonTrack API", Version = "v1" });
+});
 services.AddAuthorization();
 services.AddAuthentication("Bearer").AddJwtBearer();
 
