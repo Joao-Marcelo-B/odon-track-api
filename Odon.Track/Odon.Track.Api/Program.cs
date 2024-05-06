@@ -18,12 +18,12 @@ services.AddContexts(appSettings);
 services.AddCustomCors(appSettings);
 services.AddCustomControllers();
 services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
 services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "OdonTrack API", Version = "v1" });
-    // Configure outras opções do Swagger aqui, se necessário
 });
+services.AddAuthorization();
+services.AddAuthentication("Bearer").AddJwtBearer();
 
 var app = builder.Build();
 
@@ -38,7 +38,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseExceptionHandler(error => error.UseCustomError());
-app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors();
 app.MapControllers();
