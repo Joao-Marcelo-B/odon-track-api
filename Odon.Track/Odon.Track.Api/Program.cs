@@ -23,9 +23,6 @@ services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "OdonTrack API", Version = "v1" });
 });
-builder.WebHost.ConfigureKestrel(options =>
-          options.ListenLocalhost(8080));
-
 services.AddAuthorization();
 services.AddAuthentication("Bearer").AddJwtBearer();
 
