@@ -41,4 +41,4 @@ app.UseExceptionHandler(error => error.UseCustomError());
 app.UseAuthorization();
 app.UseCors();
 app.MapControllers();
-app.Run("http://localhost:8080");
+app.Run();

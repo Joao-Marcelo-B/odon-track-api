@@ -2,9 +2,7 @@
   "profiles": {
     "Odon.Track.Api": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": false,
-      "launchUrl": "swagger",
       "applicationUrl": "http://localhost:8080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
