@@ -11,7 +11,7 @@ namespace Odon.Track.Application.Services
 {
     public class AuthServices(OdontrackContext _context) : BaseResponses
     {
-        public async Task<IActionResult> Singup(PostSingupRequest request)
+        public async Task<IActionResult> Signup(PostSignupRequest request)
         {
             if (!request.Email.Contains("unifenas"))
                 return BadRequest(OdonTrackErrors.EmailUnifenasInvalid);
@@ -55,7 +55,6 @@ namespace Odon.Track.Application.Services
             {
                 var professor = new Professor()
                 {
-                    Id = 1,
                     Nome = request.Nome,
                     IdUsuario = user.Id,
                 };
@@ -65,8 +64,18 @@ namespace Odon.Track.Application.Services
 
             return Created();
         }
-        public async Task<IActionResult> Auth()
+        public async Task<IActionResult> Auth(PostAuthRequest request)
         {
+            if (!request.Email.Contains("unifenas"))
+                return BadRequest(OdonTrackErrors.EmailUnifenasInvalid);
+
+            var user = await _context.Usuarios.FirstOrDefaultAsync(x => x.Email.Equals(request.Email));
+            if (user == null)
+                return BadRequest(OdonTrackErrors.UsuarioNotFound);
+
+            if (!PasswordSaltHasher.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+                return BadRequest(OdonTrackErrors.CredenciaisInvalid);
+
             return Ok();
         } 
     }

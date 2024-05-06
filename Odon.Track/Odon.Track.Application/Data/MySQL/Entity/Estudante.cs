@@ -17,10 +17,8 @@ public partial class Estudante
     [Column("nome")]
     public string Nome { get; set; } = null!;
 
-    //[IgnoreDataMember]
-    //public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
-    //[IgnoreDataMember]
-    //public virtual ICollection<PacienteEstudante> PacienteEstudantes { get; } = new List<PacienteEstudante>();
-    //[IgnoreDataMember]
-    //public virtual ICollection<ProntuarioPmEstudante> ProntuarioPmEstudantes { get; } = new List<ProntuarioPmEstudante>();
+    [ForeignKey(nameof(IdUsuario))]
+    public virtual Usuario Usuario { get; set; } = null!;
+    public virtual ICollection<PacienteEstudante> PacienteEstudantes { get; } = new List<PacienteEstudante>();
+    public virtual ICollection<ProntuarioPmEstudante> ProntuarioPmEstudantes { get; } = new List<ProntuarioPmEstudante>();
 }

@@ -18,14 +18,14 @@ public partial class Professor
     [Column("nome")]
     public string Nome { get; set; } = null!;
 
-    //[IgnoreDataMember]
-    //public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
-    //[IgnoreDataMember]
-    //public virtual ICollection<ProntuarioProntoAtendimento> ProntuarioProntoAtendimentos { get; } = new List<ProntuarioProntoAtendimento>();
-    //[IgnoreDataMember]
-    //public virtual ICollection<Prontuario> Prontuarios { get; } = new List<Prontuario>();
-    //[IgnoreDataMember]
-    //public virtual ICollection<Triagem> Triagems { get; } = new List<Triagem>();
-    //[IgnoreDataMember]
-    //public virtual ICollection<Disciplina> IdDisciplinas { get; } = new List<Disciplina>();
+    [ForeignKey(nameof(IdUsuario))]
+    public virtual Usuario Usuario { get; set; } = null!;
+
+    public virtual ICollection<ProntuarioProntoAtendimento> ProntuarioProntoAtendimentos { get; } = new List<ProntuarioProntoAtendimento>();
+
+    public virtual ICollection<Prontuario> Prontuarios { get; } = new List<Prontuario>();
+
+    public virtual ICollection<Triagem> Triagems { get; } = new List<Triagem>();
+
+    public virtual ICollection<Disciplina> IdDisciplinas { get; } = new List<Disciplina>();
 }

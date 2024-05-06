@@ -16,12 +16,11 @@ namespace Odon.Track.Api.Controllers
         }
 
         [HttpPost("signup")]
-        public async Task<IActionResult> Singup([FromBody] PostSingupRequest request) =>
-            await _auth.Singup(request);
+        public async Task<IActionResult> Signup([FromBody] PostSignupRequest request) =>
+            await _auth.Signup(request);
 
         [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Auth() =>
-            await _auth.Auth();
+        public async Task<IActionResult> Auth([FromBody] PostAuthRequest request) =>
+            await _auth.Auth(request);
     }
 }

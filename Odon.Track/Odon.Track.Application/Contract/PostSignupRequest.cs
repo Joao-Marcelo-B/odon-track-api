@@ -2,7 +2,7 @@
 
 namespace Odon.Track.Application.Contract
 {
-    public class PostSingupRequest
+    public class PostSignupRequest
     {
         [Required]
         public int TipoUsuario { get; set; }
