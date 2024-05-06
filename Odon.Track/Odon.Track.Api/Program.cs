@@ -28,18 +28,6 @@ services.AddSwaggerGen();
 services.AddAuthorization();
 services.AddAuthentication("Bearer").AddJwtBearer();
 
-services.AddControllers(config =>
-{
-    config.Filters.Add(new ConsumesAttribute("application/json"));
-    config.Filters.Add(new ProducesAttribute("application/json"));
-})
-                    .AddJsonOptions(
-                          config =>
-                          {
-                              config.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                          });
-
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
