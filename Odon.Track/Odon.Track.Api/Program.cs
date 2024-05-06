@@ -18,6 +18,11 @@ AppSettings appSettings = new AppSettings(configuration);
 //services.AddCommon(configuration);  // Erro aqui
 services.AddLogging();
 services.AddServices();
+services.AddDbContext<OdontrackContext>(
+                                    options =>
+                                    {
+                                        if (appSettings.ConnOdonTrack != null) options.UseMySQL(appSettings.ConnOdonTrack);
+                                    });
 //services.AddContexts(appSettings);
 //services.AddCustomCors(appSettings);
 services.AddCustomControllers();
@@ -27,11 +32,6 @@ services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "OdonTrack API", Version = "v1" });
 });
-services.AddDbContext<OdontrackContext>(
-                                    options =>
-                                    {
-                                        if (appSettings.ConnOdonTrack != null) options.UseMySQL(appSettings.ConnOdonTrack);
-                                    });
 services.AddAuthorization();
 services.AddAuthentication("Bearer").AddJwtBearer();
 

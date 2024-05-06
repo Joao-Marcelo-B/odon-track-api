@@ -5,10 +5,6 @@ namespace Odon.Track.Application.Data.MySQL;
 
 public partial class OdontrackContext : DbContext
 {
-    public OdontrackContext()
-    {
-    }
-
     public OdontrackContext(DbContextOptions<OdontrackContext> options)
         : base(options)
     {
