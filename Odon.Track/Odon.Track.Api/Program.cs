@@ -14,6 +14,7 @@ AppSettings appSettings = new AppSettings(configuration);
 services.AddCommon(configuration);
 services.AddServices();
 services.AddContexts(appSettings);
+services.AddEndpointsApiExplorer();
 services.AddCustomCors(appSettings);
 services.AddCustomControllers();
 services.AddEndpointsApiExplorer();
