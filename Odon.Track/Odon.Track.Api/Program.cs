@@ -40,6 +40,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseExceptionHandler(error => error.UseCustomError());
 app.UseAuthorization();
-app.UseCors();
+app.UseCors(x =>
+            x.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
 app.MapControllers();
 app.Run();
