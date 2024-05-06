@@ -13,11 +13,11 @@ IConfiguration configuration = new ConfigurationBuilder()
 
 AppSettings appSettings = new AppSettings(configuration);
 
-services.AddCommon(configuration);
+//services.AddCommon(configuration);
 services.AddServices();
 services.AddContexts(appSettings);
 //services.AddCustomCors(appSettings);
-services.AddCustomControllers();
+//services.AddCustomControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 //services.AddSwaggerGen(c =>
