@@ -25,6 +25,8 @@ services.AddSwaggerGen();
 //{
 //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "OdonTrack API", Version = "v1" });
 //});
+services.AddAuthorization();
+services.AddAuthentication("Bearer").AddJwtBearer();
 
 services.AddControllers(config =>
 {
