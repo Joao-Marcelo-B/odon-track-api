@@ -18,10 +18,13 @@ services.AddEndpointsApiExplorer();
 services.AddCustomCors(appSettings);
 services.AddCustomControllers();
 services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "OdonTrack API", Version = "v1" });
 });
+builder.WebHost.ConfigureKestrel(options =>
+          options.ListenLocalhost(8081));
 
 services.AddAuthorization();
 services.AddAuthentication("Bearer").AddJwtBearer();
