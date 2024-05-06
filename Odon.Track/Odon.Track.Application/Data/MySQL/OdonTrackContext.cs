@@ -680,9 +680,9 @@ public partial class OdontrackContext : DbContext
                 .HasMaxLength(150)
                 .HasColumnName("email");
             entity.Property(e => e.IdTipoUsuario).HasColumnName("id_tipo_usuario");
-            entity.Property(e => e.Password)
+            entity.Property(e => e.PasswordHash)
                 .HasMaxLength(150)
-                .HasColumnName("password");
+                .HasColumnName("password_hash");
 
             entity.HasOne(d => d.IdTipoUsuarioNavigation).WithMany(p => p.Usuarios)
                 .HasForeignKey(d => d.IdTipoUsuario)

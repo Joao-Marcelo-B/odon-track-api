@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Odon.Track.Application.Contract;
 using Odon.Track.Application.Services;
 
 namespace Odon.Track.Api.Controllers
@@ -15,8 +16,8 @@ namespace Odon.Track.Api.Controllers
         }
 
         [HttpPost("signup")]
-        public async Task<IActionResult> Singup() =>
-            await _auth.Singup();
+        public async Task<IActionResult> Singup([FromBody] PostSingupRequest request) =>
+            await _auth.Singup(request);
 
         [HttpPost]
         [Authorize]

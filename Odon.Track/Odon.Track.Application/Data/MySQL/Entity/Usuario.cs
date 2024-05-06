@@ -14,13 +14,16 @@ public partial class Usuario
 
     public int IdTipoUsuario { get; set; }
 
+    [Column("identificador_unifenas")]
+    public string IdentificadorUnifenas { get; set; }
+
     [Column("email")]
     public string Email { get; set; } = null!;
 
     [Column("password_hash")]
-    public byte[]? PasswordHash { get; set; } = null!;
+    public byte[] PasswordHash { get; set; } = null!;
     [Column("password_salt")]
-    public byte[]? PasswordSalt { get; set; }
+    public byte[] PasswordSalt { get; set; }
 
     public virtual ICollection<Estudante> Estudantes { get; } = new List<Estudante>();
 

@@ -2,6 +2,9 @@ using Odon.Track.Application.Configuration;
 using Odon.Track.Application.Core.Middleware;
 using Odon.Track.Application.Core.Injections.Extensions;
 using Microsoft.OpenApi.Models;
+using Odon.Track.Application.Data.MySQL.Entity;
+using Microsoft.AspNetCore.Identity;
+using Odon.Track.Application.Data.MySQL;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +25,10 @@ services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "OdonTrack API", Version = "v1" });
 });
+//services.AddIdentity<Usuario, IdentityRole>()
+//    .AddEntityFrameworkStores<OdontrackContext>()
+//    .AddDefaultTokenProviders();
+
 services.AddAuthorization();
 services.AddAuthentication("Bearer").AddJwtBearer();
 

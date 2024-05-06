@@ -16,9 +16,14 @@ namespace Odon.Track.Application.Configuration
             AllowOrigins = Environment.GetEnvironmentVariable("AllowOrigins");
             if (string.IsNullOrEmpty(AllowOrigins))
                 AllowOrigins = appSettingsSection["AllowOrigins"];
+
+            SharedKeyToken = Environment.GetEnvironmentVariable("SharedKeyToken");
+            if (string.IsNullOrEmpty(SharedKeyToken))
+                SharedKeyToken = appSettingsSection["SharedKeyToken"];
         }
 
-        public string? ConnOdonTrack { get; set; }
-        public string? AllowOrigins { get; set; }
+        public string ConnOdonTrack { get; set; }
+        public string AllowOrigins { get; set; }
+        public string SharedKeyToken { get; set; }
     }
 }
