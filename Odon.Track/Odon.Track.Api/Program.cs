@@ -16,7 +16,7 @@ IConfiguration configuration = new ConfigurationBuilder()
 AppSettings appSettings = new AppSettings(configuration);
 
 //services.AddCommon(configuration);  // Erro aqui
-services.AddSingleton(configuration);
+//services.AddSingleton(configuration);
 services.AddLogging();
 services.AddServices();
 Console.WriteLine($"#############ConnOdonTrack={appSettings.ConnOdonTrack}");
