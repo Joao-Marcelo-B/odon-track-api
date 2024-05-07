@@ -1,11 +1,7 @@
 using Odon.Track.Application.Configuration;
 using Odon.Track.Application.Core.Middleware;
 using Odon.Track.Application.Core.Injections.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
-using Microsoft.EntityFrameworkCore;
-using Odon.Track.Application.Data.MySQL;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -15,18 +11,9 @@ IConfiguration configuration = new ConfigurationBuilder()
 
 AppSettings appSettings = new AppSettings(configuration);
 
-//services.AddCommon(configuration);  // Erro aqui
-//services.AddSingleton(configuration);
 services.AddLogging();
 services.AddServices();
-Console.WriteLine($"#############ConnOdonTrack={appSettings.ConnOdonTrack}");
-services.AddDbContext<OdontrackContext>(
-                                    options =>
-                                    {
-                                        if (appSettings.ConnOdonTrack != null) options.UseMySQL(appSettings.ConnOdonTrack);
-                                    });
-//services.AddContexts(appSettings);
-//services.AddCustomCors(appSettings);
+services.AddContexts(appSettings);
 services.AddCustomControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();

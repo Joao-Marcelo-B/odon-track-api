@@ -60,12 +60,5 @@ namespace Odon.Track.Application.Core.Injections.Extensions
 
             return services;
         }
-
-        public static IServiceCollection AddCommon(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddLogging();
-            services.AddSingleton(configuration);
-            return services;
-        }
     }
 }
