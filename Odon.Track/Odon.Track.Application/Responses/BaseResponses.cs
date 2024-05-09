@@ -4,7 +4,7 @@ namespace Odon.Track.Application.Responses
 {
     public class BaseResponses
     {
-        public OkObjectResult Ok(string message)
+        public OkObjectResult Ok(object message)
         {
             return new OkObjectResult(message);
         }
@@ -14,7 +14,7 @@ namespace Odon.Track.Application.Responses
             return new OkResult();
         }
 
-        public CreatedResult Created(string message)
+        public CreatedResult Created(object message)
         {
             return new CreatedResult("", message);
         }
@@ -24,7 +24,7 @@ namespace Odon.Track.Application.Responses
             return new CreatedResult("", "");
         }
 
-        public BadRequestObjectResult BadRequest(string message)
+        public BadRequestObjectResult BadRequest(object message)
         {
             return new BadRequestObjectResult(message);
         }

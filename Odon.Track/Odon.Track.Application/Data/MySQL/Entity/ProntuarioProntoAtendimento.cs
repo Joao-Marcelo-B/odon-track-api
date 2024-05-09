@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebApplication1;
+namespace Odon.Track.Application.Data.MySQL.Entity;
 
 public partial class ProntuarioProntoAtendimento
 {
@@ -91,11 +91,11 @@ public partial class ProntuarioProntoAtendimento
 
     public sbyte PacienteAssinou { get; set; }
 
-    public virtual ICollection<CondutaProntoAtendimento> CondutaProntoAtendimentos { get; } = new List<CondutaProntoAtendimento>();
+    //public virtual ICollection<CondutaProntoAtendimento> CondutaProntoAtendimentos { get; } = new List<CondutaProntoAtendimento>();
 
-    public virtual Paciente IdPacienteNavigation { get; set; } = null!;
+    //public virtual Paciente IdPacienteNavigation { get; set; } = null!;
 
-    public virtual Professor IdProfessorVinculadoNavigation { get; set; } = null!;
+    //public virtual Professor IdProfessorVinculadoNavigation { get; set; } = null!;
 
-    public virtual ICollection<ProntuarioPmEstudante> ProntuarioPmEstudantes { get; } = new List<ProntuarioPmEstudante>();
+    //public virtual ICollection<ProntuarioPmEstudante> ProntuarioPmEstudantes { get; } = new List<ProntuarioPmEstudante>();
 }

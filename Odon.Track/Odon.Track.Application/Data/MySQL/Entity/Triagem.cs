@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebApplication1;
+namespace Odon.Track.Application.Data.MySQL.Entity;
 
 public partial class Triagem
 {
@@ -25,7 +25,7 @@ public partial class Triagem
 
     public virtual Paciente IdPacienteNavigation { get; set; } = null!;
 
-    public virtual Professor IdProfessorVinculadoNavigation { get; set; } = null!;
+    //public virtual Professor IdProfessorVinculadoNavigation { get; set; } = null!;
 
     public virtual ICollection<NecessidadeTratamento> NecessidadeTratamentos { get; } = new List<NecessidadeTratamento>();
 }

@@ -9,16 +9,21 @@ namespace Odon.Track.Application.Configuration
         {
             var appSettingsSection = configuration.GetSection("AppSettings");
 
-            ConnDB = Environment.GetEnvironmentVariable("ConnDB");
-            if (string.IsNullOrEmpty(ConnDB))
-                ConnDB = appSettingsSection["ConnDB"];
+            ConnOdonTrack = Environment.GetEnvironmentVariable("ConnOdonTrack");
+            if (string.IsNullOrEmpty(ConnOdonTrack))
+                ConnOdonTrack = appSettingsSection["ConnOdonTrack"];
 
             AllowOrigins = Environment.GetEnvironmentVariable("AllowOrigins");
             if (string.IsNullOrEmpty(AllowOrigins))
                 AllowOrigins = appSettingsSection["AllowOrigins"];
+
+            SharedKeyToken = Environment.GetEnvironmentVariable("SharedKeyToken");
+            if (string.IsNullOrEmpty(SharedKeyToken))
+                SharedKeyToken = appSettingsSection["SharedKeyToken"];
         }
 
-        public string? ConnDB { get; set; }
-        public string? AllowOrigins { get; set; }
+        public string ConnOdonTrack { get; set; }
+        public string AllowOrigins { get; set; }
+        public string SharedKeyToken { get; set; }
     }
 }

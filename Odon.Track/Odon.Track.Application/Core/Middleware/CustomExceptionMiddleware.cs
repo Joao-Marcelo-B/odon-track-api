@@ -25,6 +25,7 @@ namespace Odon.Track.Application.Core.Middleware
                 context.Features.Get<IExceptionHandlerPathFeature>();
 
             _log.LogError(exceptionHandlerPathFeature!.Error.ToString());
+            await _next.Invoke(context);
         }
     }
 }

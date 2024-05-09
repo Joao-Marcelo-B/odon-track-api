@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebApplication1;
+namespace Odon.Track.Application.Data.MySQL.Entity;
 
 public partial class TipoUsuario
 {
@@ -9,5 +9,5 @@ public partial class TipoUsuario
 
     public string? Descricao { get; set; }
 
-    public virtual ICollection<Usuario> Usuarios { get; } = new List<Usuario>();
+    //public virtual ICollection<Usuario> Usuarios { get; } = new List<Usuario>();
 }
