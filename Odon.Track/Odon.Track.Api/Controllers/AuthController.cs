@@ -21,6 +21,6 @@ namespace Odon.Track.Api.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Auth([FromBody] PostAuthRequest request) =>
-            await _auth.Auth(request);
+            await _auth.Auth(request, HttpContext);
     }
 }

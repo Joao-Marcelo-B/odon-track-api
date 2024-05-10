@@ -20,10 +20,15 @@ namespace Odon.Track.Application.Configuration
             SharedKeyToken = Environment.GetEnvironmentVariable("SharedKeyToken");
             if (string.IsNullOrEmpty(SharedKeyToken))
                 SharedKeyToken = appSettingsSection["SharedKeyToken"];
+
+            Issuer = Environment.GetEnvironmentVariable("Issuer");
+            if (string.IsNullOrEmpty(Issuer))
+                Issuer = appSettingsSection["Issuer"];
         }
 
         public string ConnOdonTrack { get; set; }
         public string AllowOrigins { get; set; }
         public string SharedKeyToken { get; set; }
+        public string Issuer { get; set; }
     }
 }

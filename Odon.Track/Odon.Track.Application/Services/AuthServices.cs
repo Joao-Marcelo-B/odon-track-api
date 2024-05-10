@@ -1,15 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Odon.Track.Application.Configuration;
 using Odon.Track.Application.Contract;
 using Odon.Track.Application.Crypto;
 using Odon.Track.Application.Data.MySQL;
 using Odon.Track.Application.Data.MySQL.Entity;
 using Odon.Track.Application.Errors;
 using Odon.Track.Application.Responses;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Odon.Track.Application.Services
 {
-    public class AuthServices(OdontrackContext _context) : BaseResponses
+    public class AuthServices(OdontrackContext _context, AppSettings _settings) : BaseResponses
     {
         public async Task<IActionResult> Signup(PostSignupRequest request)
         {
@@ -64,7 +72,7 @@ namespace Odon.Track.Application.Services
 
             return Created();
         }
-        public async Task<IActionResult> Auth(PostAuthRequest request)
+        public async Task<IActionResult> Auth(PostAuthRequest request, HttpContext _httpContext)
         {
             if (!request.Email.Contains("unifenas"))
                 return BadRequest(OdonTrackErrors.EmailUnifenasInvalid);
@@ -76,7 +84,36 @@ namespace Odon.Track.Application.Services
             if (!PasswordSaltHasher.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
                 return BadRequest(OdonTrackErrors.CredenciaisInvalid);
 
-            return Ok();
-        } 
+            var token = GenerateToken(user.Id);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var parsedToken = tokenHandler.ReadJwtToken(token);
+            var identity = new ClaimsIdentity(parsedToken.Claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+            await _httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+            return Ok(new
+            {
+                AccessToken = token
+            });
+        }
+
+        private string GenerateToken(int idUser)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_settings.SharedKeyToken);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("id", idUser.ToString()) }),
+                Expires = DateTime.UtcNow.AddDays(15),
+                Issuer = _settings.Issuer,
+                Audience = _settings.Issuer,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.EcdsaSha512Signature) 
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
     }
 }
