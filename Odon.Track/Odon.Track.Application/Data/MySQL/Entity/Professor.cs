@@ -21,11 +21,11 @@ public partial class Professor
     [ForeignKey(nameof(IdUsuario))]
     public virtual Usuario Usuario { get; set; } = null!;
 
-    public virtual ICollection<ProntuarioProntoAtendimento> ProntuarioProntoAtendimentos { get; } = new List<ProntuarioProntoAtendimento>();
+    //public virtual ICollection<ProntuarioProntoAtendimento> ProntuarioProntoAtendimentos { get; } = new List<ProntuarioProntoAtendimento>();
 
-    public virtual ICollection<Prontuario> Prontuarios { get; } = new List<Prontuario>();
+    //public virtual ICollection<Prontuario> Prontuarios { get; } = new List<Prontuario>();
 
-    public virtual ICollection<Triagem> Triagems { get; } = new List<Triagem>();
+    //public virtual ICollection<Triagem> Triagems { get; } = new List<Triagem>();
 
     public virtual ICollection<Disciplina> IdDisciplinas { get; } = new List<Disciplina>();
 }
