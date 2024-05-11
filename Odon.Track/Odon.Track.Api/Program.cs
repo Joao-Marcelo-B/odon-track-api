@@ -40,6 +40,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "OdonTrack API v1");
+        c.RoutePrefix = "swagger";
+        c.ConfigObject.DisplayRequestDuration = true;
+        c.ConfigObject.DocExpansion = Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None;
+        c.ConfigObject.DefaultModelsExpandDepth = -1;
     });
 }
 
