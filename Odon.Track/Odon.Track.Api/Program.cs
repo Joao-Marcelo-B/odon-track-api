@@ -4,6 +4,9 @@ using Odon.Track.Application.Core.Injections.Extensions;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -30,7 +33,22 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             options.ExpireTimeSpan = TimeSpan.FromHours(10);
             options.LoginPath = "/auth";
         });
-services.AddAuthentication("Bearer").AddJwtBearer();
+services.AddAuthentication(auth =>
+{
+    auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.SharedKeyToken)),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
 
 var app = builder.Build();
 

@@ -22,5 +22,13 @@ namespace Odon.Track.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Auth([FromBody] PostAuthRequest request) =>
             await _auth.Auth(request, HttpContext);
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> TesteToken()
+        {
+            Console.WriteLine("#################### Teste Authorize");
+            return Ok();
+        }
     }
 }
