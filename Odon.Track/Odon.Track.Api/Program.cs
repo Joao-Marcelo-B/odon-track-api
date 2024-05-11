@@ -2,6 +2,8 @@ using Odon.Track.Application.Configuration;
 using Odon.Track.Application.Core.Middleware;
 using Odon.Track.Application.Core.Injections.Extensions;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -22,6 +24,12 @@ services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "OdonTrack API", Version = "v1" });
 });
 services.AddAuthorization();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options =>
+        {
+            options.ExpireTimeSpan = TimeSpan.FromHours(10);
+            options.LoginPath = "/auth";
+        });
 services.AddAuthentication("Bearer").AddJwtBearer();
 
 var app = builder.Build();
@@ -37,6 +45,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseExceptionHandler(error => error.UseCustomError());
+app.UseAuthentication();
+app.UseCookiePolicy();
 app.UseAuthorization();
 app.MapControllers();
 app.UseCors(x =>

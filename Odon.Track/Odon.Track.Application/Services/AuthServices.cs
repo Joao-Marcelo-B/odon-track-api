@@ -72,6 +72,7 @@ namespace Odon.Track.Application.Services
 
             return Created();
         }
+
         public async Task<IActionResult> Auth(PostAuthRequest request, HttpContext _httpContext)
         {
             if (!request.Email.Contains("unifenas"))
@@ -84,36 +85,31 @@ namespace Odon.Track.Application.Services
             if (!PasswordSaltHasher.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
                 return BadRequest(OdonTrackErrors.CredenciaisInvalid);
 
-            var token = GenerateToken(user.Id);
-
             var tokenHandler = new JwtSecurityTokenHandler();
-            var parsedToken = tokenHandler.ReadJwtToken(token);
+            var key = Encoding.UTF8.GetBytes(_settings.SharedKeyToken);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("id", EncryptionHelper.Encrypt(user.Id.ToString())) }),
+                Expires = DateTime.UtcNow.AddDays(15),
+                Issuer = _settings.Issuer,
+                Audience = _settings.Issuer,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+
+            var parsedToken = tokenHandler.ReadJwtToken(tokenString);
             var identity = new ClaimsIdentity(parsedToken.Claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
             await _httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
             return Ok(new
             {
-                AccessToken = token
+                AccessToken = tokenString,
+                Expires = tokenDescriptor.Expires
             });
-        }
-
-        private string GenerateToken(int idUser)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_settings.SharedKeyToken);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", idUser.ToString()) }),
-                Expires = DateTime.UtcNow.AddDays(15),
-                Issuer = _settings.Issuer,
-                Audience = _settings.Issuer,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.EcdsaSha512Signature) 
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
         }
     }
 }
