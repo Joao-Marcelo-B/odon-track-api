@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Odon.Track.Application.Authorization;
 using Odon.Track.Application.Configuration;
 using Odon.Track.Application.Contract;
 using Odon.Track.Application.Crypto;
@@ -88,9 +89,23 @@ namespace Odon.Track.Application.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_settings.SharedKeyToken);
 
+            var claims = new List<Claim>();
+
+            var professor = await _context.Professors.FirstOrDefaultAsync(x => x.IdUsuario.Equals(user.Id));
+            if(professor != null)
+            {
+                claims.Add(new Claim( ClaimTypes.Role, RolesForUsers.Professor ));
+            }
+
+            var estudante = await _context.Estudantes.FirstOrDefaultAsync(x => x.IdUsuario.Equals(user.Id));
+            if(estudante != null)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, RolesForUsers.Estudante));
+            }
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", EncryptionHelper.Encrypt(user.Id.ToString())) }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddDays(15),
                 Issuer = _settings.Issuer,
                 Audience = _settings.Issuer,
@@ -99,11 +114,6 @@ namespace Odon.Track.Application.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
-
-            var parsedToken = tokenHandler.ReadJwtToken(tokenString);
-            var identity = new ClaimsIdentity(parsedToken.Claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(identity);
-            await _httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
             return Ok(new
             {

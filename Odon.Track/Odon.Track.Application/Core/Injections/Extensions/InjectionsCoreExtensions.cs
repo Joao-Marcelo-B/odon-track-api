@@ -6,6 +6,11 @@ using Odon.Track.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Configuration;
+using Odon.Track.Application.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Odon.Track.Application.Core.Injections.Extensions
 {
@@ -58,6 +63,41 @@ namespace Odon.Track.Application.Core.Injections.Extensions
                           {
                               config.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                           });
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomAuthorization(this IServiceCollection services)
+        {
+            services.AddAuthorization();
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, AppSettings appSettings)
+        {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.FromHours(10);
+                options.LoginPath = "/auth";
+            });
+            services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.SharedKeyToken)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             return services;
         }
