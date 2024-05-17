@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -34,7 +32,7 @@ namespace Odon.Track.Application.Services
 
             var identificadorUsed = await _context.Usuarios.AnyAsync(x => x.IdentificadorUnifenas.Equals(request.Identificador));
             if(identificadorUsed)
-                return BadRequest(OdonTrackErrors.EmailUsed);
+                return BadRequest(OdonTrackErrors.IdentificadorUsed);
 
             //TODO: Talvez validar codigo enviado ao email
 
@@ -52,7 +50,7 @@ namespace Odon.Track.Application.Services
             await _context.Usuarios.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            if (request.TipoUsuario.Equals(2))
+            if (request.TipoUsuario.Equals(3))
             {
                 var estudante = new Estudante()
                 {
@@ -60,7 +58,7 @@ namespace Odon.Track.Application.Services
                     Nome = request.Nome,
                 };
                 await _context.Estudantes.AddAsync(estudante);
-            } else if (request.TipoUsuario.Equals(1))
+            } else if (request.TipoUsuario.Equals(1) || request.Equals(2))
             {
                 var professor = new Professor()
                 {
@@ -94,6 +92,8 @@ namespace Odon.Track.Application.Services
             var professor = await _context.Professors.FirstOrDefaultAsync(x => x.IdUsuario.Equals(user.Id));
             if(professor != null)
             {
+                if(user.IdTipoUsuario.Equals(1))
+                    claims.Add(new Claim( ClaimTypes.Role, RolesForUsers.Administrador));
                 claims.Add(new Claim( ClaimTypes.Role, RolesForUsers.Professor ));
             }
 
@@ -101,6 +101,13 @@ namespace Odon.Track.Application.Services
             if(estudante != null)
             {
                 claims.Add(new Claim(ClaimTypes.Role, RolesForUsers.Estudante));
+                //var query = from rs in _context.RolesSemestre
+                //            where rs.Periodo == estudante.PeriodoAtual
+
+                //if (roles.Count > 0)
+                    
+                //foreach( var role in roles)
+                //    claims.Add(new Claim(ClaimTypes.Role, role.Name));
             }
 
             var tokenDescriptor = new SecurityTokenDescriptor

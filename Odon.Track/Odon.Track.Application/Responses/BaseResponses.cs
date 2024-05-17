@@ -21,7 +21,10 @@ namespace Odon.Track.Application.Responses
 
         public CreatedResult Created()
         {
-            return new CreatedResult("", "");
+            return new CreatedResult("", new
+            {
+                message = "created"
+            });
         }
 
         public BadRequestObjectResult BadRequest(object message)
