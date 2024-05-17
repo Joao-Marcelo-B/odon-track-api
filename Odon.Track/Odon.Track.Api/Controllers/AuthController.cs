@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Odon.Track.Application.Contract;
+using Odon.Track.Application.Contract.Auth;
 using Odon.Track.Application.Services;
 
 namespace Odon.Track.Api.Controllers

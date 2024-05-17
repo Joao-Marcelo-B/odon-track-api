@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Odon.Track.Application.Contract
+namespace Odon.Track.Application.Contract.Auth
 {
     public class PostAuthRequest
     {

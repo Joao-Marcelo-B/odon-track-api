@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Odon.Track.Application.Authorization;
 using Odon.Track.Application.Configuration;
-using Odon.Track.Application.Contract;
+using Odon.Track.Application.Contract.Auth;
 using Odon.Track.Application.Crypto;
 using Odon.Track.Application.Data.MySQL;
 using Odon.Track.Application.Data.MySQL.Entity;
@@ -101,13 +101,15 @@ namespace Odon.Track.Application.Services
             if(estudante != null)
             {
                 claims.Add(new Claim(ClaimTypes.Role, RolesForUsers.Estudante));
-                //var query = from rs in _context.RolesSemestre
-                //            where rs.Periodo == estudante.PeriodoAtual
+                var query = from rs in _context.RolesSemestre
+                            join r in _context.Roles on rs.IdRole equals r.Id
+                            where rs.Periodo == estudante.PeriodoAtual
+                            select r.Name;
 
-                //if (roles.Count > 0)
-                    
-                //foreach( var role in roles)
-                //    claims.Add(new Claim(ClaimTypes.Role, role.Name));
+                var roles = query.ToList();
+
+               foreach( var role in query.ToList())
+                    claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
             var tokenDescriptor = new SecurityTokenDescriptor
