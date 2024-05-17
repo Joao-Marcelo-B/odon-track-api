@@ -129,6 +129,7 @@ namespace Odon.Track.Application.Services
             return Ok(new
             {
                 IdUsuario = user.Id,
+                IdTipoUsuario = user.IdTipoUsuario,
                 Nome = nomeUsuario,
                 AccessToken = tokenString,
                 Expires = tokenDescriptor.Expires
