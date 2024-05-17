@@ -8,6 +8,7 @@ using Odon.Track.Application.Contract.Auth;
 using Odon.Track.Application.Crypto;
 using Odon.Track.Application.Data.MySQL;
 using Odon.Track.Application.Data.MySQL.Entity;
+using Odon.Track.Application.Enums;
 using Odon.Track.Application.Errors;
 using Odon.Track.Application.Responses;
 using System.IdentityModel.Tokens.Jwt;
@@ -79,7 +80,7 @@ namespace Odon.Track.Application.Services
 
             var user = await _context.Usuarios.FirstOrDefaultAsync(x => x.Email.Equals(request.Email));
             if (user == null)
-                return BadRequest(OdonTrackErrors.UsuarioNotFound);
+                return BadRequest(OdonTrackErrors.UsuarioNotFound); 
 
             if (!PasswordSaltHasher.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
                 return BadRequest(OdonTrackErrors.CredenciaisInvalid);
@@ -111,6 +112,7 @@ namespace Odon.Track.Application.Services
                foreach( var role in query.ToList())
                     claims.Add(new Claim(ClaimTypes.Role, role));
             }
+            string nomeUsuario = estudante != null ? estudante.Nome : professor.Nome;
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -126,6 +128,8 @@ namespace Odon.Track.Application.Services
 
             return Ok(new
             {
+                IdUsuario = user.Id,
+                Nome = nomeUsuario,
                 AccessToken = tokenString,
                 Expires = tokenDescriptor.Expires
             });
