@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 
 namespace Odon.Track.Application.Data.MySQL.Entity;
-
-public partial class Estudante
+[Table("estudante")]
+public class Estudante
 {
     [Key, Column("id")]
     public int Id { get; set; }
@@ -16,6 +16,9 @@ public partial class Estudante
 
     [Column("nome")]
     public string Nome { get; set; } = null!;
+
+    [Column("periodo_atual")]
+    public int PeriodoAtual { get; set; } = 0!;
 
     [ForeignKey(nameof(IdUsuario))]
     public virtual Usuario Usuario { get; set; } = null!;
