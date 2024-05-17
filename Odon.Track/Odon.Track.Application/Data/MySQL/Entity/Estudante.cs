@@ -2,9 +2,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Odon.Track.Application.Data.MySQL.Entity;
-
 [Table("estudante")]
-public partial class Estudante
+public class Estudante
 {
     [Key, Column("id")]
     public int Id { get; set; }

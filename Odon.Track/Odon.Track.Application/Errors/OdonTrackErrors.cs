@@ -9,5 +9,6 @@
         public static string EmailUnifenasInvalid = "Esse email não corresponde ao email institucional";
         public static string IdentificadorUsed = "Identificador Unifenas em uso";
         public static string PasswordNotMatched = "As senhas não são iguais";
+        public static string EstudanteNotFound = "Estudante não encontrado";
     }
 }
