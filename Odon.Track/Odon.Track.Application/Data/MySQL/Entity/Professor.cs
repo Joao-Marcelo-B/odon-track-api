@@ -27,5 +27,5 @@ public partial class Professor
 
     //public virtual ICollection<Triagem> Triagems { get; } = new List<Triagem>();
 
-    public virtual ICollection<Disciplina> IdDisciplinas { get; } = new List<Disciplina>();
+    public virtual ICollection<DisciplinasProfessor> DisciplinasProfessores { get; set; } = new List<DisciplinasProfessor>();
 }
