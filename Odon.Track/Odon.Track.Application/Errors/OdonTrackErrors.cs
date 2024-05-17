@@ -10,5 +10,6 @@
         public static string IdentificadorUsed = "Identificador Unifenas em uso";
         public static string PasswordNotMatched = "As senhas não são iguais";
         public static string EstudanteNotFound = "Estudante não encontrado";
+        public static string UsuarioBlocked = "Esse usuário está bloqueado, entre em contato com um professor para liberar o acesso";
     }
 }

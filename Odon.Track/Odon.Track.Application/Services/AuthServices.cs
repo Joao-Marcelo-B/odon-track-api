@@ -8,7 +8,6 @@ using Odon.Track.Application.Contract.Auth;
 using Odon.Track.Application.Crypto;
 using Odon.Track.Application.Data.MySQL;
 using Odon.Track.Application.Data.MySQL.Entity;
-using Odon.Track.Application.Enums;
 using Odon.Track.Application.Errors;
 using Odon.Track.Application.Responses;
 using System.IdentityModel.Tokens.Jwt;
@@ -45,6 +44,7 @@ namespace Odon.Track.Application.Services
                 Email = request.Email,
                 IdTipoUsuario = request.TipoUsuario,
                 IdentificadorUnifenas = request.Identificador,
+                Blocked = 1,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSatl,
             };
@@ -59,7 +59,7 @@ namespace Odon.Track.Application.Services
                     Nome = request.Nome,
                 };
                 await _context.Estudantes.AddAsync(estudante);
-            } else if (request.TipoUsuario.Equals(1) || request.Equals(2))
+            } else if (request.TipoUsuario.Equals(1) || request.TipoUsuario.Equals(2))
             {
                 var professor = new Professor()
                 {
@@ -80,7 +80,10 @@ namespace Odon.Track.Application.Services
 
             var user = await _context.Usuarios.FirstOrDefaultAsync(x => x.Email.Equals(request.Email));
             if (user == null)
-                return BadRequest(OdonTrackErrors.UsuarioNotFound); 
+                return BadRequest(OdonTrackErrors.UsuarioNotFound);
+
+            if (user.Blocked == 1)
+                return BadRequest(OdonTrackErrors.UsuarioBlocked);
 
             if (!PasswordSaltHasher.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
                 return BadRequest(OdonTrackErrors.CredenciaisInvalid);
@@ -134,6 +137,23 @@ namespace Odon.Track.Application.Services
                 AccessToken = tokenString,
                 Expires = tokenDescriptor.Expires
             });
+        }
+
+        public async Task<IActionResult> AutorizarUsuario(PatchAutorizarUsuarioRequest request)
+        {
+            var user = await _context.Usuarios.FirstOrDefaultAsync(x => x.Id.Equals(request.IdUsuario));
+            if (user == null)
+                return BadRequest(OdonTrackErrors.UsuarioNotFound);
+
+            var estudante = await _context.Estudantes.FirstOrDefaultAsync(x => x.IdUsuario.Equals(user.Id));
+            var professor = await _context.Professors.FirstOrDefaultAsync(x => x.IdUsuario.Equals(user.Id));
+            if(estudante == null && professor == null)
+                return BadRequest(OdonTrackErrors.UsuarioNotFound);
+
+            user.Blocked = 0;
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }

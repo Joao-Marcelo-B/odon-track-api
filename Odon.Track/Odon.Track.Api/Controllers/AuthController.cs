@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Odon.Track.Application.Authorization;
 using Odon.Track.Application.Contract.Auth;
 using Odon.Track.Application.Services;
 
@@ -23,12 +24,9 @@ namespace Odon.Track.Api.Controllers
         public async Task<IActionResult> Auth([FromBody] PostAuthRequest request) =>
             await _auth.Auth(request, HttpContext);
 
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> TesteToken()
-        {
-            Console.WriteLine("#################### Teste Authorize");
-            return Ok();
-        }
+        [HttpPatch("autorizar/usuario")]
+        [Authorize(Roles = RolesForUsers.Professor)]
+        public async Task<IActionResult> AutorizarUsuario([FromBody] PatchAutorizarUsuarioRequest request) =>
+            await _auth.AutorizarUsuario(request);
     }
 }

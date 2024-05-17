@@ -17,7 +17,8 @@ public partial class Usuario
 
     [Column("email")]
     public string Email { get; set; } = null!;
-
+    [Column("blocked")]
+    public int Blocked { get; set; }
     [Column("password_hash")]
     public byte[] PasswordHash { get; set; } = null!;
     [Column("password_salt")]
