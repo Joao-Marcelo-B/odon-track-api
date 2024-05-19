@@ -23,5 +23,13 @@ namespace Odon.Track.Api.Controllers
             return await _services.GetProfessores();
         }
 
+        [HttpGet("{id}")]
+        [Authorize(Roles = RolesForUsers.Professor)]
+        public async Task<IActionResult> GetProdessoresDetails(int id)
+        {
+            return await _services.GetProfessorDetails(id);
+        }
+
+
     }
 }

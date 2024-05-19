@@ -39,5 +39,37 @@ namespace Odon.Track.Application.Services
             }
             return Ok(new { professoresDisciplinas });
         }
+
+        public async Task<IActionResult> GetProfessorDetails(int id)
+        {
+            Professor professor = new();
+
+            var professores = await _context.Professors
+                                            .Include(p => p.Usuario)
+                                            .Include(p => p.DisciplinasProfessores)
+                                            .ThenInclude(dp => dp.Disciplina)
+                                            .Where(p => p.Id == id).ToListAsync();
+
+            List<GetProfessoresDetails> professoresDetails = new();
+
+            foreach (var item in professores)
+            {
+                List<string> disciplinas = new();
+                foreach (var disciplina in item.DisciplinasProfessores)
+                {
+                    if (disciplina.Id_Professor == item.Id)
+                        disciplinas.Add(disciplina.Disciplina.Nome);
+                }
+                professoresDetails.Add(new()
+                {
+                    Id = item.Id,
+                    Nome = item.Nome,
+                    NomeDisciplina = disciplinas
+                });
+            }
+
+
+            return Ok(new { professoresDetails });
+        }
     }
 }
