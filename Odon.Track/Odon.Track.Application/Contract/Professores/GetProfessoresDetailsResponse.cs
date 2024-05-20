@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Odon.Track.Application.Contract.Professores
 {
-    internal class GetProfessoresDetails
+    internal class GetProfessoresDetailsResponse
     {
         public int Id { get; set; }
         public string Nome { get; set; } = null!;
