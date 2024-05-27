@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Odon.Track.Application.Contract.Auth;
 using Odon.Track.Application.Contract.Estudantes;
 using Odon.Track.Application.Data.MySQL;
 using Odon.Track.Application.Data.MySQL.Entity;
@@ -39,6 +40,20 @@ namespace Odon.Track.Application.Services
                 return BadRequest(OdonTrackErrors.EstudanteNotFound);
             else 
                 return Ok(estudante);
+        }
+
+        public async Task<IActionResult> UpdateEstudante(PathEstudantesRequest request)
+        {
+            var estudante = await _context.Estudantes.FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
+            if (estudante == null)
+                return BadRequest(OdonTrackErrors.EstudanteNotFound);
+
+            estudante.Nome = request.Nome;
+            estudante.PeriodoAtual = request.Periodo;
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }
