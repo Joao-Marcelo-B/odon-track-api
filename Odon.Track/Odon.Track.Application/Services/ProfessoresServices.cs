@@ -17,9 +17,10 @@ namespace Odon.Track.Application.Services
         public async Task<IActionResult> GetProfessores()
         {
             var professores = await _context.Professors
-                                            .Include(p => p.DisciplinasProfessores)
-                                            .ThenInclude(dp => dp.Disciplina)
-                                            .ToListAsync();
+                .Include(p=> p.Usuario)
+                .Include(p => p.DisciplinasProfessores)
+                .ThenInclude(dp => dp.Disciplina)
+                .ToListAsync();
             List<GetProfessoresDisciplinasResponse> professoresDisciplinas = new();
             
             foreach (var item in professores)
@@ -34,10 +35,45 @@ namespace Odon.Track.Application.Services
                 {
                     Id = item.Id,
                     Nome = item.Nome,
-                    NomeDisciplina = disciplinas
+                    NomeDisciplina = disciplinas,
+                    CodigoUnifenas = item.Usuario.IdentificadorUnifenas,
+                    Bloqueado = item.Usuario.Blocked
                 });
             }
             return Ok(new { professoresDisciplinas });
+        }
+
+        public async Task<IActionResult> GetProfessorDetails(int id)
+        {
+            Professor professor = new();
+
+            var professores = await _context.Professors
+                .Include(p => p.Usuario)
+                .Include(p => p.DisciplinasProfessores)
+                .ThenInclude(dp => dp.Disciplina)
+                .Where(p => p.Id == id).ToListAsync();
+
+            List<GetProfessoresDetailsResponse> professoresDetails = new();
+
+            foreach (var item in professores)
+            {
+                List<string> disciplinas = new();
+                foreach (var disciplina in item.DisciplinasProfessores)
+                {
+                    if (disciplina.Id_Professor == item.Id)
+                        disciplinas.Add(disciplina.Disciplina.Nome);
+                }
+                professoresDetails.Add(new()
+                {
+                    Id = item.Id,
+                    Nome = item.Nome,
+                    NomeDisciplina = disciplinas,
+                    IdentificadorUnifenas = item.Usuario.IdentificadorUnifenas,
+                    Email = item.Usuario.Email
+                });
+            }
+
+            return Ok(new { professoresDetails });
         }
     }
 }
