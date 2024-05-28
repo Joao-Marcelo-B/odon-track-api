@@ -92,6 +92,7 @@ namespace Odon.Track.Application.Services
             var key = Encoding.UTF8.GetBytes(_settings.SharedKeyToken);
 
             var claims = new List<Claim>();
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, EncryptionHelper.Encrypt(user.Id.ToString())));
 
             var professor = await _context.Professors.FirstOrDefaultAsync(x => x.IdUsuario.Equals(user.Id));
             if(professor != null)

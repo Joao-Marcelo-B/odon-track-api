@@ -6,5 +6,6 @@
         public const string EditProntuario = "edit_prontuario";
         public const string CreateProntuario = "create_prontuario";
         public const string DeleteProntuario = "delete_prontuario";
+        public const string EditTriagem = "edit_triagem";
     }
 }
