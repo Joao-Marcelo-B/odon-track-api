@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MySqlX.XDevAPI;
@@ -34,17 +35,19 @@ namespace Odon.Track.Application.Services
                 Random random = new Random();
                 aux.codigo = random.Next(100000, 1000000).ToString();
 
-                var nomeProfessor = _context.Usuarios
-                               .FromSqlInterpolated($"SELECT nome FROM professor p INNER JOIN usuario u on u.id = p.id_usuario WHERE Email = '{email.Email}';")
-                               .FirstOrDefault();
-                var nomeEstudante = _context.Usuarios
-                               .FromSqlInterpolated($"SELECT nome FROM professor p INNER JOIN usuario u on u.id = p.id_usuario WHERE Email = '{email.Email}';")
-                               .FirstOrDefault();
+                aux.numeroUnifenas = "(35) 98888-8888";
+
+                var usuario = await _context.Usuarios
+                    .FirstOrDefaultAsync(u => u.Email == email.Email);
+
+                var nomeProfessor = await _context.Professors.FirstOrDefaultAsync(p => p.IdUsuario == usuario.Id);
+
+                var nomeEstudante = await _context.Estudantes.FirstOrDefaultAsync(p => p.IdUsuario == usuario.Id);
 
                 if (nomeProfessor != null)
-                    aux.nomeUsuario = nomeProfessor.ToString();
+                    aux.nomeUsuario = nomeProfessor.Nome.ToString();
                 else if (nomeEstudante != null)
-                    aux.nomeUsuario = nomeEstudante.ToString();
+                    aux.nomeUsuario = nomeEstudante.Nome.ToString();
                 else
                     return BadRequest("Ocorreu um erro interno.");
 
@@ -56,7 +59,7 @@ namespace Odon.Track.Application.Services
                 var response = await client.PostAsync(url, data);
 
                 string result = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(result);
+
                 return Ok(result);
             }
             else
