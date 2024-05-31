@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Odon.Track.Application.Authorization;
+using Odon.Track.Application.Contract.Estudantes;
+using Odon.Track.Application.Contract.Usuarios;
 using Odon.Track.Application.Services;
 
 namespace Odon.Track.Api.Controllers
@@ -16,10 +18,22 @@ namespace Odon.Track.Api.Controllers
         {
             _services = services;
         }
+
         [HttpGet]
+        [Authorize(Roles = RolesForUsers.Administrador)]
         public async Task<IActionResult> GetUsuarios(int pageIndex, int pageSize)
         {
             return await _services.GetUsuarios(pageIndex, pageSize);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUsuarioById(int id)
+        {
+            return await _services.GetUsuarioById(id);
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> UpdateUsuario([FromBody] PathUsuarioRequest request) =>
+           await _services.UpdateUsuario(request);
     }
 }

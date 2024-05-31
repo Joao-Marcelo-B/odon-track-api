@@ -19,19 +19,21 @@ namespace Odon.Track.Api.Controllers
             _services = services;
         }
         [HttpGet]
+        [Authorize(Roles = RolesForUsers.Administrador + "," + RolesForUsers.Professor)]
         public async Task<IActionResult> GetEstudantes()
         {
             return await _services.GetEstudantes();
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = RolesForUsers.Administrador + "," + RolesForUsers.Professor)]
         public async Task<IActionResult> GetEstudanteById([FromRoute]int id)
         {
             return await _services.GetByEstudante(id);
         }
 
         [HttpPatch]
-        [Authorize(Roles = RolesForUsers.Administrador)]
+        [Authorize(Roles = RolesForUsers.Administrador + "," + RolesForUsers.Professor)]
         public async Task<IActionResult> UpdateEstudante([FromBody] PathEstudantesRequest request) =>
             await _services.UpdateEstudante(request);
     }
