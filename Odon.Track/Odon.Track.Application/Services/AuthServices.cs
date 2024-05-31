@@ -155,5 +155,47 @@ namespace Odon.Track.Application.Services
 
             return Ok();
         }
+
+        public async Task<IActionResult> GetRoles(int periodo)
+        {
+            List<Roles> roles = new();
+            if(periodo <= 0)
+                roles = await _context.Roles.ToListAsync();
+            else
+                roles = await _context.RolesSemestre
+                    .Where(x => x.Periodo <= periodo)
+                    .Join(_context.Roles, rs => rs.IdRole, r => r.Id, (rs, r) => r)
+                    .ToListAsync();
+
+            return Ok(new { roles });
+        }
+
+        public async Task<IActionResult> PatchRolesSemestre(PatchRolesSemestreRequest request)
+        {
+            var rolesSemestre = _context.RolesSemestre.Where(x => request.Roles.Contains(x.IdRole));
+            if(rolesSemestre.Count() > 0)
+            {
+                _context.RolesSemestre.RemoveRange(rolesSemestre);
+                await _context.SaveChangesAsync();
+            }
+
+            var roles = await _context.Roles.AnyAsync(x => request.Roles.Contains(x.Id));
+            if (!roles)
+                return BadRequest(OdonTrackErrors.RolesNotFound);
+
+            foreach (var role in request.Roles)
+            {
+
+                var roleSemestre = new RolesSemestre()
+                {
+                    IdRole = role,
+                    Periodo = request.Periodo,
+                };
+                await _context.RolesSemestre.AddAsync(roleSemestre);
+            }
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

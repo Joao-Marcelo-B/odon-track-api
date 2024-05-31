@@ -11,5 +11,8 @@
         public static string PasswordNotMatched = "As senhas não são iguais";
         public static string EstudanteNotFound = "Estudante não encontrado";
         public static string UsuarioBlocked = "Esse usuário está bloqueado, entre em contato com um professor para liberar o acesso";
+        public static string RolesSemestreAlreadyExists = "Essa regra já está associada a outro semestre";
+        public static string RolesNotFound = "Essa regra de autorização não existe ou não foi encontrada";
+        public static string RolesSemestreNotFound = "Essa regra não existe ou não foi encontrada";
     }
 }
