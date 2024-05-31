@@ -91,6 +91,7 @@ namespace Odon.Track.Application.Services
             if (!PasswordSaltHasher.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
             {
                 user.LoginFailed++;
+                await _context.SaveChangesAsync();
                 return BadRequest(OdonTrackErrors.CredenciaisInvalid);
             }
                 
