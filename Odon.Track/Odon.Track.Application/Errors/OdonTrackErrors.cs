@@ -15,5 +15,7 @@
         public static string RolesSemestreAlreadyExists = "Essa regra já está associada a outro semestre";
         public static string RolesNotFound = "Essa regra de autorização não existe ou não foi encontrada";
         public static string RolesSemestreNotFound = "Essa regra não existe ou não foi encontrada";
+        public static string SenhaAtualInvalid = "Sua senha atual não está correta";
+        public static string SenhasIguais = "Nova senha não pode ser igual a senha Atual";
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Odon.Track.Application.Contract.Estudantes;
 using Odon.Track.Application.Contract.Usuarios;
 using Odon.Track.Application.Data.MySQL;
+using Odon.Track.Application.Errors;
 using Odon.Track.Application.Responses;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,33 @@ namespace Odon.Track.Application.Services
         public UsuariosServices(OdontrackContext context)
         {
             _context = context;
+        }
+
+        public async Task<IActionResult> GetUsuarioById(int id)
+        {
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.Id == id);
+
+            if(usuario == null)
+            {
+               return BadRequest(OdonTrackErrors.UsuarioNotFound);
+            }else
+            {
+                var professor = await _context.Professors.FirstOrDefaultAsync(x => x.IdUsuario.Equals(usuario.Id));
+                var estudante = await _context.Estudantes.FirstOrDefaultAsync(x => x.IdUsuario.Equals(usuario.Id));
+
+                GetUsuarioResponse response = new();
+                response.Usuario.Add(new UsuarioInfo
+                {
+                    Id = usuario.Id,
+                    Nome = usuario.IdTipoUsuario == 3 ? (estudante != null ? estudante.Nome : "") : (professor != null ? professor.Nome : ""),
+                    IdTipoUsuario = usuario.IdTipoUsuario,
+                    Email = usuario.Email,
+                    Identificador = usuario.IdentificadorUnifenas,
+                    periodo = usuario.IdTipoUsuario == 3 ? (estudante != null ? estudante.PeriodoAtual : 0) : 0
+                });
+
+                return Ok(response.Usuario);
+            }
         }
 
         public async Task<IActionResult> GetUsuarios(int pageNumber = 1, int pageSize = 10)
@@ -58,6 +86,31 @@ namespace Odon.Track.Application.Services
                 TotalPages = (int)Math.Ceiling(totalRecords / (double)pageSize),
                 Usuarios = response.Usuarios
             });
+        }
+
+        public async Task<IActionResult> UpdateUsuario(PathUsuarioRequest request)
+        {
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
+            if (usuario == null)
+                return BadRequest(OdonTrackErrors.UsuarioNotFound);
+
+            var professor = await _context.Professors.FirstOrDefaultAsync(x => x.IdUsuario == usuario.Id);
+            var estudante = await _context.Estudantes.FirstOrDefaultAsync(x => x.IdUsuario == usuario.Id);
+
+            if(professor != null)
+            {
+                professor.Nome = request.Nome;
+            }else
+            {
+                estudante.Nome = request.Nome;
+            }
+
+            usuario.IdentificadorUnifenas = request.identificador;
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+
         }
 
     }
