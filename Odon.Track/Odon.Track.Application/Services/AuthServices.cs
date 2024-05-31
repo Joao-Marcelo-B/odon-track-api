@@ -156,5 +156,30 @@ namespace Odon.Track.Application.Services
 
             return Ok();
         }
+
+        public async Task<IActionResult> AlterarSenha(PatchAlterarSenhaRequeste request)
+        {
+            var user = await _context.Usuarios.FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
+            if (user == null)
+                return BadRequest(OdonTrackErrors.UsuarioNotFound);
+
+            if (!PasswordSaltHasher.VerifyPasswordHash(request.senhaAtual, user.PasswordHash, user.PasswordSalt))
+                return BadRequest(OdonTrackErrors.SenhaAtualInvalid);
+
+            if (request.novaSenha != request.confirmarSenha)
+                return BadRequest(OdonTrackErrors.PasswordNotMatched);
+
+            if (request.novaSenha == request.senhaAtual)
+                return BadRequest(OdonTrackErrors.SenhasIguais);
+
+            byte[] passwordHash, passwordSatl;
+            PasswordSaltHasher.CreatePasswordHashAndSalt(request.novaSenha, out passwordHash, out passwordSatl);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSatl;
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

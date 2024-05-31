@@ -11,5 +11,7 @@
         public static string PasswordNotMatched = "As senhas não são iguais";
         public static string EstudanteNotFound = "Estudante não encontrado";
         public static string UsuarioBlocked = "Esse usuário está bloqueado, entre em contato com um professor para liberar o acesso";
+        public static string SenhaAtualInvalid = "Sua senha atual não está correta";
+        public static string SenhasIguais = "Nova senha não pode ser igual a senha Atual";
     }
 }

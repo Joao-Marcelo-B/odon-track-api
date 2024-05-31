@@ -28,5 +28,10 @@ namespace Odon.Track.Api.Controllers
         [Authorize(Roles = RolesForUsers.Professor)]
         public async Task<IActionResult> AutorizarUsuario([FromBody] PatchAutorizarUsuarioRequest request) =>
             await _auth.AutorizarUsuario(request);
+
+        [Authorize]
+        [HttpPatch("alterarSenha/usuario")]
+        public async Task<IActionResult> AlterarSenha([FromBody] PatchAlterarSenhaRequeste request) =>
+            await _auth.AlterarSenha(request);
     }
 }
