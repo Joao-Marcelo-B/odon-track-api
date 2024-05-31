@@ -18,8 +18,6 @@ public partial class OdontrackContext : DbContext
 
     public virtual DbSet<Estudante> Estudantes { get; set; }
 
-    public virtual DbSet<HorarioDisponivelAtendimento> HorarioDisponivelAtendimentos { get; set; }
-
     public virtual DbSet<NecessidadeTratamento> NecessidadeTratamentos { get; set; }
 
     public virtual DbSet<Paciente> Pacientes { get; set; }
@@ -44,11 +42,13 @@ public partial class OdontrackContext : DbContext
 
     public virtual DbSet<TipoUsuario> TipoUsuarios { get; set; }
 
-    public virtual DbSet<Triagem> Triagems { get; set; }
+    public virtual DbSet<Triagem> Triagens { get; set; }
+    public virtual DbSet<HorarioDisponivelAtendimento> HorariosDisponiveisAtendimento { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
     public virtual DbSet<RolesSemestre> RolesSemestre { get; set; }
     public virtual DbSet<Roles> Roles { get; set; }
+    public virtual DbSet<Responsavel> Responsaveis { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

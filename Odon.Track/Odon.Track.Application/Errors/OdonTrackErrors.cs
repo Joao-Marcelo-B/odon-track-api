@@ -17,5 +17,10 @@
         public static string RolesSemestreNotFound = "Essa regra não existe ou não foi encontrada";
         public static string SenhaAtualInvalid = "Sua senha atual não está correta";
         public static string SenhasIguais = "Nova senha não pode ser igual a senha Atual";
+        public static string CPFJaCadastrado = "Esse CPF já está vinculado com outro paciente";
+        public static string PacienteNotFound = "Paciente não encontrado";
+        public static string CPFInvalido = "Número do CPF inválido";
+        public static string EnderecoPendente = "É necessário cadastrar o endereço antes de preencher a triagem";
+        public static string TriagemFound = "Esse paciente já possui uma ficha de triagem";
     }
 }

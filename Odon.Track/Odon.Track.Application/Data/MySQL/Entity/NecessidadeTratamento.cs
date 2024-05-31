@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Odon.Track.Application.Data.MySQL.Entity;
 
-public partial class NecessidadeTratamento
+[Table("necessidade_tratamento")]
+public class NecessidadeTratamento
 {
+    [Column("id")]
     public int Id { get; set; }
 
+
+    [Column("id_triagem")]
     public int IdTriagem { get; set; }
 
-    public string Endodontia { get; set; } = null!;
+    [Column("tratamento")]
+    public string Tratamento { get; set; }
 
-    public string Periodontia { get; set; } = null!;
+    [Column("descricao")]
+    public string Descricao { get; set; }
 
-    public string Dentistica { get; set; } = null!;
-
-    public string Cirurgia { get; set; } = null!;
-
-    public string Protese { get; set; } = null!;
-
-    public virtual Triagem IdTriagemNavigation { get; set; } = null!;
+    [ForeignKey(nameof(IdTriagem))]
+    public Triagem Triagem { get; set; } = null!;
 }

@@ -7,5 +7,7 @@
         public const string CreateProntuario = "create_prontuario";
         public const string DeleteProntuario = "delete_prontuario";
         public const string EditTriagem = "edit_triagem";
+        public const string CadastrarPaciente = "cadastrar_paciente";
+        public const string CadastrarTriagem = "cadastrar_triagem";
     }
 }

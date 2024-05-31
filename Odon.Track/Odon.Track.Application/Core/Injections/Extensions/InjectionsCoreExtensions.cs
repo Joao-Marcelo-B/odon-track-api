@@ -5,9 +5,6 @@ using Odon.Track.Application.Data.MySQL;
 using Odon.Track.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.Configuration;
-using Odon.Track.Application.Authorization;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -23,6 +20,7 @@ namespace Odon.Track.Application.Core.Injections.Extensions
             services.AddScoped<ProfessoresServices>();
             services.AddScoped<EstudantesServices>();
             services.AddScoped<UsuariosServices>();
+            services.AddScoped<PacientesServices>();
             return services;
         }
 

@@ -107,6 +107,10 @@ namespace Odon.Track.Application.Services
                 if(user.IdTipoUsuario.Equals(1))
                     claims.Add(new Claim( ClaimTypes.Role, RolesForUsers.Administrador));
                 claims.Add(new Claim( ClaimTypes.Role, RolesForUsers.Professor ));
+
+                var roles = await _context.Roles.ToListAsync();
+                foreach (var role in roles)
+                    claims.Add(new Claim(ClaimTypes.Role, role.Name));
             }
 
             var estudante = await _context.Estudantes.FirstOrDefaultAsync(x => x.IdUsuario.Equals(user.Id));

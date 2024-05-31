@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Odon.Track.Application.Data.MySQL.Entity;
-
-public partial class HorarioDisponivelAtendimento
+namespace Odon.Track.Application.Data.MySQL.Entity
 {
-    public int Id { get; set; }
-
-    public int IdTriagem { get; set; }
-
-    public sbyte? SeteMeia { get; set; }
-
-    public sbyte? NoveMeia { get; set; }
-
-    public sbyte? UmaMeia { get; set; }
-
-    public sbyte? TresMeia { get; set; }
-
-    public virtual Triagem IdTriagemNavigation { get; set; } = null!;
+    [Table("horario_disponivel_atendimento")]
+    public class HorarioDisponivelAtendimento
+    {
+        [Key, Column("id")]
+        public int Id { get; set; }
+        [Column("id_triagem")]
+        public int IdTriagem { get; set; }
+        [Column("sete_meia")]
+        public int SeteMeia { get; set; }
+        [Column("nove_meia")]
+        public int NoveMeia { get; set; }
+        [Column("uma_meia")]
+        public int UmaMeia { get; set; }
+        [Column("tres_meia")]
+        public int TresMeia { get; set; }
+    }
 }
