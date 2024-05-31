@@ -13,6 +13,7 @@ namespace Odon.Track.Application.Data.MySQL.Entity
         [Column("periodo")]
         public int Periodo { get; set; }
 
+        [ForeignKey("IdRole")]
         public Roles Roles { get; set; }
     }
 }

@@ -28,5 +28,15 @@ namespace Odon.Track.Api.Controllers
         [Authorize(Roles = RolesForUsers.Professor)]
         public async Task<IActionResult> AutorizarUsuario([FromBody] PatchAutorizarUsuarioRequest request) =>
             await _auth.AutorizarUsuario(request);
+
+        [HttpGet("roles")]
+        [Authorize(Roles = RolesForUsers.Professor)]
+        public async Task<IActionResult> GetRoles([FromQuery] int periodo) =>
+            await _auth.GetRoles(periodo);
+
+        [HttpPatch("roles/semestre")]
+        [Authorize(Roles = RolesForUsers.Professor)]
+        public async Task<IActionResult> PatchRolesSemestre([FromBody] PatchRolesSemestreRequest request) =>
+            await _auth.PatchRolesSemestre(request);
     }
 }

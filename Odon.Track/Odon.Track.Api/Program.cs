@@ -2,12 +2,7 @@ using Odon.Track.Application.Configuration;
 using Odon.Track.Application.Core.Middleware;
 using Odon.Track.Application.Core.Injections.Extensions;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.Data;
-using Odon.Track.Application.Authorization;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
