@@ -85,8 +85,15 @@ namespace Odon.Track.Application.Services
             if (user.Blocked == 1)
                 return BadRequest(OdonTrackErrors.UsuarioBlocked);
 
+            if (user.LoginFailed >= 5)
+                return BadRequest(OdonTrackErrors.UsuarioBlockedForLoginFailed);
+
             if (!PasswordSaltHasher.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+            {
+                user.LoginFailed++;
                 return BadRequest(OdonTrackErrors.CredenciaisInvalid);
+            }
+                
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_settings.SharedKeyToken);
@@ -108,7 +115,7 @@ namespace Odon.Track.Application.Services
                 claims.Add(new Claim(ClaimTypes.Role, RolesForUsers.Estudante));
                 var query = from rs in _context.RolesSemestre
                             join r in _context.Roles on rs.IdRole equals r.Id
-                            where rs.Periodo == estudante.PeriodoAtual
+                            where rs.Periodo <= estudante.PeriodoAtual
                             select r.Name;
 
                 var roles = query.ToList();
