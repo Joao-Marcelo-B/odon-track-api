@@ -21,6 +21,7 @@ namespace Odon.Track.Application.Services
                 x.Nome,
                 x.CPF,
                 x.IdPacienteStatus,
+                x.DataNascimento,
                 x.Ativo
             }), Count = pacientesCount });
         }
