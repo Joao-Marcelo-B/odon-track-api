@@ -18,6 +18,7 @@ namespace Odon.Track.Application.Services
 
             var pacientesList = pacientes.Select(x => new
             {
+                x.Id,
                 x.Nome,
                 x.CPF,
                 x.IdPacienteStatus,
@@ -30,8 +31,9 @@ namespace Odon.Track.Application.Services
             {
                 response.Add(new()
                 {
+                    Id = paciente.Id,
                     Atividade = paciente.Ativo,
-                    CPF = paciente.CPF,
+                    Cpf = paciente.CPF,
                     DataNascimento = paciente.DataNascimento.ToString("dd/MM/yyyy"),
                     Nome = paciente.Nome,
                     Status = ParsePacienteStatus(paciente.IdPacienteStatus)
