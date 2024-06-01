@@ -14,6 +14,7 @@ spec:
     spec:
       containers:
       - name: app-odon-track-python-api
+        imagePullPolicy: IfNotPresent
         image: app-odon-track-python-api-image:latest
         ports:
         - containerPort: 5000
