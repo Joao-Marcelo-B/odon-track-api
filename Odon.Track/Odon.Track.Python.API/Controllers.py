@@ -25,4 +25,4 @@ def get_logo_odontrack():
     return send_file(image_path, mimetype='image/png')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=False)
