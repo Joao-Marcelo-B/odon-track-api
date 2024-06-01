@@ -16,14 +16,44 @@ namespace Odon.Track.Application.Services
 
             var pacientes = await _context.Pacientes.OrderBy(x => x.Id).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
-            return Ok(new { Pacientes = pacientes.Select(x => new
+            var pacientesList = pacientes.Select(x => new
             {
                 x.Nome,
                 x.CPF,
                 x.IdPacienteStatus,
                 x.DataNascimento,
                 x.Ativo
-            }), Count = pacientesCount });
+            });
+
+            var response = new List<GetPacientesResponse>();
+            foreach (var paciente in pacientesList)
+            {
+                response.Add(new()
+                {
+                    Atividade = paciente.Ativo,
+                    CPF = paciente.CPF,
+                    DataNascimento = paciente.DataNascimento.ToString("dd/MM/yyyy"),
+                    Nome = paciente.Nome,
+                    Status = ParsePacienteStatus(paciente.IdPacienteStatus)
+                });
+            }
+
+            return Ok(new { Pacientes = response, Count = pacientesCount });
+        }
+
+        private string ParsePacienteStatus(int idPacienteStatus)
+        {
+            switch (idPacienteStatus)
+            {
+                case 1000:
+                    return "Cadastro Incompleto";
+                case 2000:
+                    return "Triagem Incompleta";
+                case 3000:
+                    return "Protuario Incompleto";
+                default:
+                    return "";
+            }
         }
 
         public async Task<IActionResult> PostCadastrarPaciente(int idUsuario, PostCadastrarPacienteRequest request)
