@@ -21,3 +21,7 @@ spec:
         env:
         - name: ConnOdonTrack
           value: "server=mysql-service;port=3306;database=odon_track;User=root;Password=2rQ78h$32T@4f7gy=;"
+        - name: ApiPython
+          value: "http://app-odon-track-python-api-service:5000"
+        - name: NumeroUnifenas
+          value: "(35) 98888-8888"

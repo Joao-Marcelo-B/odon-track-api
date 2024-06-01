@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MySqlX.XDevAPI;
 using Newtonsoft.Json;
+using Odon.Track.Application.Configuration;
 using Odon.Track.Application.Contract.Auth;
 using Odon.Track.Application.Contract.RecoverPassword;
 using Odon.Track.Application.Crypto;
 using Odon.Track.Application.Data.MySQL;
 using Odon.Track.Application.Data.MySQL.Entity;
 using Odon.Track.Application.Responses;
-using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace Odon.Track.Application.Services
 {
@@ -23,9 +22,11 @@ namespace Odon.Track.Application.Services
     {
         private static readonly HttpClient client = new HttpClient();
         private readonly OdontrackContext _context;
-        public RecoverPasswordServices(OdontrackContext context) 
+        private readonly AppSettings _settings;
+        public RecoverPasswordServices(OdontrackContext context, AppSettings settings)
         {
             _context = context;
+            _settings = settings;
         }
 
         public async Task<IActionResult> GetCode(PostRecoverPasswordRequest email)
@@ -53,7 +54,7 @@ namespace Odon.Track.Application.Services
 
                 var json = JsonConvert.SerializeObject(aux);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
-                var url = "http://127.0.0.1:5000/EnviarEmail";
+                var url = _settings.ApiPython;
                 var response = await client.PostAsync(url, data);
                 string result = await response.Content.ReadAsStringAsync();
 

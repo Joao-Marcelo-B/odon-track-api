@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-odon-track-python-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app-odon-track-python-api
+  template:
+    metadata:
+      labels:
+        app: app-odon-track-python-api
+    spec:
+      containers:
+      - name: app-odon-track-python-api
+        image: app-odon-track-python-api-image:latest
+        ports:
+        - containerPort: 5000
