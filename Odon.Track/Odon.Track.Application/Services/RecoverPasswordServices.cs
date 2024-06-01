@@ -55,6 +55,7 @@ namespace Odon.Track.Application.Services
                 var json = JsonConvert.SerializeObject(aux);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
                 var url = $"{_settings.ApiPython}/EnviarEmail";
+                Console.WriteLine("######################## URL:" + url);
                 var response = await client.PostAsync(url, data);
                 string result = await response.Content.ReadAsStringAsync();
 
