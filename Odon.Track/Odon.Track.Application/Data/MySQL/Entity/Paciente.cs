@@ -13,7 +13,7 @@ public partial class Paciente
     public int IdPacienteStatus { get; set; }
 
     [Column("id_usuario_cadastro")]
-    public int IdUsuarioCadastro { get; set; } dio 
+    public int IdUsuarioCadastro { get; set; }
 
     [Column("nome")]
     public string? Nome { get; set; }
