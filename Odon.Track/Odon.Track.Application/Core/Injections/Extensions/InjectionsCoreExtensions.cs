@@ -20,6 +20,7 @@ namespace Odon.Track.Application.Core.Injections.Extensions
             services.AddScoped<ProfessoresServices>();
             services.AddScoped<EstudantesServices>();
             services.AddScoped<UsuariosServices>();
+            services.AddScoped<RecoverPasswordServices>();
             services.AddScoped<PacientesServices>();
             return services;
         }
