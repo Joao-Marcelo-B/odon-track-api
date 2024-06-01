@@ -49,6 +49,7 @@ public partial class OdontrackContext : DbContext
     public virtual DbSet<Usuario> Usuarios { get; set; }
     public virtual DbSet<RolesSemestre> RolesSemestre { get; set; }
     public virtual DbSet<Roles> Roles { get; set; }
+    public virtual DbSet<CodigoSeguranca> CodigoSeguranca { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

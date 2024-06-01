@@ -73,9 +73,9 @@ def enviarEmail(nomeUsuario,codigo,numeroUnifenas,email):
         <p style="color: #555;line-height: 1.6;">
             Este é o seu código de verificação:
         </p>
-        <p style="color: #555;line-height: 1.6;">
+        <b style="color: #555;line-height: 1.6; font-size: xx-large">
             %s
-        </p>
+        </b>
         <p style="color: #555;line-height: 1.6;">
             Se não foi você que o requisitou, contate a Unifenas pelo número: %s 
         </p>
