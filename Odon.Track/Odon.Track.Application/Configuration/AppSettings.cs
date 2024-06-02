@@ -26,11 +26,21 @@ namespace Odon.Track.Application.Configuration
             Issuer = Environment.GetEnvironmentVariable("Issuer");
             if (string.IsNullOrEmpty(Issuer))
                 Issuer = appSettingsSection["Issuer"];
+
+            NumeroUnifenas = Environment.GetEnvironmentVariable("NumeroUnifenas");
+            if (string.IsNullOrEmpty(Issuer))
+                NumeroUnifenas = appSettingsSection["NumeroUnifenas"];
+
+            ApiPython = Environment.GetEnvironmentVariable("ApiPython");
+            if (string.IsNullOrEmpty(ApiPython))
+                ApiPython = appSettingsSection["ApiPython"];
         }
 
         public string ConnOdonTrack { get; set; }
         public string AllowOrigins { get; set; }
         public string SharedKeyToken { get; set; }
         public string Issuer { get; set; }
+        public string NumeroUnifenas { get; set; }
+        public string ApiPython { get; set; }
     }
 }

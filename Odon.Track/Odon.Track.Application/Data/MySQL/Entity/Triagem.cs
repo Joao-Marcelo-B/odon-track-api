@@ -29,7 +29,14 @@ public partial class Triagem
     [Column("data_cadastro")]
     public DateTime DataCadastro { get; set; }
 
-    private Professor IdProfessorVinculadoNavigation { get; set; } = null!;
+    [ForeignKey(nameof(IdPaciente))]
+    public Paciente Paciente { get; set; } = null!;
 
-    private ICollection<NecessidadeTratamento> NecessidadeTratamentos { get; } = new List<NecessidadeTratamento>();
+    [ForeignKey(nameof(IdProfessorAssinatura))]
+    public Professor ProfessorAssinatura { get; set; } = null!;
+
+    [ForeignKey(nameof(IdEstudanteAssinatura))]
+    public Estudante EstudanteAssinatura { get; set; } = null!;
+
+    public ICollection<NecessidadeTratamento> NecessidadeTratamentos { get; } = new List<NecessidadeTratamento>();
 }

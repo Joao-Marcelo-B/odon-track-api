@@ -37,10 +37,5 @@ namespace Odon.Track.Api.Controllers
         [Authorize(Roles = RolesForAccess.CadastrarPaciente)]
         public async Task<IActionResult> PostCadastrarEnderecoPaciente([FromBody] PostCadastrarEnderecoPacienteRequest request) =>
             await _services.PostCadastrarEnderecoPaciente(request);
-
-        [HttpPost("triagem")]
-        [Authorize(Roles = RolesForAccess.CadastrarTriagem)]
-        public async Task<IActionResult> PostCadastrarTriagem([FromBody] PostCadastrarTriagemRequest request) =>
-            await _services.PostCadastrarTriagem(request);
     }
 }
