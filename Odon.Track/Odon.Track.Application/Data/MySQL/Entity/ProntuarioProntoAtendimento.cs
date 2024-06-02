@@ -6,93 +6,137 @@ namespace Odon.Track.Application.Data.MySQL.Entity;
 
 public partial class ProntuarioProntoAtendimento
 {
-    public int Id { get; set; }
+    [Column("id")]
+    public int? Id { get; set; }
 
-    public int IdPaciente { get; set; }
+    [Column("id_paciente")]
+    public int? IdPaciente { get; set; }
 
-    public int IdProfessorVinculado { get; set; }
+    [Column("id_professor_vinculado")]
+    public int? IdProfessorVinculado { get; set; }
 
-    public int IdEstudanteVinculado { get; set; }
+    [Column("id_estudante_vinculado")]
+    public int? IdEstudanteVinculado { get; set; }
 
+    [Column("queixa_principal")]
     public string QueixaPrincipal { get; set; } = null!;
 
+    [Column("historia_molestia_atual")]
     public string HistoriaMolestiaAtual { get; set; } = null!;
 
-    public sbyte JaTomouAnestesiaOdontologica { get; set; }
+    [Column("ja_tomou_anestesia_odontologica")]
+    public int? JaTomouAnestesiaOdontologica { get; set; }
 
-    public sbyte TeveAlgumaReacaoIndesejavel { get; set; }
+    [Column("teve_alguma_reacao_indesejavel")]
+    public int? TeveAlgumaReacaoIndesejavel { get; set; }
 
-    public sbyte EstaSobTratamentoMedico { get; set; }
+    [Column("esta_sob_tratamento_medico")]
+    public int? EstaSobTratamentoMedico { get; set; }
 
-    public string? MotivoTratamentoMedico { get; set; }
+    [Column("motivo_tratamento_medico")]
+    public string MotivoTratamentoMedico { get; set; }
 
-    public sbyte EstaTomandoAlgumMedicamento { get; set; }
+    [Column("esta_tomando_algum_medicamento")]
+    public int? EstaTomandoAlgumMedicamento { get; set; }
 
-    public string? QualMedicamento { get; set; }
+    [Column("qual_medicamento")]
+    public string QualMedicamento { get; set; }
 
-    public sbyte AlergiaAlgumMedicamentoSubstancia { get; set; }
+    [Column("alergia_algum_medicamento_substancia")]
+    public int? AlergiaAlgumMedicamentoSubstancia { get; set; }
 
-    public string? QualMedicamentoSubstancia { get; set; }
+    [Column("qual_medicamento_substancia")]
+    public string QualMedicamentoSubstancia { get; set; }
 
-    public sbyte EDiabetico { get; set; }
+    [Column("e_diabetico")]
+    public int? EDiabetico { get; set; }
 
-    public sbyte EstaGravida { get; set; }
+    [Column("esta_gravida")]
+    public int? EstaGravida { get; set; }
 
-    public sbyte SofreDisturbiosCardiovasculares { get; set; }
+    [Column("sofre_disturbios_cardiovasculares")]
+    public int? SofreDisturbiosCardiovasculares { get; set; }
 
-    public string? QualDisturbioCardiovascular { get; set; }
+    [Column("qual_disturbio_cardiovascular")]
+    public string QualDisturbioCardiovascular { get; set; }
 
-    public sbyte TemHipertensao { get; set; }
+    [Column("tem_hipertensao")]
+    public int? TemHipertensao { get; set; }
 
-    public sbyte FazUsoProteseCardiaca { get; set; }
+    [Column("faz_uso_protese_cardiaca")]
+    public int? FazUsoProteseCardiaca { get; set; }
 
-    public string? Outros { get; set; }
+    [Column("outros")]
+    public string Outros { get; set; }
 
-    public sbyte ApresentaHistoriaHemorragia { get; set; }
+    [Column("apresenta_historia_hemorragia")]
+    public int? ApresentaHistoriaHemorragia { get; set; }
 
-    public sbyte ApresentaHistoriaFebreReumatica { get; set; }
+    [Column("apresenta_historia_febre_reumatica")]
+    public int? ApresentaHistoriaFebreReumatica { get; set; }
 
-    public sbyte Bronquite { get; set; }
+    [Column("bronquite")]
+    public int? Bronquite { get; set; }
 
-    public sbyte Asma { get; set; }
+    [Column("asma")]
+    public int? Asma { get; set; }
 
-    public string? OutrosDisturbiosRespiratorios { get; set; }
+    [Column("outros_disturbios_respiratorios")]
+    public string OutrosDisturbiosRespiratorios { get; set; }
 
-    public sbyte SofreDisturbioGastroIntestinal { get; set; }
+    [Column("sofre_disturbio_gastro_intestinal")]
+    public int? SofreDisturbioGastroIntestinal { get; set; }
 
-    public sbyte Gastrite { get; set; }
+    [Column("gastrite")]
+    public int? Gastrite { get; set; }
 
-    public sbyte Ulcera { get; set; }
+    [Column("ulcera")]
+    public int? Ulcera { get; set; }
 
-    public sbyte Hepatite { get; set; }
+    [Column("hepatite")]
+    public int? Hepatite { get; set; }
 
-    public sbyte Cirrose { get; set; }
+    [Column("cirrose")]
+    public int? Cirrose { get; set; }
 
-    public sbyte TeveDoencaInfectoContagiosa { get; set; }
+    [Column("teve_doenca_infecto_contagiosa")]
+    public int? TeveDoencaInfectoContagiosa { get; set; }
 
-    public string? QualDoencaInfectoContagiosa { get; set; }
+    [Column("qual_doenca_infecto_contagiosa")]
+    public string QualDoencaInfectoContagiosa { get; set; }
 
-    public sbyte ExisteDoencaPredominanteFamilia { get; set; }
+    [Column("existe_doenca_predominante_familia")]
+    public int? ExisteDoencaPredominanteFamilia { get; set; }
 
-    public string? QualDoencaPredominante { get; set; }
+    [Column("qual_doenca_predominante")]
+    public string QualDoencaPredominante { get; set; }
 
-    public string? OutrasInformacoesHabitosVicios { get; set; }
+    [Column("outras_informacoes_habitos_vicios")]
+    public string OutrasInformacoesHabitosVicios { get; set; }
 
-    public string? Observacoes { get; set; }
+    [Column("observacoes")]
+    public string Observacoes { get; set; }
 
+    [Column("pressao_arterial_mm_mm_hg")]
     public string PressaoArterialMmMmHg { get; set; } = null!;
 
+    [Column("diagnostico")]
     public string Diagnostico { get; set; } = null!;
 
-    public sbyte AlunoAssinou { get; set; }
+    [Column("aluno_assinou")]
+    public int? AlunoAssinou { get; set; }
 
+    [Column("cidade_ficha_feita")]
     public string CidadeFichaFeita { get; set; } = null!;
 
+    [Column("data_ficha_feita")]
     public DateTime DataFichaFeita { get; set; }
 
-    public sbyte ProfessorAssinou { get; set; }
+    [Column("professor_assinou")]
+    public int? ProfessorAssinou { get; set; }
 
-    public sbyte PacienteAssinou { get; set; }
+    [Column("paciente_assinou")]
+    public int? PacienteAssinou { get; set; }
 
     public ICollection<CondutaProntoAtendimento> CondutaProntoAtendimentos { get; } = new List<CondutaProntoAtendimento>();
 

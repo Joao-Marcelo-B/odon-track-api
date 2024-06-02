@@ -122,7 +122,7 @@ namespace Odon.Track.Application.Services
 
         public async Task<IActionResult> GetProntoAtendimento(int pageNumber, int pageSize)
         {
-            var prontoAtendimento = await _context.ProntuarioProntoAtendimentos
+            var prontoAtendimentos = await _context.ProntuarioProntoAtendimentos
                                                         .OrderBy(x => x.Id)
                                                         .Include(x => x.EstudanteVinculado)
                                                         .Include(x => x.ProfessorVinculado)
@@ -131,19 +131,20 @@ namespace Odon.Track.Application.Services
                                                         .Take(pageSize)
                                                         .ToListAsync();
 
-            //var response = prontoAtendimento.Select(x => new
-            //{
-            //    x.Id,
-            //    x.DataCadastro,
-            //    NomePaciente = x.Paciente.Nome,
-            //    NomeEstudante = x.EstudanteAssinatura != null ? x.EstudanteAssinatura.Nome : "--",
-            //    NomeProfessor = x.ProfessorAssinatura != null ? x.ProfessorAssinatura.Nome : "--",
-            //    Status = "Aprovado"
-            //});
+            var prontoAtendimentosCount = await _context.ProntuarioProntoAtendimentos.CountAsync(); 
 
-            return Ok(new { ProntoAtendimentos = prontoAtendimento });
+            var response = prontoAtendimentos.Select(x => new
+            {
+                x.Id,
+                DataCadastro = x.DataFichaFeita,
+                NomePaciente = x.Paciente.Nome,
+                NomeEstudante = x.EstudanteVinculado != null ? x.EstudanteVinculado.Nome : "--",
+                NomeProfessor = x.ProfessorVinculado != null ? x.ProfessorVinculado.Nome : "--",
+                Status = "Aprovado"
+            });
 
-            return Ok();
+            return Ok(new { ProntoAtendimentos = response, Count = prontoAtendimentosCount });
+
         }
 
         private string ParseProntuarioStatus(int? idProntuarioStatus)
