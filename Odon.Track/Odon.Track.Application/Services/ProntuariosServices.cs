@@ -144,7 +144,7 @@ namespace Odon.Track.Application.Services
                 x.Id,
                 DataCadastro = x.DataFichaFeita,
                 NomePaciente = x.Paciente.Nome,
-                //NomeEstudante = x.EstudanteVinculado != null ? x.EstudanteVinculado.Nome : "--",
+                NomeEstudante = "--",//x.EstudanteVinculado != null ? x.EstudanteVinculado.Nome : "--",
                 NomeProfessor = x.ProfessorVinculado != null ? x.ProfessorVinculado.Nome : "--",
                 Status = "Aprovado"
             });
