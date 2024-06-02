@@ -144,7 +144,23 @@ namespace Odon.Track.Application.Services
             });
 
             return Ok(new { ProntoAtendimentos = response, Count = prontoAtendimentosCount });
+        }
 
+        public async Task<IActionResult> GetReavaliacaoAnamnese(int idPaciente, int pageNumber, int pageSize)
+        {
+            if(idPaciente == 0)
+                return BadRequest(OdonTrackErrors.PacienteNotFound);
+
+            var reavaliacoesAnamnese = await _context.ReavaliacaoAnamneses.Include(x => x.Paciente)
+                                                                        .Where(x => x.IdPaciente.Equals(idPaciente))
+                                                                        .OrderBy(x => x.Id)
+                                                                        .Skip((pageNumber - 1) * pageSize)
+                                                                        .Take(pageSize)
+                                                                        .ToListAsync();
+
+            var reavaliacaoAnamneseCount = await _context.ReavaliacaoAnamneses.Where(x => x.IdPaciente.Equals(idPaciente)).CountAsync(x => x.IdPaciente.Equals(idPaciente));
+
+            return Ok(new { ReavaliacoesAnamnese = reavaliacoesAnamnese, Count = reavaliacaoAnamneseCount });
         }
 
         private string ParseProntuarioStatus(int? idProntuarioStatus)
