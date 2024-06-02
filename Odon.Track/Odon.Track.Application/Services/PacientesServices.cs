@@ -25,6 +25,27 @@ namespace Odon.Track.Application.Services
             }), Count = pacientesCount });
         }
 
+        public async Task<IActionResult> GetPacienteById(int id)
+        {
+            var paciente = await _context.Pacientes.FirstOrDefaultAsync(x => x.Id == id);
+            if (paciente == null)
+                return BadRequest(OdonTrackErrors.EstudanteNotFound);
+            else
+                return Ok(paciente);
+        }
+
+        public async Task<IActionResult> GetPacienteByNome(string nome)
+        {
+            var pacientes = await _context.Pacientes
+                .Where(x => x.Nome.ToLower().Contains(nome.ToLower()))
+                .ToListAsync();
+
+            if (!pacientes.Any())
+                return Ok(new List<Paciente>());
+
+            return Ok(pacientes);
+        }
+
         public async Task<IActionResult> PostCadastrarPaciente(int idUsuario, PostCadastrarPacienteRequest request)
         {
             if(string.IsNullOrEmpty(request.CPF) || request.CPF.Length != 11)

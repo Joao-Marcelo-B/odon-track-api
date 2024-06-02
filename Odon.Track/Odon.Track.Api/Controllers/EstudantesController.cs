@@ -29,7 +29,13 @@ namespace Odon.Track.Api.Controllers
         [Authorize(Roles = RolesForUsers.Administrador + "," + RolesForUsers.Professor)]
         public async Task<IActionResult> GetEstudanteById([FromRoute]int id)
         {
-            return await _services.GetByEstudante(id);
+            return await _services.GetEstudanteById(id);
+        }
+
+        [HttpGet("buscarPorNome")]
+        public async Task<IActionResult> GetEstudanteByNome(string nome)
+        {
+            return await _services.GetEstudanteByNome(nome);
         }
 
         [HttpPatch]

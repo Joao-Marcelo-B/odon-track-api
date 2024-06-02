@@ -5,6 +5,7 @@ using Odon.Track.Application.Services;
 
 namespace Odon.Track.Api.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class ProfessoresController : ControllerBase
@@ -30,6 +31,11 @@ namespace Odon.Track.Api.Controllers
             return await _services.GetProfessorDetails(id);
         }
 
+        [HttpGet("buscarPorNome")]
+        public async Task<IActionResult> GetProfessoresByNome(string nome)
+        {
+            return await _services.GetProfessoresByNome(nome);
+        }
 
     }
 }

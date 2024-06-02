@@ -16,6 +16,18 @@ namespace Odon.Track.Api.Controllers
         public async Task<IActionResult> GetPacientes([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) =>
             await _services.GetPacientes(pageNumber, pageSize);
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPacienteById([FromRoute] int id)
+        {
+            return await _services.GetPacienteById(id);
+        }
+
+        [HttpGet("buscarPorNome")]
+        public async Task<IActionResult> GetPacienteByNome(string nome)
+        {
+            return await _services.GetPacienteByNome(nome);
+        }
+
         [HttpPost]
         [Authorize(Roles = RolesForAccess.CadastrarPaciente)]
         public async Task<IActionResult> PostCadastrarPaciente([FromBody] PostCadastrarPacienteRequest request) =>

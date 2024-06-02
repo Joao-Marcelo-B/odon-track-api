@@ -15,11 +15,9 @@ public partial class Paciente
     [Column("id_usuario_cadastro")]
     public int IdUsuarioCadastro { get; set; }
 
-    [Column("id_triagem")]
-    public int IdTriagem { get; set; }
 
     [Column("nome")]
-    public string? Nome { get; set; }
+    public string Nome { get; set; }
 
     [Column("naturalidade")]
     public string Naturalidade { get; set; } = null!;

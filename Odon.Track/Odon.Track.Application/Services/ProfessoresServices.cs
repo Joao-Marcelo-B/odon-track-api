@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Odon.Track.Application.Contract.Professores;
 using Odon.Track.Application.Data.MySQL;
 using Odon.Track.Application.Data.MySQL.Entity;
+using Odon.Track.Application.Errors;
 using Odon.Track.Application.Responses;
 
 namespace Odon.Track.Application.Services
@@ -74,6 +75,19 @@ namespace Odon.Track.Application.Services
             }
 
             return Ok(new { professoresDetails });
+        }
+
+        public async Task<IActionResult> GetProfessoresByNome(string nome)
+        {
+            var professoresValidos = await (from p in _context.Professors
+                                          join u in _context.Usuarios on p.IdUsuario equals u.Id
+                                          where p.Nome.ToLower().Contains(nome.ToLower()) && u.Blocked == 0
+                                          select p).ToListAsync();
+
+            if (professoresValidos == null || !professoresValidos.Any())
+                return Ok(new List<Paciente>());
+            else
+                return Ok(professoresValidos);
         }
     }
 }
