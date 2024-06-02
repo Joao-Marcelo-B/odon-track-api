@@ -1,12 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-odon-track-python-api-service
+  name: app-odon-track-python-api
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
-    app: app-odon-track-python-api-service
+    app: app-odon-track-python-api
   ports:
     - port: 5000
       targetPort: 5000
-      nodePort: 30003
