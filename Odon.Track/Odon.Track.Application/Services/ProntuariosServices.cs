@@ -116,6 +116,11 @@ namespace Odon.Track.Application.Services
             return Ok(new { Triagens = response });
         }
 
+        public async Task<IActionResult> GetProntoAtendimento()
+        {
+            return Ok();
+        }
+
         private string ParseProntuarioStatus(int? idProntuarioStatus)
         {
             var status = idProntuarioStatus switch
