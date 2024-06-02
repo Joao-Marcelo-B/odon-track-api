@@ -79,6 +79,8 @@ namespace Odon.Track.Application.Services
                                                 .Take(pageSize)
                                                 .ToListAsync();
 
+            var prontuariosCount = await _context.Prontuarios.CountAsync();
+
             var response = prontuarios.Select(x => new
             {
                 x.Id,
@@ -89,7 +91,7 @@ namespace Odon.Track.Application.Services
                 Status = ParseProntuarioStatus(x.IdProntuarioStatus)
             });
 
-            return Ok(new { Prontuarios = response });
+            return Ok(new { Prontuarios = response , Count = prontuariosCount });
         }
 
         public async Task<IActionResult> GetTriagem(int pageNumber, int pageSize)
@@ -103,6 +105,8 @@ namespace Odon.Track.Application.Services
                                             .Take(pageSize)
                                             .ToListAsync();
 
+            var triagensCount = await _context.Triagens.CountAsync();
+
             var response = triagens.Select(x => new
             {
                 x.Id,
@@ -113,11 +117,32 @@ namespace Odon.Track.Application.Services
                 Status = "Aprovado"
             });
 
-            return Ok(new { Triagens = response });
+            return Ok(new { Triagens = response, Count = triagensCount });
         }
 
         public async Task<IActionResult> GetProntoAtendimento(int pageNumber, int pageSize)
         {
+            var prontoAtendimento = await _context.ProntuarioProntoAtendimentos
+                                                        .OrderBy(x => x.Id)
+                                                        .Include(x => x.EstudanteVinculado)
+                                                        .Include(x => x.ProfessorVinculado)
+                                                        .Include(x => x.Paciente)
+                                                        .Skip((pageNumber - 1) * pageSize)
+                                                        .Take(pageSize)
+                                                        .ToListAsync();
+
+            //var response = prontoAtendimento.Select(x => new
+            //{
+            //    x.Id,
+            //    x.DataCadastro,
+            //    NomePaciente = x.Paciente.Nome,
+            //    NomeEstudante = x.EstudanteAssinatura != null ? x.EstudanteAssinatura.Nome : "--",
+            //    NomeProfessor = x.ProfessorAssinatura != null ? x.ProfessorAssinatura.Nome : "--",
+            //    Status = "Aprovado"
+            //});
+
+            return Ok(new { ProntoAtendimentos = prontoAtendimento });
+
             return Ok();
         }
 

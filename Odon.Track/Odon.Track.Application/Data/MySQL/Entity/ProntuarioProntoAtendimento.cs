@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Odon.Track.Application.Data.MySQL.Entity;
 
@@ -10,6 +11,8 @@ public partial class ProntuarioProntoAtendimento
     public int IdPaciente { get; set; }
 
     public int IdProfessorVinculado { get; set; }
+
+    public int IdEstudanteVinculado { get; set; }
 
     public string QueixaPrincipal { get; set; } = null!;
 
@@ -91,11 +94,16 @@ public partial class ProntuarioProntoAtendimento
 
     public sbyte PacienteAssinou { get; set; }
 
-    //public virtual ICollection<CondutaProntoAtendimento> CondutaProntoAtendimentos { get; } = new List<CondutaProntoAtendimento>();
+    public ICollection<CondutaProntoAtendimento> CondutaProntoAtendimentos { get; } = new List<CondutaProntoAtendimento>();
 
-    //public virtual Paciente IdPacienteNavigation { get; set; } = null!;
+    [ForeignKey(nameof(IdPaciente))]
+    public Paciente Paciente { get; set; } = null!;
 
-    //public virtual Professor IdProfessorVinculadoNavigation { get; set; } = null!;
+    [ForeignKey(nameof(IdProfessorVinculado))]
+    public Professor ProfessorVinculado { get; set; } = null!;
 
-    //public virtual ICollection<ProntuarioPmEstudante> ProntuarioPmEstudantes { get; } = new List<ProntuarioPmEstudante>();
+    [ForeignKey(nameof(IdEstudanteVinculado))]
+    public Estudante EstudanteVinculado { get; set; } = null!;
+
+    public ICollection<ProntuarioPmEstudante> ProntuarioPmEstudantes { get; } = new List<ProntuarioPmEstudante>();
 }
