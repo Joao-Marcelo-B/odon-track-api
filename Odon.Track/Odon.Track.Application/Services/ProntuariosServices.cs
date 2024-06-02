@@ -116,7 +116,7 @@ namespace Odon.Track.Application.Services
             return Ok(new { Triagens = response });
         }
 
-        public async Task<IActionResult> GetProntoAtendimento()
+        public async Task<IActionResult> GetProntoAtendimento(int pageNumber, int pageSize)
         {
             return Ok();
         }
