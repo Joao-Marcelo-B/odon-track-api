@@ -32,7 +32,7 @@ namespace Odon.Track.Application.Configuration
                 NumeroUnifenas = appSettingsSection["NumeroUnifenas"];
 
             ApiPython = Environment.GetEnvironmentVariable("ApiPython");
-            if (string.IsNullOrEmpty(Issuer))
+            if (string.IsNullOrEmpty(ApiPython))
                 ApiPython = appSettingsSection["ApiPython"];
         }
 
