@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Odon.Track.Application.Contract.Auth;
 using Odon.Track.Application.Contract.RecoverPassword;
-using Odon.Track.Application.Data.MySQL.Entity;
 using Odon.Track.Application.Services;
 
 namespace Odon.Track.Api.Controllers

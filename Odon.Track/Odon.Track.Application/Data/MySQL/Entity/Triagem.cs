@@ -15,7 +15,7 @@ public partial class Triagem
     public int IdEstudanteAssinatura { get; set; }
 
     [Column("encaminhar_periodo")]
-    public string EncaminharPeriodo { get; set; } = null!;
+    public int EncaminharPeriodo { get; set; }
 
     [Column("especializacao_cirurgia")]
     public int EspecializacaoCirurgia { get; set; }
@@ -26,7 +26,17 @@ public partial class Triagem
     [Column("outras_especializacoes")]
     public string OutrasEspecializacoes { get; set; } = null!;
 
-    private Professor IdProfessorVinculadoNavigation { get; set; } = null!;
+    [Column("data_cadastro")]
+    public DateTime DataCadastro { get; set; }
 
-    private ICollection<NecessidadeTratamento> NecessidadeTratamentos { get; } = new List<NecessidadeTratamento>();
+    [ForeignKey(nameof(IdPaciente))]
+    public Paciente Paciente { get; set; } = null!;
+
+    [ForeignKey(nameof(IdProfessorAssinatura))]
+    public Professor ProfessorAssinatura { get; set; } = null!;
+
+    [ForeignKey(nameof(IdEstudanteAssinatura))]
+    public Estudante EstudanteAssinatura { get; set; } = null!;
+
+    public ICollection<NecessidadeTratamento> NecessidadeTratamentos { get; } = new List<NecessidadeTratamento>();
 }

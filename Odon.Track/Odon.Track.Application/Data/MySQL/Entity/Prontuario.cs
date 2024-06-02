@@ -1,89 +1,140 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Odon.Track.Application.Data.MySQL.Entity;
 
+[Table("prontuario")]
 public partial class Prontuario
 {
-    public int Id { get; set; }
+    [Column("id")]
+    public int? Id { get; set; }
 
-    public int IdPaciente { get; set; }
+    [Column("id_paciente")]
+    public int? IdPaciente { get; set; }
 
-    public int IdProfessorVinculado { get; set; }
+    [Column("id_professor_vinculado")]
+    public int? IdProfessorVinculado { get; set; }
+    [Column("id_estudante_vinculado")]
+    public int? IdEstudanteVinculado { get; set; }
 
-    public string QueixaPrincipal { get; set; } = null!;
+    [Column("id_prontuario_status")]
+    public int? IdProntuarioStatus { get; set; }
 
-    public string HistoriaDoencaAtual { get; set; } = null!;
+    [Column("queixa_principal")]
+    public string QueixaPrincipal { get; set; }
 
-    public sbyte TeveCatapora { get; set; }
+    [Column("historia_doenca_atual")]
+    public string HistoriaDoencaAtual { get; set; }
 
-    public sbyte TeveSarampo { get; set; }
+    [Column("teve_catapora")]
+    public int? TeveCatapora { get; set; }
 
-    public sbyte TeveAmigdalite { get; set; }
+    [Column("teve_sarampo")]
+    public int? TeveSarampo { get; set; }
 
-    public string? OutrasDoencaInfancia { get; set; }
+    [Column("teve_amigdalite")]
+    public int? TeveAmigdalite { get; set; }
 
-    public sbyte TeveFebreReumatica { get; set; }
+    [Column("outras_doenca_infancia")]
+    public string OutrasDoencaInfancia { get; set; }
 
-    public sbyte TeveSopros { get; set; }
+    [Column("teve_febre_reumatica")]
+    public int? TeveFebreReumatica { get; set; }
 
-    public sbyte TevePatologiasDeValvulas { get; set; }
+    [Column("teve_sopros")]
+    public int? TeveSopros { get; set; }
 
-    public sbyte TeveAnomaliasCongenitasCardiacas { get; set; }
+    [Column("teve_patologias_de_valvulas")]
+    public int? TevePatologiasDeValvulas { get; set; }
 
-    public sbyte TeveHipertensao { get; set; }
+    [Column("teve_anomalias_congenitas_cardiacas")]
+    public int? TeveAnomaliasCongenitasCardiacas { get; set; }
 
-    public sbyte TeveArritmias { get; set; }
+    [Column("teve_hipertensao")]
+    public int? TeveHipertensao { get; set; }
 
-    public sbyte TeveInfartoDoMiocardio { get; set; }
+    [Column("teve_arritmias")]
+    public int? TeveArritmias { get; set; }
 
-    public sbyte TeveAnginaOuDorTorax { get; set; }
+    [Column("teve_infarto_do_miocardio")]
+    public int? TeveInfartoDoMiocardio { get; set; }
 
-    public sbyte FezCirurgiasCardiacas { get; set; }
+    [Column("teve_angina_ou_dor_torax")]
+    public int? TeveAnginaOuDorTorax { get; set; }
 
-    public sbyte TemAlergiaMedicamentos { get; set; }
+    [Column("fez_cirurgias_cardiacas")]
+    public int? FezCirurgiasCardiacas { get; set; }
 
-    public string? QuaisMedicamentos { get; set; }
+    [Column("tem_alergia_medicamentos")]
+    public int? TemAlergiaMedicamentos { get; set; }
 
-    public string OutrasAlergias { get; set; } = null!;
+    [Column("quais_medicamentos")]
+    public string QuaisMedicamentos { get; set; }
 
-    public sbyte FazUsoMedicamento { get; set; }
+    [Column("outras_alergias")]
+    public string OutrasAlergias { get; set; }
 
-    public string? DescricaoMedicamentoUsado { get; set; }
+    [Column("faz_uso_medicamento")]
+    public int? FazUsoMedicamento { get; set; }
 
-    public string VisitasMedicas { get; set; } = null!;
+    [Column("descricao_medicamento_usado")]
+    public string DescricaoMedicamentoUsado { get; set; }
 
-    public string Observacoes { get; set; } = null!;
+    [Column("visitas_medicas")]
+    public string VisitasMedicas { get; set; }
 
-    public string DadosRelevantesHistoriaMedica { get; set; } = null!;
+    [Column("observacoes")]
+    public string Observacoes { get; set; }
 
-    public string HereditarioPai { get; set; } = null!;
+    [Column("dados_relevantes_historia_medica")]
+    public string DadosRelevantesHistoriaMedica { get; set; }
 
-    public string HereditarioMae { get; set; } = null!;
+    [Column("hereditario_pai")]
+    public string HereditarioPai { get; set; }
 
-    public string HereditarioIrmaos { get; set; } = null!;
+    [Column("hereditario_mae")]
+    public string HereditarioMae { get; set; } 
 
-    public sbyte HabitoAlcool { get; set; }
+    [Column("hereditario_irmaos")]
+    public string HereditarioIrmaos { get; set; } 
 
-    public DateTime HabitoAlcoolInicio { get; set; }
+    [Column("habito_alcool")]
+    public int? HabitoAlcool { get; set; }
 
-    public string HabitoAlcoolFrequencia { get; set; } = null!;
+    [Column("habito_alcool_inicio")]
+    public DateTime? HabitoAlcoolInicio { get; set; }
 
-    public sbyte HabitoFumo { get; set; }
+    [Column("habito_alcool_frequencia")]
+    public string HabitoAlcoolFrequencia { get; set; }
 
-    public DateTime HabitoFumoInicio { get; set; }
+    [Column("habito_fumo")]
+    public int? HabitoFumo { get; set; }
 
-    public string HabitoFumoFrequencia { get; set; } = null!;
+    [Column("habito_fumo_inicio")]
+    public DateTime? HabitoFumoInicio { get; set; }
 
-    public string OutrosHabitosNocivos { get; set; } = null!;
+    [Column("habito_fumo_frequencia")]
+    public string HabitoFumoFrequencia { get; set; } 
 
-    public string CaminhoMapaPeriodental { get; set; } = null!;
+    [Column("outros_habitos_nocivos")]
+    public string OutrosHabitosNocivos { get; set; } 
 
-    public virtual Paciente IdPacienteNavigation { get; set; } = null!;
+    [Column("caminho_mapa_periodental")]
+    public string CaminhoMapaPeriodental { get; set; } 
 
-    //public virtual Professor IdProfessorVinculadoNavigation { get; set; } = null!;
+    [Column("data_cadastro")]
+    public DateTime? DataCadastro { get; set; }
 
-    public virtual ICollection<ProntuarioEstudante> ProntuarioEstudantes { get; } = new List<ProntuarioEstudante>();
 
-    public virtual ICollection<ProntuarioStatus> ProntuarioStatuses { get; } = new List<ProntuarioStatus>();
+    [ForeignKey(nameof(IdPaciente))]
+    public Paciente Paciente { get; set; } = null!;
+
+    [ForeignKey(nameof(IdProfessorVinculado))]
+    public Professor ProfessorVinculado { get; set; } = null!;
+
+    [ForeignKey(nameof(IdEstudanteVinculado))]
+    public Estudante EstudanteVinculado { get; set; } = null!;
+
+    public ICollection<ProntuarioEstudante> ProntuarioEstudantes { get; } = new List<ProntuarioEstudante>();
+
+    public ICollection<ProntuarioStatus> ProntuarioStatuses { get; } = new List<ProntuarioStatus>();
 }

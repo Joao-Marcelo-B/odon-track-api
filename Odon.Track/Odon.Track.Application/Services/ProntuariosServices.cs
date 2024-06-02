@@ -32,7 +32,8 @@ namespace Odon.Track.Application.Services
                 EspecializacaoProteseImplante = request.EspecializacaoProteseImplante ? 1 : 0,
                 IdProfessorAssinatura = request.IdProfessorAssinatura,
                 OutrasEspecializacoes = request.OutrasEspecializacoes,
-                IdEstudanteAssinatura = request.IdEstudanteAssinatura
+                IdEstudanteAssinatura = request.IdEstudanteAssinatura,
+                DataCadastro = DateTime.Now
             };
             await _context.Triagens.AddAsync(triagem);
             await _context.SaveChangesAsync();
@@ -65,6 +66,65 @@ namespace Odon.Track.Application.Services
             await _context.SaveChangesAsync();
 
             return Created();
+        }
+
+        public async Task<IActionResult> GetProntuarios(int pageNumber, int pageSize)
+        {
+            var prontuarios = await _context.Prontuarios
+                                                .OrderBy(x => x.Id)
+                                                .Include(x => x.Paciente)
+                                                .Include(x => x.EstudanteVinculado)
+                                                .Include(x => x.ProfessorVinculado)
+                                                .Skip((pageNumber - 1) * pageSize)
+                                                .Take(pageSize)
+                                                .ToListAsync();
+
+            var response = prontuarios.Select(x => new
+            {
+                x.Id,
+                x.DataCadastro,
+                NomePaciente = x.Paciente.Nome,
+                NomeEstudante = x.EstudanteVinculado != null ? x.EstudanteVinculado.Nome : "--",
+                NomeProfessor = x.ProfessorVinculado != null ? x.ProfessorVinculado.Nome : "--",
+                Status = ParseProntuarioStatus(x.IdProntuarioStatus)
+            });
+
+            return Ok(new { Prontuarios = response });
+        }
+
+        public async Task<IActionResult> GetTriagem(int pageNumber, int pageSize)
+        {
+            var triagens = await _context.Triagens
+                                            .OrderBy(x => x.Id)   
+                                            .Include(x => x.EstudanteAssinatura)
+                                            .Include(x => x.ProfessorAssinatura)
+                                            .Include(x => x.Paciente)
+                                            .Skip((pageNumber - 1) * pageSize)
+                                            .Take(pageSize)
+                                            .ToListAsync();
+
+            var response = triagens.Select(x => new
+            {
+                x.Id,
+                x.DataCadastro,
+                NomePaciente = x.Paciente.Nome,
+                NomeEstudante = x.EstudanteAssinatura != null ? x.EstudanteAssinatura.Nome : "--",
+                NomeProfessor = x.ProfessorAssinatura != null ? x.ProfessorAssinatura.Nome : "--",
+                Status = "Aprovado"
+            });
+
+            return Ok(new { Triagens = response });
+        }
+
+        private string ParseProntuarioStatus(int? idProntuarioStatus)
+        {
+            var status = idProntuarioStatus switch
+            {
+                1000 => "Prontuario Incompleto",
+                _ => ""
+            };
+
+            return status;
         }
     }
 }
