@@ -95,8 +95,8 @@ def enviarEmail(nomeUsuario,codigo,numeroUnifenas,email):
 """ % (nomeUsuario,codigo,numeroUnifenas)
     
     IMAGE_PATHS = [
-        '../Odon.Track.Python.API/assets/logo_odon_track.png',
-        '../Odon.Track.Python.API/assets/logo_unifenas.png'
+        '/assets/logo_odon_track.png',
+        '/assets/logo_unifenas.png'
     ]
 
     send_email_with_image(SMTP_SERVER, SMTP_PORT, SENDER_EMAIL, SENDER_PASSWORD, RECIPIENT_EMAIL, SUBJECT, BODY, IMAGE_PATHS)
