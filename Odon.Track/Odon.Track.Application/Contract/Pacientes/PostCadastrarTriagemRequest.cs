@@ -7,7 +7,6 @@
         public int IdEstudanteAssinatura { get; set; }
         public List<Tratamento> Tratamentos { get; set; }
         public string EncaminharPeriodo { get; set; }
-
         public bool EspecializacaoCirurgia { get; set; }
         public bool EspecializacaoProteseImplante { get; set; }
         public string OutrasEspecializacoes { get; set; }
