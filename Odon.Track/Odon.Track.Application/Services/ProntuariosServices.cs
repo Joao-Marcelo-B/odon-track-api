@@ -68,6 +68,12 @@ namespace Odon.Track.Application.Services
             return Created();
         }
 
+        public async Task<IActionResult> PostCadastrarProntuario()
+        {
+
+            return Created();
+        }
+
         public async Task<IActionResult> GetProntuarios(int pageNumber, int pageSize)
         {
             var prontuarios = await _context.Prontuarios
@@ -124,7 +130,7 @@ namespace Odon.Track.Application.Services
         {
             var prontoAtendimentos = await _context.ProntuarioProntoAtendimentos
                                                         .OrderBy(x => x.Id)
-                                                        .Include(x => x.EstudanteVinculado)
+                                                        //.Include(x => x.EstudanteVinculado)
                                                         .Include(x => x.ProfessorVinculado)
                                                         .Include(x => x.Paciente)
                                                         .Skip((pageNumber - 1) * pageSize)
@@ -138,7 +144,7 @@ namespace Odon.Track.Application.Services
                 x.Id,
                 DataCadastro = x.DataFichaFeita,
                 NomePaciente = x.Paciente.Nome,
-                NomeEstudante = x.EstudanteVinculado != null ? x.EstudanteVinculado.Nome : "--",
+                //NomeEstudante = x.EstudanteVinculado != null ? x.EstudanteVinculado.Nome : "--",
                 NomeProfessor = x.ProfessorVinculado != null ? x.ProfessorVinculado.Nome : "--",
                 Status = "Aprovado"
             });

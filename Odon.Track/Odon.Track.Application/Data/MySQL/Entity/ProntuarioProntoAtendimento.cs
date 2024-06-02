@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Odon.Track.Application.Data.MySQL.Entity;
 
+[Table("prontuario_pronto_atendimento")]
 public partial class ProntuarioProntoAtendimento
 {
     [Column("id")]
@@ -15,8 +14,8 @@ public partial class ProntuarioProntoAtendimento
     [Column("id_professor_vinculado")]
     public int? IdProfessorVinculado { get; set; }
 
-    [Column("id_estudante_vinculado")]
-    public int? IdEstudanteVinculado { get; set; }
+    //[Column("id_estudante_vinculado")]
+    //public int? IdEstudanteVinculado { get; set; }
 
     [Column("queixa_principal")]
     public string QueixaPrincipal { get; set; } = null!;
@@ -117,7 +116,7 @@ public partial class ProntuarioProntoAtendimento
     [Column("observacoes")]
     public string Observacoes { get; set; }
 
-    [Column("pressao_arterial_mm_mm_hg")]
+    [Column("pressao_arterial_mm_mmHg")]
     public string PressaoArterialMmMmHg { get; set; } = null!;
 
     [Column("diagnostico")]
@@ -146,8 +145,8 @@ public partial class ProntuarioProntoAtendimento
     [ForeignKey(nameof(IdProfessorVinculado))]
     public Professor ProfessorVinculado { get; set; } = null!;
 
-    [ForeignKey(nameof(IdEstudanteVinculado))]
-    public Estudante EstudanteVinculado { get; set; } = null!;
+    //[ForeignKey(nameof(IdEstudanteVinculado))]
+    //public Estudante EstudanteVinculado { get; set; } = null!;
 
     public ICollection<ProntuarioPmEstudante> ProntuarioPmEstudantes { get; } = new List<ProntuarioPmEstudante>();
 }

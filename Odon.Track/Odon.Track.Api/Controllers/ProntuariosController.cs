@@ -11,6 +11,11 @@ namespace Odon.Track.Api.Controllers
     [Authorize(Roles = RolesForUsers.Professor + "," + RolesForUsers.Estudante)]
     public class ProntuariosController(ProntuariosServices _services) : ControllerBase
     {
+        //[HttpPost]
+        //[Authorize(Roles = RolesForAccess.CadastrarProntuario)]
+        //public async Task<IActionResult> PostCadastrarProntuario([FromBody] PostCadastrarProntuarioRequest request) =>
+        //    await _services.PostCadastrarProntuario(request);
+
         [HttpPost("triagem")]
         [Authorize(Roles = RolesForAccess.CadastrarTriagem)]
         public async Task<IActionResult> PostCadastrarTriagem([FromBody] PostCadastrarTriagemRequest request) =>
