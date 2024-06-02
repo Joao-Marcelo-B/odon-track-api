@@ -14,15 +14,16 @@ namespace Odon.Track.Application.Services
 {
     public class RecoverPasswordServices : BaseResponses
     {
-        private static readonly HttpClient client = new HttpClient();
+        private readonly HttpClient _client;
         private readonly OdontrackContext _context;
         private readonly AppSettings _settings;
         public RecoverPasswordServices(OdontrackContext context, AppSettings settings)
         {
             _settings = settings;
             _context = context;
-            
-            client.BaseAddress = new Uri(_settings.ApiPython);
+            _client = new HttpClient();
+
+            _client.BaseAddress = new Uri(_settings.ApiPython);
         }
 
         public async Task<IActionResult> GetCode(PostRecoverPasswordRequest email)
@@ -50,7 +51,7 @@ namespace Odon.Track.Application.Services
 
                 var json = JsonConvert.SerializeObject(aux);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("/EnviarEmail", data);
+                var response = await _client.PostAsync("/EnviarEmail", data);
                 string result = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
