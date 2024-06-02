@@ -8,6 +8,7 @@ namespace Odon.Track.Application.Contract.RecoverPassword
 {
     public class PatchRecoverPasswordChangePassword
     {
+        public string HashIdCodigo { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
     }

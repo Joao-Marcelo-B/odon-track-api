@@ -91,20 +91,27 @@ namespace Odon.Track.Application.Services
 
         public async Task<IActionResult> ChangePassword(PatchRecoverPasswordChangePassword request)
         {
-            var usuarioSelecionado = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == request.Email);
-            byte[] passwordHash, passwordSatl;
-            PasswordSaltHasher.CreatePasswordHashAndSalt(request.Password, out passwordHash, out passwordSatl);
-
-            if (usuarioSelecionado == null)
-                return BadRequest("Não foi possível processar a sua solicitação.");
-            else
+            EncryptionHelper encryptionHelper = new();
+            var idCodigo = encryptionHelper.Decrypt(request.HashIdCodigo);
+            if (await _context.CodigoSeguranca.FirstOrDefaultAsync(cs => cs.Id == int.Parse(idCodigo)) != null)
             {
-                usuarioSelecionado.PasswordHash = passwordHash;
-                usuarioSelecionado.PasswordSalt = passwordSatl;
-                _context.Usuarios.Update(usuarioSelecionado);
-                await _context.SaveChangesAsync();
-                return Ok("Senha alterada com sucesso");
-            }          
+                var usuarioSelecionado = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == request.Email);
+                byte[] passwordHash, passwordSatl;
+                PasswordSaltHasher.CreatePasswordHashAndSalt(request.Password, out passwordHash, out passwordSatl);
+
+                if (usuarioSelecionado == null)
+                    return BadRequest("Não foi possível processar a sua solicitação.");
+                else
+                {
+                    usuarioSelecionado.PasswordHash = passwordHash;
+                    usuarioSelecionado.PasswordSalt = passwordSatl;
+                    _context.Usuarios.Update(usuarioSelecionado);
+                    await _context.SaveChangesAsync();
+                    return Ok("Senha alterada com sucesso");
+                }
+            }
+            else
+                return BadRequest("Não foi possível encontrar uma solicitação para mudar sua senha.");
         }
     }
 }

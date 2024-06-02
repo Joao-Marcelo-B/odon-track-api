@@ -3,10 +3,10 @@ using System.Text;
 
 namespace Odon.Track.Application.Crypto
 {
-    public static class EncryptionHelper
+    public class EncryptionHelper
     {
-        public static readonly string key = "796Y%r5v67f5S=3X4243xaz$685GB798M090-=k98M0=7N5v6#b8f4C563D34ec6586B7@7n08mh908M7JNH76b=#8g5745VD";
-        public static string Encrypt(string text)
+        public readonly string key = "796Y%r5v67f5S=3X4243xaz$685GB798M090-=k98M0=7N5v6#b8f4C563D34ec6586B7@7n08mh908M7JNH76b=#8g5745VD";
+        public string Encrypt(string text)
         {
             byte[] plainBytes = Encoding.ASCII.GetBytes(text);
 
@@ -29,7 +29,7 @@ namespace Odon.Track.Application.Crypto
             }
         }
 
-        public static string Decrypt(string cipherText)
+        public string Decrypt(string cipherText)
         {
             byte[] cipherBytesWithIV = Convert.FromBase64String(cipherText);
 
