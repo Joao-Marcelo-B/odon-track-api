@@ -19,5 +19,7 @@ namespace Odon.Track.Application.Data.MySQL.Entity
         public int Codigo { get; set; }
         [Column("validade")]
         public DateTime Validade { get; set; }
+        [Column("usado")]
+        public int Usado { get; set; }
     }
 }

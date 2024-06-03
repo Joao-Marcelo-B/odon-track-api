@@ -6,5 +6,6 @@ namespace Odon.Track.Application.Contract.Auth
     {
         [Required, EmailAddress]
         public string Email { get; set; }
+        public string HashIdCodigo { get; set; }
     }
 }
