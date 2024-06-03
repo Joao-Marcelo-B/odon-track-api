@@ -109,7 +109,23 @@ namespace Odon.Track.Application.Services
             await _context.Pacientes.AddAsync(paciente);
             await _context.SaveChangesAsync();
 
-            if(request.ResponsaveisPaciente.Count > 0)
+            var endereco = new Endereco()
+            {
+                Bairro = request.Bairro,
+                CEP = request.CEP,
+                Cidade = request.Cidade,
+                IdPaciente = paciente.Id,
+                Logradouro = request.Logradouro,
+                NumeroCasa = request.NumeroCasa,
+                UF = request.UF,
+            };
+            await _context.Enderecos.AddAsync(endereco);
+            await _context.SaveChangesAsync();
+
+            paciente.IdPacienteStatus = 2000;
+            await _context.SaveChangesAsync();
+
+            if (request.ResponsaveisPaciente.Count > 0)
             {
                 foreach(var responsavel in request.ResponsaveisPaciente)
                 {
@@ -127,31 +143,6 @@ namespace Odon.Track.Application.Services
             }
 
             return Created(new { idPaciente = paciente.Id });
-        }
-
-        public async Task<IActionResult> PostCadastrarEnderecoPaciente(PostCadastrarEnderecoPacienteRequest request)
-        {
-            var paciente = await _context.Pacientes.FirstOrDefaultAsync(x => x.Id.Equals(request.IdPaciente));
-            if(paciente == null)
-                return BadRequest(OdonTrackErrors.PacienteNotFound);
-
-            var endereco = new Endereco()
-            {
-                Bairro = request.Bairro,
-                CEP = request.CEP,
-                Cidade = request.Cidade,
-                IdPaciente = request.IdPaciente,
-                Logradouro = request.Logradouro,
-                NumeroCasa = request.NumeroCasa,
-                UF = request.UF,
-            };
-            await _context.Enderecos.AddAsync(endereco);
-            await _context.SaveChangesAsync();
-
-            paciente.IdPacienteStatus = 2000;
-            await _context.SaveChangesAsync();
-
-            return Created();
         }
     }
 }

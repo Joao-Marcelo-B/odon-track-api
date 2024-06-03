@@ -192,8 +192,8 @@ namespace Odon.Track.Application.Services
                 await _context.SaveChangesAsync();
             }
 
-            var roles = await _context.Roles.AnyAsync(x => request.Roles.Contains(x.Id));
-            if (!roles)
+            var rolesAny = await _context.Roles.AnyAsync(x => request.Roles.Contains(x.Id));
+            if (!rolesAny)
                 return BadRequest(OdonTrackErrors.RolesNotFound);
 
             foreach (var role in request.Roles)
