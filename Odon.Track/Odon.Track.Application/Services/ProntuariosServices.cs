@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Odon.Track.Application.Contract.Pacientes;
+using Odon.Track.Application.Contract.Prontuarios;
 using Odon.Track.Application.Data.MySQL;
 using Odon.Track.Application.Data.MySQL.Entity;
 using Odon.Track.Application.Errors;
 using Odon.Track.Application.Responses;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace Odon.Track.Application.Services
 {
@@ -74,19 +75,77 @@ namespace Odon.Track.Application.Services
             return Created();
         }
 
-        public async Task<IActionResult> GetProntuarios(int pageNumber, int pageSize)
+        public async Task<IActionResult> PathAlterarTriagem(PathAlterarTriagemRequest request)
         {
-            var prontuarios = await _context.Prontuarios
-                                                .OrderBy(x => x.Id)
-                                                .Include(x => x.Paciente)
-                                                .Include(x => x.EstudanteVinculado)
-                                                .Include(x => x.ProfessorVinculado)
-                                                .Skip((pageNumber - 1) * pageSize)
-                                                .Take(pageSize)
-                                                .ToListAsync();
+            var triagem = await _context.Triagens.FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
+            if (triagem == null)
+                BadRequest(OdonTrackErrors.TriagemNotFound);
 
-            var prontuariosCount = await _context.Prontuarios.CountAsync();
+            var horario = await _context.HorariosDisponiveisAtendimento.FirstOrDefaultAsync(x => x.IdTriagem.Equals(request.Id));
+            horario.SeteMeia = request.HorariosDisponiveisAtendimento.Contains(EHorarioDisponivelAtendimento.sete_meia) ? 1 : 0;
+            horario.NoveMeia = request.HorariosDisponiveisAtendimento.Contains(EHorarioDisponivelAtendimento.nove_meia) ? 1 : 0;
+            horario.UmaMeia = request.HorariosDisponiveisAtendimento.Contains(EHorarioDisponivelAtendimento.uma_meia) ? 1 : 0;
+            horario.TresMeia = request.HorariosDisponiveisAtendimento.Contains(EHorarioDisponivelAtendimento.tres_meia) ? 1 : 0;
 
+            await _context.SaveChangesAsync();
+
+            triagem.EncaminharPeriodo = request.EncaminharPeriodo;
+            triagem.EspecializacaoCirurgia = request.EspecializacaoCirurgia ? 1 : 0;
+            triagem.EspecializacaoProteseImplante = request.EspecializacaoProteseImplante ? 1 : 0;
+            triagem.OutrasEspecializacoes = request.OutrasEspecializacoes;
+
+            await _context.SaveChangesAsync();
+
+            var tratamentos = await _context.NecessidadeTratamentos
+                                .Where(x => x.IdTriagem.Equals(triagem.Id))
+                                .ToListAsync();
+            foreach (var tratamento in tratamentos)
+            {
+                _context.NecessidadeTratamentos.Remove(tratamento);
+            }
+
+            foreach (var tratamento in request.Tratamentos)
+            {
+                var necessidadeTratamento = new NecessidadeTratamento()
+                {
+                    IdTriagem = triagem.Id,
+                    Tratamento = tratamento.TipoTratamento.ToString(),
+                    Descricao = tratamento.Descricao
+                };
+                await _context.NecessidadeTratamentos.AddAsync(necessidadeTratamento);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        public async Task<IActionResult> GetProntuarios(int pageNumber, int pageSize, string nomePaciente)
+        {
+            // Construindo a consulta base
+            var query = _context.Prontuarios
+                                .OrderBy(x => x.Id)
+                                .Include(x => x.Paciente)
+                                .Include(x => x.EstudanteVinculado)
+                                .Include(x => x.ProfessorVinculado)
+                                .AsQueryable();
+
+            // Aplicando o filtro de nome do paciente, se fornecido
+            if (!string.IsNullOrEmpty(nomePaciente))
+            {
+                query = query.Where(x => x.Paciente.Nome.Contains(nomePaciente));
+            }
+
+            // Obtendo o número total de prontuários (para paginação)
+            var prontuariosCount = await query.CountAsync();
+
+            // Aplicando paginação
+            var prontuarios = await query
+                                    .Skip((pageNumber - 1) * pageSize)
+                                    .Take(pageSize)
+                                    .ToListAsync();
+
+            // Selecionando os campos desejados para a resposta
             var response = prontuarios.Select(x => new
             {
                 x.Id,
@@ -97,22 +156,36 @@ namespace Odon.Track.Application.Services
                 Status = ParseProntuarioStatus(x.IdProntuarioStatus)
             });
 
-            return Ok(new { Prontuarios = response , Count = prontuariosCount });
+            // Retornando a resposta com os resultados paginados e a contagem total
+            return Ok(new { Prontuarios = response, Count = prontuariosCount });
         }
 
-        public async Task<IActionResult> GetTriagem(int pageNumber, int pageSize)
+        public async Task<IActionResult> GetTriagem(int pageNumber, int pageSize, string nomePaciente)
         {
-            var triagens = await _context.Triagens
-                                            .OrderBy(x => x.Id)   
-                                            .Include(x => x.EstudanteAssinatura)
-                                            .Include(x => x.ProfessorAssinatura)
-                                            .Include(x => x.Paciente)
-                                            .Skip((pageNumber - 1) * pageSize)
-                                            .Take(pageSize)
-                                            .ToListAsync();
+            // Construindo a consulta base
+            var query = _context.Triagens
+                                .OrderBy(x => x.Id)
+                                .Include(x => x.EstudanteAssinatura)
+                                .Include(x => x.ProfessorAssinatura)
+                                .Include(x => x.Paciente)
+                                .AsQueryable();
 
-            var triagensCount = await _context.Triagens.CountAsync();
+            // Aplicando o filtro de nome do paciente, se fornecido
+            if (!string.IsNullOrEmpty(nomePaciente))
+            {
+                query = query.Where(x => x.Paciente.Nome.Contains(nomePaciente));
+            }
 
+            // Obtendo o número total de triagens (para paginação)
+            var triagensCount = await query.CountAsync();
+
+            // Aplicando paginação
+            var triagens = await query
+                                    .Skip((pageNumber - 1) * pageSize)
+                                    .Take(pageSize)
+                                    .ToListAsync();
+
+            // Selecionando os campos desejados para a resposta
             var response = triagens.Select(x => new
             {
                 x.Id,
@@ -123,34 +196,125 @@ namespace Odon.Track.Application.Services
                 Status = "Aprovado"
             });
 
+            // Retornando a resposta com os resultados paginados e a contagem total
             return Ok(new { Triagens = response, Count = triagensCount });
         }
 
-        public async Task<IActionResult> GetProntoAtendimento(int pageNumber, int pageSize)
+
+        public async Task<IActionResult> GetTriagemById(int id)
         {
-            var prontoAtendimentos = await _context.ProntuarioProntoAtendimentos
-                                                        .OrderBy(x => x.Id)
-                                                        //.Include(x => x.EstudanteVinculado)
-                                                        .Include(x => x.ProfessorVinculado)
-                                                        .Include(x => x.Paciente)
-                                                        .Skip((pageNumber - 1) * pageSize)
-                                                        .Take(pageSize)
-                                                        .ToListAsync();
+            var triagem = await _context.Triagens.FirstOrDefaultAsync(x => x.Id == id);
 
-            var prontoAtendimentosCount = await _context.ProntuarioProntoAtendimentos.CountAsync(); 
+            if(triagem == null)
+                return BadRequest(OdonTrackErrors.TriagemNotFound);
+            var paciente = await _context.Pacientes.FirstOrDefaultAsync(x => x.Id == triagem.IdPaciente);
+            var professor = await _context.Professors.FirstOrDefaultAsync(x => x.Id == triagem.IdProfessorAssinatura);
+            var estudante = await _context.Estudantes.FirstOrDefaultAsync(x => x.Id == triagem.IdEstudanteAssinatura);
+            var tratamentos = await _context.NecessidadeTratamentos
+                                .Where(x => x.IdTriagem.Equals(id))
+                                .ToListAsync();
+            var horarios = await _context.HorariosDisponiveisAtendimento.FirstOrDefaultAsync(x => x.IdTriagem == id);
 
+
+            GetTriagemResponse response =  new GetTriagemResponse();
+            response.Paciente = new Pessoa();
+            response.Professor = new Pessoa();
+            response.Estudante = new Pessoa();
+            response.Tratamentos = new List<Tratamento>();
+            response.HorariosDisponiveisAtendimento = new List<Horarios>();
+            response.Id = triagem.Id;
+            response.EncaminharPeriodo = triagem.EncaminharPeriodo;
+            response.OutrasEspecializacoes = triagem.OutrasEspecializacoes;
+            response.DataCadastro = triagem.DataCadastro;
+            response.EspecializacaoCirurgia = triagem.EspecializacaoCirurgia == 1 ? true : false;
+            response.EspecializacaoProteseImplante = triagem.EspecializacaoProteseImplante == 1 ? true : false;
+            response.Paciente.Id = paciente != null ? paciente.Id : 0;
+            response.Paciente.Nome = paciente != null ? paciente.Nome : "";
+            response.Professor.Id = professor != null ? professor.Id : 0;
+            response.Professor.Nome = professor != null ? professor.Nome : "";
+            response.Estudante.Id = estudante != null ? estudante.Id : 0;
+            response.Estudante.Nome = estudante != null ? estudante.Nome : "";
+
+            foreach(var item in tratamentos)
+            {
+                response.Tratamentos.Add(new Tratamento()
+                {
+                    TipoTratamento = (ETratamento)Enum.Parse(typeof(ETratamento), item.Tratamento),
+                    Descricao = item.Descricao
+                });
+            }
+
+            if (horarios.SeteMeia == 1)
+                response.HorariosDisponiveisAtendimento.Add(new Horarios()
+                {
+                    Id = "sete_meia",
+                    Descricao = "7:30"
+                });
+
+            if(horarios.NoveMeia == 1)
+                response.HorariosDisponiveisAtendimento.Add(new Horarios()
+                {
+                    Id = "nove_meia",
+                    Descricao = "9:30"
+                });
+
+            if (horarios.UmaMeia == 1)
+                response.HorariosDisponiveisAtendimento.Add(new Horarios()
+                {
+                    Id = "uma_meia",
+                    Descricao = "13:30"
+                });
+
+            if (horarios.TresMeia == 1)
+                response.HorariosDisponiveisAtendimento.Add(new Horarios()
+                {
+                    Id = "tres_meia",
+                    Descricao = "15:30"
+                });
+
+            return Ok(response);
+        }
+
+        public async Task<IActionResult> GetProntoAtendimento(int pageNumber, int pageSize, string nomePaciente)
+        {
+            // Construindo a consulta base
+            var query = _context.ProntuarioProntoAtendimentos
+                                .OrderBy(x => x.Id)
+                                // .Include(x => x.EstudanteVinculado)
+                                .Include(x => x.ProfessorVinculado)
+                                .Include(x => x.Paciente)
+                                .AsQueryable();
+
+            // Aplicando o filtro de nome do paciente, se fornecido
+            if (!string.IsNullOrEmpty(nomePaciente))
+            {
+                query = query.Where(x => x.Paciente.Nome.Contains(nomePaciente));
+            }
+
+            // Obtendo o número total de pronto atendimentos (para paginação)
+            var prontoAtendimentosCount = await query.CountAsync();
+
+            // Aplicando paginação
+            var prontoAtendimentos = await query
+                                            .Skip((pageNumber - 1) * pageSize)
+                                            .Take(pageSize)
+                                            .ToListAsync();
+
+            // Selecionando os campos desejados para a resposta
             var response = prontoAtendimentos.Select(x => new
             {
                 x.Id,
                 DataCadastro = x.DataFichaFeita,
                 NomePaciente = x.Paciente.Nome,
-                NomeEstudante = "--",//x.EstudanteVinculado != null ? x.EstudanteVinculado.Nome : "--",
+                NomeEstudante = "--", // x.EstudanteVinculado != null ? x.EstudanteVinculado.Nome : "--",
                 NomeProfessor = x.ProfessorVinculado != null ? x.ProfessorVinculado.Nome : "--",
                 Status = "Aprovado"
             });
 
+            // Retornando a resposta com os resultados paginados e a contagem total
             return Ok(new { ProntoAtendimentos = response, Count = prontoAtendimentosCount });
         }
+
 
         public async Task<IActionResult> GetReavaliacaoAnamnese(int idPaciente, int pageNumber, int pageSize)
         {

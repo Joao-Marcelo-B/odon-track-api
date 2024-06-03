@@ -23,5 +23,6 @@
         public static string EnderecoPendente = "É necessário cadastrar o endereço antes de preencher a triagem";
         public static string TriagemFound = "Esse paciente já possui uma ficha de triagem";
         public static string ProfessorNotFound = "Professor não exite";
+        public static string TriagemNotFound = "Triagem não exite";
     }
 }
