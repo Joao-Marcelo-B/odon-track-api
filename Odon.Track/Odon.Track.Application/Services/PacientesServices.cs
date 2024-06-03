@@ -104,8 +104,8 @@ namespace Odon.Track.Application.Services
                 Ativo = request.Ativadade,
                 Telefone = request.Telefone,
                 UFNaturalidade = request.UF,
-                CartaoNacionalSus = request.CartaoNacionalSUS,
-                CartaoRegionalSus = request.CartaoRegionalSUS,
+                CartaoNacionalSUS = request.CartaoNacionalSUS,
+                CartaoRegionalSUS = request.CartaoRegionalSUS,
             };
             await _context.Pacientes.AddAsync(paciente);
             await _context.SaveChangesAsync();
