@@ -11,6 +11,7 @@
         public string RG { get; set; }
         public string NomePai { get; set; }
         public string NomeMae { get; set; }
+        public int Ativadade { get; set; }
         public string Telefone { get; set; }
         public string CartaoRegionalSUS { get; set; }
         public string CartaoNacionalSUS { get; set; }

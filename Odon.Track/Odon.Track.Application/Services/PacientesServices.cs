@@ -101,6 +101,7 @@ namespace Odon.Track.Application.Services
                 NomeMae = request.NomeMae,
                 NomePai = request.NomePai,
                 RG = request.RG,
+                Ativo = request.Ativadade,
                 Telefone = request.Telefone,
                 UFNaturalidade = request.UF,
                 CartaoNacionalSus = request.CartaoNacionalSUS,
