@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Odon.Track.Application.Authorization;
-using Odon.Track.Application.Contract.Pacientes;
+using Odon.Track.Application.Contract.Prontuarios;
 using Odon.Track.Application.Services;
 
 namespace Odon.Track.Api.Controllers
@@ -21,17 +21,27 @@ namespace Odon.Track.Api.Controllers
         public async Task<IActionResult> PostCadastrarTriagem([FromBody] PostCadastrarTriagemRequest request) =>
             await _services.PostCadastrarTriagem(request);
 
+        [HttpPatch("triagem")]
+        public async Task<IActionResult> PathAlterarTriagem([FromBody] PathAlterarTriagemRequest request) =>
+            await _services.PathAlterarTriagem(request);
+
         [HttpGet]
-        public async Task<IActionResult> GetProntuarios([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) =>
-            await _services.GetProntuarios(pageNumber, pageSize);
+        public async Task<IActionResult> GetProntuarios([FromQuery] string nomePaciente, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) =>
+            await _services.GetProntuarios(pageNumber, pageSize, nomePaciente);
 
         [HttpGet("triagem")]
-        public async Task<IActionResult> GetTriagem([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) =>
-            await _services.GetTriagem(pageNumber, pageSize);
+        public async Task<IActionResult> GetTriagem([FromQuery] string nomePaciente,[FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            return await _services.GetTriagem(pageNumber, pageSize, nomePaciente);
+        }
+
+        [HttpGet("triagem/{id}")]
+        public async Task<IActionResult> GetTriagemById(int id) =>
+            await _services.GetTriagemById(id);
 
         [HttpGet("pronto/atendimento")]
-        public async Task<IActionResult> GetProntoAtendimento([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) =>
-            await _services.GetProntoAtendimento(pageNumber, pageSize);
+        public async Task<IActionResult> GetProntoAtendimento([FromQuery] string nomePaciente, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) =>
+            await _services.GetProntoAtendimento(pageNumber, pageSize, nomePaciente);
 
         [HttpGet("reavaliacao/anamnese")]
         public async Task<IActionResult> GetReavaliacaoAnamnese([FromQuery]int idPaciente, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) =>

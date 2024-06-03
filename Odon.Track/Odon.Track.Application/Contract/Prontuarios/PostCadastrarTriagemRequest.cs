@@ -1,4 +1,4 @@
-﻿namespace Odon.Track.Application.Contract.Pacientes
+﻿namespace Odon.Track.Application.Contract.Prontuarios
 {
     public class PostCadastrarTriagemRequest
     {
@@ -11,7 +11,7 @@
         public bool EspecializacaoCirurgia { get; set; }
         public bool EspecializacaoProteseImplante { get; set; }
         public string OutrasEspecializacoes { get; set; }
-        public  List<EHorarioDisponivelAtendimento> HorariosDisponiveisAtendimento { get; set; }
+        public List<EHorarioDisponivelAtendimento> HorariosDisponiveisAtendimento { get; set; }
     }
 
     public class Tratamento
