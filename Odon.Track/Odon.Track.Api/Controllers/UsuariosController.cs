@@ -7,7 +7,7 @@ using Odon.Track.Application.Services;
 
 namespace Odon.Track.Api.Controllers
 {
-    [Authorize(Roles = RolesForUsers.Administrador)]
+    
     [Route("[controller]")]
     [ApiController]
     public class UsuariosController : Controller
@@ -27,12 +27,14 @@ namespace Odon.Track.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetUsuarioById(int id)
         {
             return await _services.GetUsuarioById(id);
         }
 
         [HttpPatch]
+        [Authorize]
         public async Task<IActionResult> UpdateUsuario([FromBody] PathUsuarioRequest request) =>
            await _services.UpdateUsuario(request);
     }
