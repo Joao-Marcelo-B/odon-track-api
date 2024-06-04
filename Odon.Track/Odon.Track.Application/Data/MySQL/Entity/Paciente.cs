@@ -43,10 +43,10 @@ public partial class Paciente
     public string? Telefone { get; set; }
 
     [Column("cartao_regional_sus")]
-    public string? CartaoRegionalSus { get; set; }
+    public string? CartaoRegionalSUS { get; set; }
 
     [Column("cartao_nacional_sus")]
-    public string? CartaoNacionalSus { get; set; }
+    public string? CartaoNacionalSUS { get; set; }
 
     [Column("data_nascimento")]
     public DateTime DataNascimento { get; set; }
