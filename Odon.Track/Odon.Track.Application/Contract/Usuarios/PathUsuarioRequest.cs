@@ -10,6 +10,5 @@ namespace Odon.Track.Application.Contract.Usuarios
     {
         public int Id { get; set; }
         public string Nome { get; set; }
-        public string identificador { get; set; }
     }
 }

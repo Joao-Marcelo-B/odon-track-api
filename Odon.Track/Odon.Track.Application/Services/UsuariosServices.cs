@@ -105,8 +105,6 @@ namespace Odon.Track.Application.Services
                 estudante.Nome = request.Nome;
             }
 
-            usuario.IdentificadorUnifenas = request.identificador;
-
             await _context.SaveChangesAsync();
 
             return Ok();

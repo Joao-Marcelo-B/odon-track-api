@@ -21,13 +21,16 @@ namespace Odon.Track.Application.Services
         {
             
             var estudantes = await _context.Estudantes.ToListAsync();
+            var usuariosEstudantes = await _context.Usuarios.Where(x => x.IdTipoUsuario == 3).ToListAsync();
+
             GetEstudantesResponse estudante = new ();
             foreach (var item in estudantes)
                 estudante.Estudantes.Add(new EstudantesInfo
                 {
                     Id = item.Id,
                     Nome = item.Nome,
-                    PeriodoAtual = item.PeriodoAtual
+                    PeriodoAtual = item.PeriodoAtual,
+                    Identificador = usuariosEstudantes.Find(x => x.Id ==  item.IdUsuario).IdentificadorUnifenas,
                 });
             
             return Ok(new { estudante.Estudantes });
@@ -36,10 +39,18 @@ namespace Odon.Track.Application.Services
         public async Task<IActionResult> GetEstudanteById(int id)
         {
             var estudante = await _context.Estudantes.FirstOrDefaultAsync(x => x.Id == id);
+            
             if (estudante == null)
                 return BadRequest(OdonTrackErrors.EstudanteNotFound);
-            else 
-                return Ok(estudante);
+
+            var usuariosEstudantes = await _context.Usuarios.FirstOrDefaultAsync(x => x.Id == estudante.IdUsuario);
+            var detalhesEstudante = new EstudantesInfo();
+            detalhesEstudante.Id = estudante.Id;
+            detalhesEstudante.Identificador = usuariosEstudantes.IdentificadorUnifenas;
+            detalhesEstudante.PeriodoAtual = estudante.PeriodoAtual;
+            detalhesEstudante.Nome = estudante.Nome;
+
+            return Ok(detalhesEstudante);
         }
 
         public async Task<IActionResult> GetEstudanteByNome(string nome)

@@ -11,6 +11,7 @@ namespace Odon.Track.Application.Contract.Estudantes
         public int Id { get; set; }
         public string Nome { get; set; }
         public int PeriodoAtual { get; set; }
+        public string Identificador { get; set; }
 
     }
 }
