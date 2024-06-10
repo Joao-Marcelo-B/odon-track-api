@@ -187,10 +187,18 @@ namespace Odon.Track.Application.Services
 
         public async Task<IActionResult> PatchRolesSemestre(PatchRolesSemestreRequest request)
         {
-            var rolesSemestre = _context.RolesSemestre.Where(x => request.Roles.Contains(x.IdRole));
-            if(rolesSemestre.Count() > 0)
+            var rolesSemestreAtual = await _context.RolesSemestre.Where(x => x.Periodo <= request.Periodo).ToListAsync();
+            var deleteRolesSemestre = rolesSemestreAtual.Where(x => !request.Roles.Contains(x.IdRole)).ToList();
+            if (deleteRolesSemestre.Count() > 0)
             {
-                _context.RolesSemestre.RemoveRange(rolesSemestre);
+                _context.RolesSemestre.RemoveRange(deleteRolesSemestre);
+                await _context.SaveChangesAsync();
+            }
+
+            var rolesSemestreNew = _context.RolesSemestre.Where(x => request.Roles.Contains(x.IdRole));
+            if(rolesSemestreNew.Count() > 0)
+            {
+                _context.RolesSemestre.RemoveRange(rolesSemestreNew);
                 await _context.SaveChangesAsync();
             }
 
