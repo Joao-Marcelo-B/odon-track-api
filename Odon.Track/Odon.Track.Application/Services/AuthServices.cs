@@ -94,7 +94,9 @@ namespace Odon.Track.Application.Services
                 await _context.SaveChangesAsync();
                 return BadRequest(OdonTrackErrors.CredenciaisInvalid);
             }
-                
+
+            user.LoginFailed = 0;
+            await _context.SaveChangesAsync();
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_settings.SharedKeyToken);
