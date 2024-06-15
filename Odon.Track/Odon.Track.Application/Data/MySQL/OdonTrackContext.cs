@@ -47,6 +47,7 @@ public partial class OdontrackContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
     public virtual DbSet<RolesSemestre> RolesSemestre { get; set; }
+    public virtual DbSet<RolesModulo> RolesModulos { get; set; }
     public virtual DbSet<Roles> Roles { get; set; }
     public virtual DbSet<CodigoSeguranca> CodigoSeguranca { get; set; }
     public virtual DbSet<Responsavel> Responsaveis { get; set; }

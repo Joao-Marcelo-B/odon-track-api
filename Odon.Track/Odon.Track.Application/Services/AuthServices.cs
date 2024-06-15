@@ -171,7 +171,14 @@ namespace Odon.Track.Application.Services
             return Ok();
         }
 
-        public async Task<IActionResult> GetRoles(int periodo)
+        public async Task<IActionResult> GetRoles()
+        {
+            List<Roles> roles = await _context.Roles.ToListAsync();
+
+            return Ok(new { roles });
+        }
+
+        public async Task<IActionResult> GetRolesPeriodo(int periodo)
         {
             List<Roles> roles = new();
             if(periodo <= 0)
@@ -185,8 +192,61 @@ namespace Odon.Track.Application.Services
             return Ok(new { roles });
         }
 
-        public async Task<IActionResult> PatchRolesSemestre(PatchRolesSemestreRequest request)
+        public async Task<IActionResult> GetRolesModulo(int modulo)
         {
+            List<Roles> roles = new();
+            if (modulo <= 0)
+                roles = await _context.Roles.ToListAsync();
+            else
+                roles = await _context.RolesModulos
+                    .Where(x => x.Modulo <= modulo)
+                    .Join(_context.Roles, rs => rs.IdRole, r => r.Id, (rs, r) => r)
+                    .ToListAsync();
+
+            return Ok(new { roles });
+        }
+
+        public async Task<IActionResult> PatchRolesSemestreModulo(PatchRolesModuloRequest request)
+        {
+            var rolesAny = await _context.Roles.AnyAsync(x => request.Roles.Contains(x.Id));
+            if (request.Roles.Count > 0 && !rolesAny)
+                return BadRequest(OdonTrackErrors.RolesNotFound);
+
+            var rolesSemestreAtual = await _context.RolesModulos.Where(x => x.Modulo <= request.Modulo).ToListAsync();
+            var deleteRolesSemestre = rolesSemestreAtual.Where(x => !request.Roles.Contains(x.IdRole)).ToList();
+            if (deleteRolesSemestre.Count() > 0)
+            {
+                _context.RolesModulos.RemoveRange(deleteRolesSemestre);
+                await _context.SaveChangesAsync();
+            }
+
+            foreach (var role in request.Roles)
+            {
+                var rolesModulos = await _context.RolesModulos.FirstOrDefaultAsync(x => x.IdRole.Equals(role));
+                if (rolesModulos == null)
+                {
+                    var roleModulo = new RolesModulo()
+                    {
+                        IdRole = role,
+                        Modulo = request.Modulo,
+                    };
+                    await _context.RolesModulos.AddAsync(roleModulo);
+                }
+                else if (rolesModulos.Modulo > request.Modulo)
+                    rolesModulos.Modulo = request.Modulo;
+
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok();
+        }
+
+        public async Task<IActionResult> PatchRolesSemestrePeriodo(PatchRolesSemestreRequest request)
+        {
+            var rolesAny = await _context.Roles.AnyAsync(x => request.Roles.Contains(x.Id));
+            if (request.Roles.Count > 0 && !rolesAny)
+                return BadRequest(OdonTrackErrors.RolesNotFound);
+
             var rolesSemestreAtual = await _context.RolesSemestre.Where(x => x.Periodo <= request.Periodo).ToListAsync();
             var deleteRolesSemestre = rolesSemestreAtual.Where(x => !request.Roles.Contains(x.IdRole)).ToList();
             if (deleteRolesSemestre.Count() > 0)
@@ -195,28 +255,23 @@ namespace Odon.Track.Application.Services
                 await _context.SaveChangesAsync();
             }
 
-            var rolesSemestreNew = _context.RolesSemestre.Where(x => request.Roles.Contains(x.IdRole));
-            if(rolesSemestreNew.Count() > 0)
-            {
-                _context.RolesSemestre.RemoveRange(rolesSemestreNew);
-                await _context.SaveChangesAsync();
-            }
-
-            var rolesAny = await _context.Roles.AnyAsync(x => request.Roles.Contains(x.Id));
-            if (!rolesAny)
-                return BadRequest(OdonTrackErrors.RolesNotFound);
-
             foreach (var role in request.Roles)
             {
-
-                var roleSemestre = new RolesSemestre()
+                var rolesSemestre = await _context.RolesSemestre.FirstOrDefaultAsync(x => x.IdRole.Equals(role));
+                if(rolesSemestre == null)
                 {
-                    IdRole = role,
-                    Periodo = request.Periodo,
-                };
-                await _context.RolesSemestre.AddAsync(roleSemestre);
+                    var roleSemestre = new RolesSemestre()
+                    {
+                        IdRole = role,
+                        Periodo = request.Periodo,
+                    };
+                    await _context.RolesSemestre.AddAsync(roleSemestre);
+                } 
+                else if(rolesSemestre.Periodo > request.Periodo)
+                    rolesSemestre.Periodo = request.Periodo;
+
+               await _context.SaveChangesAsync();
             }
-            await _context.SaveChangesAsync();
 
             return Ok();
         }
