@@ -27,7 +27,7 @@ namespace Odon.Track.Application.Services
 
             var pacientesCount = await query.CountAsync();
 
-            var pacientes = await query.OrderBy(x => x.Id)
+            var pacientes = await query.OrderByDescending(x => x.Id)
                                        .Skip((pageNumber - 1) * pageSize)
                                        .Take(pageSize)
                                        .ToListAsync();

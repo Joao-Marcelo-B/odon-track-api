@@ -56,10 +56,10 @@ namespace Odon.Track.Application.Services
             }
             var totalRecords = await _context.Usuarios.CountAsync();
 
-            var usuario = await _context.Usuarios
-                                        .Skip((pageNumber - 1) * pageSize)
-                                        .Take(pageSize)
-                                        .ToListAsync();
+            var usuario = await _context.Usuarios.OrderByDescending(x => x.Id)
+                                       .Skip((pageNumber - 1) * pageSize)
+                                       .Take(pageSize)
+                                       .ToListAsync();
 
             GetUsuariosResponse response = new();
             foreach (var item in usuario)

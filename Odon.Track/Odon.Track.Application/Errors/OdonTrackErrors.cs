@@ -26,5 +26,6 @@
         public static string TriagemNotFound = "Triagem não exite";
         public static string ResponsavelNotFound = "Responsavel não exite";
         public static string EnderecoNotFound = "Endereço não exite";
+        public static string ConsultaNotFound = "Consulta não encontrada";
     }
 }
