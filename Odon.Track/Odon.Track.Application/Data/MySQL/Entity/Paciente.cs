@@ -54,7 +54,41 @@ public partial class Paciente
     [Column("data_cadastro")]
     public DateTime DataCadastro { get; set; }
     [Column("ativo")]
-    public int Ativo { get; set; } = 1;
+    public int Ativo { get; set; }
+
+    [Column("precisa_responsavel")]
+    public int? NecessitaResponsavel { get; set; }
+
+    [Column("sexo")]
+    public string? Sexo { get; set; }
+
+    [Column("sexo_outro")]
+    public string? SexoOutro { get; set; }
+
+    [Column("grupo_etnico")]
+    public string? GrupoEtnico { get; set; }
+
+    [Column("data_expedicao_rg")]
+    public DateTime? DataExpedicaoRG { get; set; }
+
+    [Column("estado_civil")]
+    public string? EstadoCivil { get; set; }
+
+    [Column("mora_com")]
+    public string? MoraCom {  get; set; }
+
+    [Column("mora_com_outro")]
+    public string? MoraComOutro { get; set; }
+
+    [Column("escola")]
+    public string? Escola {  get; set; }
+
+    [Column("serie")]
+    public string? Serie {  get; set; }
+
+    [Column("turno")]
+    public string? Turno { get; set; }
+
     public virtual ICollection<Endereco> Enderecos { get; } = new List<Endereco>();
 
     [ForeignKey(nameof(IdPacienteStatus))]

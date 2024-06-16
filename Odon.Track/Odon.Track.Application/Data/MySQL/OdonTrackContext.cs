@@ -15,6 +15,7 @@ public partial class OdontrackContext : DbContext
     public virtual DbSet<Disciplina> Disciplinas { get; set; }
 
     public virtual DbSet<Endereco> Enderecos { get; set; }
+    public virtual DbSet<EnderecoResponsavel> EnderecosResponsavel { get; set; }
 
     public virtual DbSet<Estudante> Estudantes { get; set; }
 

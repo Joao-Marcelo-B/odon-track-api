@@ -15,8 +15,10 @@ namespace Odon.Track.Application.Data.MySQL.Entity
         public string Nome { get; set; }
         [Column("cpf")]
         public string CPF { get; set; }
-        [Column("telefone")]
-        public string Telefone { get; set; }
+        [Column("telefone1")]
+        public string Telefone1 { get; set; }
+        [Column("telefone2")]
+        public string Telefone2 { get; set; }
         [Column("email")]
         public string Email { get; set; }
     }
