@@ -24,5 +24,7 @@
         public static string TriagemFound = "Esse paciente já possui uma ficha de triagem";
         public static string ProfessorNotFound = "Professor não exite";
         public static string TriagemNotFound = "Triagem não exite";
+        public static string ResponsavelNotFound = "Responsavel não exite";
+        public static string EnderecoNotFound = "Endereço não exite";
     }
 }
