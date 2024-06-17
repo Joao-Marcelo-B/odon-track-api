@@ -69,7 +69,7 @@ namespace Odon.Track.Application.Services
             return Created();
         }
 
-        public async Task<IActionResult> PostCadastrarProntuario()
+        public async Task<IActionResult> PostCadastrarProntuario(PostCadastrarProntuarioRequest request)
         {
 
             return Created();
