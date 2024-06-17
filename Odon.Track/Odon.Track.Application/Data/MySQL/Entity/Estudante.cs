@@ -14,7 +14,7 @@ public class Estudante
     [Column("nome")]
     public string Nome { get; set; } = null!;
     [Column("periodo_atual")]
-    public int PeriodoAtual { get; set; }
+    public int PeriodoAtual { get; set; } = 1;
 
     [ForeignKey(nameof(IdUsuario))]
     public virtual Usuario Usuario { get; set; } = null!;
