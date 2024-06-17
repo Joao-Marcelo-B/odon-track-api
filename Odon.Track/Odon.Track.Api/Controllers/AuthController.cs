@@ -36,12 +36,27 @@ namespace Odon.Track.Api.Controllers
 
         [HttpGet("roles")]
         [Authorize(Roles = RolesForUsers.Professor)]
-        public async Task<IActionResult> GetRoles([FromQuery] int periodo) =>
-            await _auth.GetRoles(periodo);
+        public async Task<IActionResult> GetRoles() =>
+            await _auth.GetRoles();
 
-        [HttpPatch("roles/semestre")]
+        [HttpGet("roles/periodo")]
         [Authorize(Roles = RolesForUsers.Professor)]
-        public async Task<IActionResult> PatchRolesSemestre([FromBody] PatchRolesSemestreRequest request) =>
-            await _auth.PatchRolesSemestre(request);
+        public async Task<IActionResult> GetRolesPeriodo([FromQuery] int semestre) =>
+            await _auth.GetRolesPeriodo(semestre);
+
+        [HttpPatch("roles/semestre/periodo")]
+        [Authorize(Roles = RolesForUsers.Professor)]
+        public async Task<IActionResult> PatchRolesSemestrePeriodo([FromBody] PatchRolesSemestreRequest request) =>
+            await _auth.PatchRolesSemestrePeriodo(request);
+
+        [HttpGet("roles/modulo")]
+        [Authorize(Roles = RolesForUsers.Professor)]
+        public async Task<IActionResult> GetRolesModulo([FromQuery] int semestre) =>
+            await _auth.GetRolesModulo(semestre);
+
+        [HttpPatch("roles/semestre/modulo")]
+        [Authorize(Roles = RolesForUsers.Professor)]
+        public async Task<IActionResult> PatchRolesSemestreModulo([FromBody] PatchRolesModuloRequest request) =>
+            await _auth.PatchRolesSemestreModulo(request);
     }
 }

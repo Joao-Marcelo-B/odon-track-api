@@ -1,9 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Odon.Track.Application.Contract.Pacientes
 {
-    public class PostCadastrarPacienteRequest
+    public class PathAtualizarPacienteRequest
     {
+        public int Id { get; set; }
         public string Nome { get; set; }
         public DateTime DataNascimento { get; set; }
         public string Naturalidade { get; set; }
@@ -17,7 +22,7 @@ namespace Odon.Track.Application.Contract.Pacientes
         public int NecessitaResponsavel { get; set; }
         public string Telefone { get; set; }
         public string CartaoRegionalSUS { get; set; }
-        public string CartaoNacionalSUS { get; set; }       
+        public string CartaoNacionalSUS { get; set; }
         public string Sexo { get; set; }
         public string SexoOutro { get; set; }
         public string GrupoEtnico { get; set; }
@@ -28,14 +33,5 @@ namespace Odon.Track.Application.Contract.Pacientes
         public string Escola { get; set; }
         public string Serie { get; set; }
         public string Turno { get; set; }
-    }
-
-    public class ResponsavelPaciente
-    {
-       public string Nome { get; set; }
-        public string CPF { get; set; }
-        public string Telefone1 { get; set; }
-        public string Telefone2 { get; set; }
-        public string Email { get; set; }
     }
 }

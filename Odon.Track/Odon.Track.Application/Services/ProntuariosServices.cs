@@ -124,7 +124,7 @@ namespace Odon.Track.Application.Services
         {
             // Construindo a consulta base
             var query = _context.Prontuarios
-                                .OrderBy(x => x.Id)
+                                .OrderByDescending(x => x.Id)
                                 .Include(x => x.Paciente)
                                 .Include(x => x.EstudanteVinculado)
                                 .Include(x => x.ProfessorVinculado)
@@ -164,7 +164,7 @@ namespace Odon.Track.Application.Services
         {
             // Construindo a consulta base
             var query = _context.Triagens
-                                .OrderBy(x => x.Id)
+                                .OrderByDescending(x => x.Id)
                                 .Include(x => x.EstudanteAssinatura)
                                 .Include(x => x.ProfessorAssinatura)
                                 .Include(x => x.Paciente)
@@ -279,7 +279,7 @@ namespace Odon.Track.Application.Services
         {
             // Construindo a consulta base
             var query = _context.ProntuarioProntoAtendimentos
-                                .OrderBy(x => x.Id)
+                                .OrderByDescending(x => x.Id)
                                 // .Include(x => x.EstudanteVinculado)
                                 .Include(x => x.ProfessorVinculado)
                                 .Include(x => x.Paciente)
@@ -323,7 +323,7 @@ namespace Odon.Track.Application.Services
 
             var reavaliacoesAnamnese = await _context.ReavaliacaoAnamneses.Include(x => x.Paciente)
                                                                         .Where(x => x.IdPaciente.Equals(idPaciente))
-                                                                        .OrderBy(x => x.Id)
+                                                                        .OrderByDescending(x => x.Id)
                                                                         .Skip((pageNumber - 1) * pageSize)
                                                                         .Take(pageSize)
                                                                         .ToListAsync();
