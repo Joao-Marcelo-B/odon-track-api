@@ -2,6 +2,7 @@ using Odon.Track.Application.Configuration;
 using Odon.Track.Application.Core.Middleware;
 using Odon.Track.Application.Core.Injections.Extensions;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 
 
 var builder = WebApplication.CreateBuilder(args);

@@ -8,6 +8,8 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Odon.Track.Application.Core.Injections.Extensions
 {
@@ -23,6 +25,7 @@ namespace Odon.Track.Application.Core.Injections.Extensions
             services.AddScoped<RecoverPasswordServices>();
             services.AddScoped<PacientesServices>();
             services.AddScoped<ProntuariosServices>();
+            services.AddScoped<DisciplinasService>();
             return services;
         }
 
@@ -59,13 +62,13 @@ namespace Odon.Track.Application.Core.Injections.Extensions
             {
                 config.Filters.Add(new ConsumesAttribute("application/json"));
                 config.Filters.Add(new ProducesAttribute("application/json"));
+
             })
                     .AddJsonOptions(
                           config =>
                           {
                               config.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                           });
-
             return services;
         }
 

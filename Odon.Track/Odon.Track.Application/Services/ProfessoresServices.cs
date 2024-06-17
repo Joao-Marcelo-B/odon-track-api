@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Configuration;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using MySql.Data.MySqlClient;
 using Odon.Track.Application.Contract.Professores;
 using Odon.Track.Application.Data.MySQL;
 using Odon.Track.Application.Data.MySQL.Entity;
@@ -54,7 +57,7 @@ namespace Odon.Track.Application.Services
                 .ThenInclude(dp => dp.Disciplina)
                 .Where(p => p.Id == id).ToListAsync();
 
-            List<GetProfessoresDetailsResponse> professoresDetails = new();
+            GetProfessoresDetailsResponse professoresDetails = new();
 
             foreach (var item in professores)
             {
@@ -64,14 +67,14 @@ namespace Odon.Track.Application.Services
                     if (disciplina.Id_Professor == item.Id)
                         disciplinas.Add(disciplina.Disciplina.Nome);
                 }
-                professoresDetails.Add(new()
+                professoresDetails = new()
                 {
                     Id = item.Id,
                     Nome = item.Nome,
                     NomeDisciplina = disciplinas,
                     IdentificadorUnifenas = item.Usuario.IdentificadorUnifenas,
                     Email = item.Usuario.Email
-                });
+                };
             }
 
             return Ok(new { professoresDetails });
@@ -88,6 +91,25 @@ namespace Odon.Track.Application.Services
                 return Ok(new List<Paciente>());
             else
                 return Ok(professoresValidos);
+        }
+
+        public async Task<IActionResult> DeleteDisciplinaProfessor(int idProfessor, DeleteProfessorDisciplinaRequest disciplina)
+        {
+            var Disciplina = await _context.Disciplinas.FirstOrDefaultAsync(d => d.Nome == disciplina.NomeDisciplina);
+            if (Disciplina != null)
+            {
+                var disciplinasProfessor = await _context.DisciplinasProfessor.FirstOrDefaultAsync(dp => dp.Id_Professor == idProfessor && dp.Disciplina.Id == Disciplina.Id);
+                if (disciplinasProfessor != null)
+                {
+                    _context.DisciplinasProfessor.Remove(disciplinasProfessor);
+                    _context.SaveChanges();
+                    return Ok("Removido com sucesso.");
+                }
+                else
+                    return BadRequest("Houve um erro interno.");
+            }
+            else
+                return BadRequest("Houve um erro interno.");
         }
     }
 }
