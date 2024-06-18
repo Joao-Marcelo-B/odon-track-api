@@ -1,4 +1,6 @@
-﻿namespace Odon.Track.Application.Contract.Prontuarios
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Odon.Track.Application.Contract.Prontuarios
 {
     public class PostCadastrarProntuarioRequest
     {
@@ -14,6 +16,265 @@
         public TendenciasHereditarias TendenciasHereditarias { get; set; }
         public Habitos Habitos { get; set; }
         public HabitoHigieneBucal HabitoHigieneBucal { get; set; }
+        public DescricaoDente DescricaoDente { get; set; }
+        public DiagnosticosDente DiagnosticosDente { get; set; }
+        public string PlanoCronologicoTratamento { get; set; }
+        public Endodontia Endodontia { get; set; }
+        public Odontometria Odontometria { get; set; }
+        public Curativos Curativos { get; set; }
+        public string RestauracaoDefinitivaDoDente { get; set; }
+        public int NumeroDeSessoesRealizadas { get; set; }
+    }
+
+    public class Curativos
+    {
+        public string PrimeiraSessao { get; set; }
+        public string SegundaSessao { get; set; }
+        public string TerceiraSessao { get; set; }
+        public string QuartaSessao { get; set; }
+        public string QuintaSessao { get; set; }
+        public string SextaSessao { get; set; }
+        public string Observacoes { get; set; }
+    }
+
+    public class Odontometria
+    {
+        public Canal Canal { get; set; }
+        public CAD CAD { get; set; }
+        public CRD CRD { get; set; }
+        public CRT CRT { get; set; }
+        public DiametroAnatomico DiametroAnatomico { get; set; }
+        public DiametroCirurgico DiametroCirurgico { get; set; }
+        public DiametroCirurgico DiametroCirurgico { get; set; }
+    }
+
+    public class PontoDeReferenciaPontoDeReferencia
+    {
+        public List<string> Descricao { get; set; }
+    }
+
+    public class DiametroCirurgico
+    {
+        public List<string> Descricao { get; set; }
+    }
+
+    public class DiametroAnatomico
+    {
+        public List<string> Descricao { get; set; }
+    }
+
+    public class CRT
+    {
+        public List<string> Descricao { get; set; }
+    }
+
+    public class CRD
+    {
+        public List<string> Descricao { get; set; }
+    }
+
+    public class Canal
+    {
+        public List<string> Descricao { get; set; }
+    }
+
+    public class CAD
+    {
+        public List<string> Descricao { get; set; }
+    }
+
+    public class Endodontia
+    {
+        public string Dente { get; set; }
+        public int NumeroDeCanais { get; set; }
+        public ExameClinico ExameClinico { get; set; }
+    }
+
+    public class  ExameClinico
+    {
+        public DiagnosticoPulpar DiagnosticoPulpar { get; set; }
+        public TesteDePercussao TesteDePercussao { get; set; }
+        public PresencaDeAbcesso PresencaDeAbcesso { get; set; }
+        public ExameRadiografico ExameRadiografico { get; set; }
+        public ExsudatoNosCanais ExsudatoNosCanais { get; set; }
+        public DorEntreAsSessoes DorEntreAsSessoes { get; set; }
+        public SolucaoIrrigadora SolucaoIrrigadora { get; set; }
+        public string CimentoObturador { get; set; }
+        public TecnicaDeObturacao TecnicaDeObturacao { get; set; }
+        public string MaterialRestauradorProvisorio{ get; set; }
+    }
+
+    public class TecnicaDeObturacao
+    {
+        public bool CondensacaoLateral { get; set; }
+        public string Outra { get; set; }
+    }
+
+    public class SolucaoIrrigadora
+    {
+        public bool HipocloritoDeSodioAPorcentagem { get; set; }
+        public string Outra { get; set; }
+    }
+
+    public class DorEntreAsSessoes
+    {
+        public bool Sim { get; set; }
+        public bool Nao { get; set; }
+    }
+
+    public class ExsudatoNosCanais
+    {
+        public bool Ausente { get; set; }
+        public bool Claro { get; set; }
+        public bool Hemorragico { get; set; }
+        public bool Purulento { get; set; }
+    }
+
+    public class ExameRadiografico
+    {
+        public RegiaoPeriapical RegiaoPeriapical { get; set; }
+    }
+
+    public class RegiaoPeriapical
+    {
+        public bool Normal { get; set; }
+        public bool ComLesao { get; set; }
+        public bool Difusa { get; set; }
+        public bool Circunscrita { get; set; }
+    }
+
+    public class PresencaDeAbcesso
+    {
+        public bool Nao { get; set; }
+        public bool Sim { get; set; }
+        public bool IntraBucal { get; set; }
+        public bool Extrabucal { get; set; }
+        public bool ComFistula { get; set; }
+        public bool SemFistula { get; set; }
+    }
+
+    public class DiagnosticoPulpar
+    {
+        public bool Normal { get; set; }
+        public bool PulpiteReversivel { get; set; }
+        public bool PulpiteIrreversivel { get; set; }
+        public bool Necrose { get; set; }
+        public bool DenteJaTratado { get; set; }
+    }
+
+    public class TesteDePercussao
+    {
+        public bool Insesivel { get; set; }
+        public bool Sensivel { get; set; }
+        public bool MuitoSensivel { get; set; }
+    }
+
+    public class ControlePlacaBacteriana
+    {
+        public IFormFile ImagemControlePlacaBacteriana { get; set; }
+        public string Observacao { get; set; }
+    }
+
+    public class DiagnosticosDente
+    {
+        public Gengivite Gengivite { get; set; }
+        public PeriodontiteLeve PeriodontiteLeve { get; set; }
+        public PeriodontiteGrave PeriodontiteGrave { get; set; }
+        public EComplicada EComplicada { get; set; }
+        public string Observacoes { get; set; }
+    }
+
+    public class Gengivite
+    {
+        public List<Dentes> Dentes { get; set; }
+    }
+
+    public class PeriodontiteLeve
+    {
+        public List<Dentes> Dentes { get; set; }
+    }
+
+    public class EComplicada
+    {
+        public List<Dentes> Dentes { get; set; }
+    }
+
+    public class PeriodontiteGrave
+    {
+        public List<Dentes> Dentes { get; set; }
+    }
+
+    public class Dentes
+    {
+        public bool _18 { get; set; }
+        public bool _17 { get; set; }
+        public bool _16 { get; set; }
+        public bool _15 { get; set; }
+        public bool _14 { get; set; }
+        public bool _13 { get; set; }
+        public bool _12 { get; set; }
+        public bool _11 { get; set; }
+        public bool _21 { get; set; }
+        public bool _22 { get; set; }
+        public bool _23 { get; set; }
+        public bool _24 { get; set; }
+        public bool _25 { get; set; }
+        public bool _26 { get; set; }
+        public bool _27 { get; set; }
+        public bool _28 { get; set; }
+        public bool _48 { get; set; }
+        public bool _47 { get; set; }
+        public bool _46 { get; set; }
+        public bool _45 { get; set; }
+        public bool _44 { get; set; }
+        public bool _43 { get; set; }
+        public bool _42 { get; set; }
+        public bool _41 { get; set; }
+        public bool _31 { get; set; }
+        public bool _32 { get; set; }
+        public bool _33 { get; set; }
+        public bool _34 { get; set; }
+        public bool _35 { get; set; }
+        public bool _36 { get; set; }
+        public bool _37 { get; set; }
+        public bool _38 { get; set; }
+    }
+
+    public class DescricaoDente
+    {
+        public string _18 { get; set; }
+        public string _17 { get; set; }
+        public string _16 { get; set; }
+        public string _15_55 { get; set; }
+        public string _14_54 { get; set; }
+        public string _13_53 { get; set; }
+        public string _12_52 { get; set; }
+        public string _11_51 { get; set; }
+        public string _21_61 { get; set; }
+        public string _22_62 { get; set; }
+        public string _23_63 { get; set; }
+        public string _24_64 { get; set; }
+        public string _25_65 { get; set; }
+        public string _26 { get; set; }
+        public string _27 { get; set; }
+        public string _28 { get; set; }
+        public string _38 { get; set; }
+        public string _37 { get; set; }
+        public string _36 { get; set; }
+        public string _35_75 { get; set; }
+        public string _34_74 { get; set; }
+        public string _33_73 { get; set; }
+        public string _32_72 { get; set; }
+        public string _31_71 { get; set; }
+        public string _41_81 { get; set; }
+        public string _42_82 { get; set; }
+        public string _43_83 { get; set; }
+        public string _44_84 { get; set; }
+        public string _45_85 { get; set; }
+        public string _46 { get; set; }
+        public string _47 { get; set; }
+        public string _48 { get; set; }
+        public string Observacoes { get; set; }
     }
 
     public class  ExameFisico
