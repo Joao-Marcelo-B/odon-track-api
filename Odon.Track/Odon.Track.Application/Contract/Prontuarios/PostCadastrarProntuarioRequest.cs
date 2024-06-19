@@ -2,228 +2,229 @@
 {
     public class PostCadastrarProntuarioRequest
     {
-        public string QueixaPrincipal { get; set; }
-        public string HistoriaDoencaAtual { get; set; }
-        public HistoriaMedicaPregressaEAtual HistoriaMedicaPregressaEAtual { get; set; }
-        public UsoMedicamentos UsoMedicamentos { get; set; }
-        public string VisistasMedicas { get; set; }
-        public string Hospitalizacoes { get; set; }
-        public string Observacoes { get; set; }
-        public string DadosRelevantesHistoriaMedica { get; set; }
-        public HistoriaFamiliar HistoriaFamiliar { get; set; }
-        public TendenciasHereditarias TendenciasHereditarias { get; set; }
-        public Habitos Habitos { get; set; }
-        public HabitoHigieneBucal HabitoHigieneBucal { get; set; }
+        public int? IdPaciente { get; set; } = null;
+        public string QueixaPrincipal { get; set; } = null;
+        public string HistoriaDoencaAtual { get; set; } = null;
+        public HistoriaMedicaPregressaEAtual HistoriaMedicaPregressaEAtual { get; set; } = null;
+        public UsoMedicamentos UsoMedicamentos { get; set; } = null;
+        public string VisistasMedicas { get; set; } = null;
+        public string Hospitalizacoes { get; set; } = null;
+        public string Observacoes { get; set; } = null;
+        public string DadosRelevantesHistoriaMedica { get; set; } = null;
+        public HistoriaFamiliar HistoriaFamiliar { get; set; } = null;
+        public TendenciasHereditarias TendenciasHereditarias { get; set; } = null;
+        public Habitos Habitos { get; set; } = null;
+        public HabitoHigieneBucal HabitoHigieneBucal { get; set; } = null;
     }
 
     public class  ExameFisico
     {
-        public string PressaoArterial { get; set; }
-        public string FrequenciaRespiratoria { get; set; }
-        public string Pulso { get; set; }
-        public string TemperaturaAxiliar { get; set; }
-        public string Ectoscopia { get; set; }
-        public string Oroscopia { get; set; }
-        public string ExamesComplementaresSolicitados { get; set; }
-        public bool PedidoAvaliacaoMedica { get; set; }
-        public string Motivo { get; set; }
-        public DateTime DataPedidoAvaliacaoMedica { get; set; }
-        public string ParecerMedico { get; set; }
-        public string PacientePortadorDe { get; set; }
-        public string NecessitaDeCuidadosEspeciaisRelacao { get; set; }
-        public string Observacoes { get; set; }
+        public string PressaoArterial { get; set; } = null;
+        public string FrequenciaRespiratoria { get; set; } = null;
+        public string Pulso { get; set; } = null;
+        public string TemperaturaAxiliar { get; set; } = null;
+        public string Ectoscopia { get; set; } = null;
+        public string Oroscopia { get; set; } = null;
+        public string ExamesComplementaresSolicitados { get; set; } = null;
+        public bool? PedidoAvaliacaoMedica { get; set; } = null;
+        public string Motivo { get; set; } = null;
+        public DateTime? DataPedidoAvaliacaoMedica { get; set; } = null;
+        public string ParecerMedico { get; set; } = null;
+        public string PacientePortadorDe { get; set; } = null;
+        public string NecessitaDeCuidadosEspeciaisRelacao { get; set; } = null;
+        public string Observacoes { get; set; } = null;
     }
 
     public class HabitoHigieneBucal
     {
-        public string Escovacao { get; set; }
-        public string FioDental { get; set; }
-        public string EnxaguatorioBucal { get; set; }
+        public string Escovacao { get; set; } = null;
+        public string FioDental { get; set; } = null;
+        public string EnxaguatorioBucal { get; set; } = null;
     }
 
     public class HistoriaFamiliar
     {
-        public string Pai { get; set; }
-        public string Mae { get; set; }
-        public string Irmaos { get; set; }
+        public string Pai { get; set; } = null;
+        public string Mae { get; set; } = null;
+        public string Irmaos { get; set; } = null;
     }
 
     public class Habitos
     {
-        public bool Alcool { get; set; }
-        public string InicioAlcool { get; set; }
-        public string FrequenciaAlcool { get; set; }
-        public bool Fumo { get; set; }
-        public string InicioFumo { get; set; }
-        public string FrequenciaFumo { get; set; }
-        public string OutrosHabitosNocivos { get; set; }
+        public bool? Alcool { get; set; } = null;
+        public string InicioAlcool { get; set; } = null;
+        public string FrequenciaAlcool { get; set; } = null;
+        public bool? Fumo { get; set; } = null;
+        public string InicioFumo { get; set; } = null;
+        public string FrequenciaFumo { get; set; } = null;
+        public string OutrosHabitosNocivos { get; set; } = null;
     }
 
     public class TendenciasHereditarias
     {
-        public bool Cardiopatis { get; set; }
-        public bool Hipertensao { get; set; }
-        public bool Diabete { get; set; }
-        public bool Asma { get; set; }
-        public bool DisturbioSangramento { get; set; }
-        public bool Alergias { get; set; }
-        public bool NeoplasiasMalignas { get; set; }
-        public bool DoencaNeurologicas { get; set; }
-        public bool Tuberculose { get; set; }
-        public string Complemento { get; set; }
-        public string OutrasDoencas { get; set; }
+        public bool? Cardiopatis { get; set; } = null;
+        public bool? Hipertensao { get; set; } = null;
+        public bool? Diabete { get; set; } = null;
+        public bool? Asma { get; set; } = null;
+        public bool? DisturbioSangramento { get; set; } = null;
+        public bool? Alergias { get; set; } = null;
+        public bool? NeoplasiasMalignas { get; set; } = null;
+        public bool? DoencaNeurologicas { get; set; } = null;
+        public bool? Tuberculose { get; set; } = null;
+        public string Complemento { get; set; } = null;
+        public string OutrasDoencas { get; set; } = null;
     }
 
     public class UsoMedicamentos
     {
-        public bool FazUsoDeMedicamentos { get; set; }
-        public string NomeComercial { get; set; }
-        public string NomeGenerico { get; set; }
-        public string Dosagem { get; set; }
-        public string FrequenciaUso { get; set; }
+        public bool? FazUsoDeMedicamentos { get; set; } = null;
+        public string NomeComercial { get; set; } = null;
+        public string NomeGenerico { get; set; } = null;
+        public string Dosagem { get; set; } = null;
+        public string FrequenciaUso { get; set; } = null;
     }
 
     public class HistoriaMedicaPregressaEAtual
     {
-        public DoencaInfancia DoencaInfancia { get; set; }
-        public DistubiosCardiovasculares DistubiosCardiovasculares { get; set; }
-        public DistubiosRespiratorios DistubiosRespiratorios { get; set; }
-        public DistubiosEndocrinos DistubiosEndocrinos { get; set; }
-        public DisturbiosNeurologicos DisturbiosNeurologicos { get; set; }
-        public DisturbiosHematologicos DisturbiosHematologicos { get; set; }
-        public DisturbiosPsiquiatricos DisturbiosPsiquiatricos { get; set; }
-        public DisturbioosArticulacoesOuOssos DisturbioosArticulacoesOuOssos { get; set; }
-        public DisturbiosArticulacaoTemporamandibular DisturbiosArticulacaoTemporamandibular { get; set; }
-        public DoencaTransmissiveis DoencaTransmissiveis { get; set; }
-        public Alergias Alergias { get; set; }
+        public DoencaInfancia DoencaInfancia { get; set; } = null;
+        public DistubiosCardiovasculares DistubiosCardiovasculares { get; set; } = null;
+        public DistubiosRespiratorios DistubiosRespiratorios { get; set; } = null;
+        public DistubiosEndocrinos DistubiosEndocrinos { get; set; } = null;
+        public DisturbiosNeurologicos DisturbiosNeurologicos { get; set; } = null;
+        public DisturbiosHematologicos DisturbiosHematologicos { get; set; } = null;
+        public DisturbiosPsiquiatricos DisturbiosPsiquiatricos { get; set; } = null;
+        public DisturbioosArticulacoesOuOssos DisturbioosArticulacoesOuOssos { get; set; } = null;
+        public DisturbiosArticulacaoTemporamandibular DisturbiosArticulacaoTemporamandibular { get; set; } = null;
+        public DoencaTransmissiveis DoencaTransmissiveis { get; set; } = null;
+        public Alergias Alergias { get; set; } = null;
     }
 
     public class  DoencaInfancia
     {
-        public bool Catapora { get; set; }
-        public bool Caxumba { get; set; }
-        public bool Sarampo { get; set; }
-        public bool Amigdalite { get; set; }
-        public string Outras { get; set; }
+        public bool? Catapora { get; set; } = null;
+        public bool? Caxumba { get; set; } = null;
+        public bool? Sarampo { get; set; } = null;
+        public bool? Amigdalite { get; set; } = null;
+        public string Outras { get; set; } = null;
     }
 
     public class DistubiosCardiovasculares
     {
-        public bool FebreReumatica { get; set; }
-        public bool Sopros { get; set; }
-        public bool PatologiasValvulas { get; set; }
-        public bool AnomaliasCongenitasCardiacas { get; set; }
-        public bool Hirpertensao { get; set; }
-        public bool Arritmias { get; set; }
-        public bool InfartoMiocardio { get; set; }
-        public bool AngiaOuDorNoTorax { get; set; }
-        public bool CirurgiasCardiacas { get; set; }
-        public bool MarcaPasso { get; set; }
-        public bool AVC { get; set; }
-        public string Outras { get; set; }
+        public bool? FebreReumatica { get; set; } = null;
+        public bool? Sopros { get; set; } = null;
+        public bool? PatologiasValvulas { get; set; } = null;
+        public bool? AnomaliasCongenitasCardiacas { get; set; } = null;
+        public bool? Hirpertensao { get; set; } = null;
+        public bool? Arritmias { get; set; } = null;
+        public bool? InfartoMiocardio { get; set; } = null;
+        public bool? AngiaOuDorNoTorax { get; set; } = null;
+        public bool? CirurgiasCardiacas { get; set; } = null;
+        public bool? MarcaPasso { get; set; } = null;
+        public bool? AVC { get; set; } = null;
+        public string Outras { get; set; } = null;
     }
 
     public class DistubiosRespiratorios
     {
-        public bool Asma { get; set; }
-        public bool DoencaPulmonares { get; set; }
-        public bool Sinusite { get; set; }
-        public bool Rinite { get; set; }
-        public string Outras { get; set; }
+        public bool? Asma { get; set; } = null;
+        public bool? DoencaPulmonares { get; set; } = null;
+        public bool? Sinusite { get; set; } = null;
+        public bool? Rinite { get; set; } = null;
+        public string Outras { get; set; } = null;
     }
 
     public class DistubiosGenitourinarias
     {
-        public bool InfeccoesTratoUrinario { get; set; }
-        public bool DoencasGionecologicas { get; set; }
-        public bool DoencasRenais { get; set; }
-        public bool Nefrite { get; set; }
-        public bool InsuficienciaRenal { get; set; }
-        public bool FazHemodialise { get; set; }
-        public string Quais { get; set; }
-        public string Outras { get; set; }
+        public bool? InfeccoesTratoUrinario { get; set; } = null;
+        public bool? DoencasGionecologicas { get; set; } = null;
+        public bool? DoencasRenais { get; set; } = null;
+        public bool? Nefrite { get; set; } = null;
+        public bool? InsuficienciaRenal { get; set; } = null;
+        public bool? FazHemodialise { get; set; } = null;
+        public string Quais { get; set; } = null;
+        public string Outras { get; set; } = null;
     }
 
     public class DistubiosEndocrinos
     {
-        public bool Diabetes { get; set; }
-        public bool DisfuncaoTireoide { get; set; }
-        public string Menarca { get; set; }
-        public string Menopausa { get; set; }
-        public string Gravidez { get; set; }
-        public int Partos { get; set; }
-        public string Outras { get; set; }
+        public bool? Diabetes { get; set; } = null;
+        public bool? DisfuncaoTireoide { get; set; } = null;
+        public string Menarca { get; set; } = null;
+        public string Menopausa { get; set; } = null;
+        public string Gravidez { get; set; } = null;
+        public int? Partos { get; set; } = null;
+        public string Outras { get; set; } = null;
     }
 
     public class DisturbiosNeurologicos
     {
-        public bool Desmaios { get; set; }
-        public bool Convulsoes { get; set; }
-        public bool Enxaquecas { get; set; }
-        public bool Cefaleias { get; set; }
-        public bool NevralgiaNaFace { get; set; }
-        public string Outras { get; set; }
+        public bool? Desmaios { get; set; } = null;
+        public bool? Convulsoes { get; set; } = null;
+        public bool? Enxaquecas { get; set; } = null;
+        public bool? Cefaleias { get; set; } = null;
+        public bool? NevralgiaNaFace { get; set; } = null;
+        public string Outras { get; set; } = null;
     }
 
     public class DisturbiosHematologicos
     {
-        public bool Anemia { get; set; }
-        public bool Hemorragia { get; set; }
-        public bool Hemofilia { get; set; }
-        public bool Leucemia { get; set; }
-        public string Outras { get; set; }
-        public bool DoouOuRecebeuSangue { get; set; }
-        public DateTime DataDoacaoSangue { get; set; }
+        public bool? Anemia { get; set; } = null;
+        public bool? Hemorragia { get; set; } = null;
+        public bool? Hemofilia { get; set; } = null;
+        public bool? Leucemia { get; set; } = null;
+        public string Outras { get; set; } = null;
+        public bool? DoouOuRecebeuSangue { get; set; } = null;
+        public DateTime? DataDoacaoSangue { get; set; } = null;
     }
 
     public class DisturbiosPsiquiatricos
     {
-        public bool TratamentoPsiquiatrico { get; set; }
-        public bool Depressao { get; set; }
-        public bool Ansiedade { get; set; }
-        public string Outras { get; set; }
+        public bool? TratamentoPsiquiatrico { get; set; } = null;
+        public bool? Depressao { get; set; } = null;
+        public bool? Ansiedade { get; set; } = null;
+        public string Outras { get; set; } = null;
     }
 
     public class DisturbioosArticulacoesOuOssos
     {
-        public bool JaSofreuTraumatismoNaFace { get; set; }
-        public bool Artrite { get; set; }
-        public bool Reumatismo { get; set; }
-        public bool Osteoporose { get; set; }
-        public string Outros { get; set; }
+        public bool? JaSofreuTraumatismoNaFace { get; set; } = null;
+        public bool? Artrite { get; set; } = null;
+        public bool? Reumatismo { get; set; } = null;
+        public bool? Osteoporose { get; set; } = null;
+        public string Outros { get; set; } = null;
     }
 
     public class DisturbiosArticulacaoTemporamandibular
     {
-        public bool BruxismoCentrico { get; set; }
-        public bool BruxismoExcentrico { get; set; }
-        public bool MastigacaoUnilateral { get; set; }
-        public bool DorRegiaoDosOuvidos { get; set; }
-        public bool EstalidoNaAberturaEFechamentoBucal { get; set; }
-        public string Outros { get; set; }
+        public bool? BruxismoCentrico { get; set; } = null;
+        public bool? BruxismoExcentrico { get; set; } = null;
+        public bool? MastigacaoUnilateral { get; set; } = null;
+        public bool? DorRegiaoDosOuvidos { get; set; } = null;
+        public bool? EstalidoNaAberturaEFechamentoBucal { get; set; } = null;
+        public string Outros { get; set; } = null;
     }
 
 
     public class DoencaTransmissiveis
     {
-        public bool Hepatite { get; set; }
-        public bool Herpes { get; set; }
-        public bool HIV { get; set; }
-        public bool Turberculose { get; set; }
-        public bool DoencaSexualmenteTransmissivel { get; set; }
-        public string Quais { get; set; }
-        public string Outras { get; set; }
+        public bool? Hepatite { get; set; } = null;
+        public bool? Herpes { get; set; } = null;
+        public bool? HIV { get; set; } = null;
+        public bool? Turberculose { get; set; } = null;
+        public bool? DoencaSexualmenteTransmissivel { get; set; } = null;
+        public string Quais { get; set; } = null;
+        public string Outras { get; set; } = null;
     }
 
     public class  Alergias
     {
-        public bool Anestesia { get; set; }
-        public bool Alimentos { get; set; }
-        public bool Cosmeticos { get; set; }
-        public bool Urticaria { get; set; }
-        public string Quais { get; set; }
-        public bool Medicamentos { get; set; }
-        public string QuaisMedicamentos { get; set; }
-        public string Outras { get; set; }
+        public bool? Anestesia { get; set; } = null;
+        public bool? Alimentos { get; set; } = null;
+        public bool? Cosmeticos { get; set; } = null;
+        public bool? Urticaria { get; set; } = null;
+        public string Quais { get; set; } = null;
+        public bool? Medicamentos { get; set; } = null;
+        public string QuaisMedicamentos { get; set; } = null;
+        public string Outras { get; set; } = null;
     }
 }

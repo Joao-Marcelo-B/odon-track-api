@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Odon.Track.Application.Contract.Prontuarios;
 using Odon.Track.Application.Data.MySQL;
 using Odon.Track.Application.Data.MySQL.Entity;
+using Odon.Track.Application.Data.UpdateEntities;
 using Odon.Track.Application.Errors;
 using Odon.Track.Application.Responses;
 using Org.BouncyCastle.Asn1.Ocsp;
@@ -71,8 +72,38 @@ namespace Odon.Track.Application.Services
 
         public async Task<IActionResult> PostCadastrarProntuario(PostCadastrarProntuarioRequest request)
         {
+            var paciente = await _context.Pacientes.FirstOrDefaultAsync(x => x.Id.Equals(request.IdPaciente));
+            if (paciente == null)
+                return BadRequest(OdonTrackErrors.PacienteNotFound);
+
+            var prontuario = await _context.Prontuarios.FirstOrDefaultAsync(x => x.IdPaciente.Equals(request.IdPaciente));
+            if (prontuario == null)
+            {
+                prontuario = new Prontuario();
+                prontuario.IdPaciente = request.IdPaciente;
+                await _context.Prontuarios.AddAsync(prontuario);
+                await _context.SaveChangesAsync();
+            }
+
+            Prontuario insertDataProntuario = InsertDataProntuario(request);
+
+            prontuario.InsertValueProntuario(insertDataProntuario, prontuario);
+            _context.Prontuarios.Update(prontuario);
+            await _context.SaveChangesAsync();
+
 
             return Created();
+        }
+        
+        private Prontuario InsertDataProntuario(PostCadastrarProntuarioRequest request)
+        {
+            var prontuario = new Prontuario
+            {
+                QueixaPrincipal = request.QueixaPrincipal,
+                HistoriaDoencaAtual = request.HistoriaDoencaAtual,
+            };
+
+            return prontuario;
         }
 
         public async Task<IActionResult> PathAlterarTriagem(PathAlterarTriagemRequest request)
