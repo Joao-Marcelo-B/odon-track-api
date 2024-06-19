@@ -56,6 +56,7 @@ namespace Odon.Track.Application.Services
                 var estudante = new Estudante()
                 {
                     IdUsuario = user.Id,
+                    PeriodoAtual = 1,
                     Nome = request.Nome,
                 };
                 await _context.Estudantes.AddAsync(estudante);
