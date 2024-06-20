@@ -7,5 +7,6 @@
         public string Nome { get; set; } = null!;
         public List<string> NomeDisciplina{ get; set; }
         public int Bloqueado { get; set; }
-}
+        public int Ativo { get; set; }
+    }
 }

@@ -128,6 +128,7 @@ namespace Odon.Track.Application.Services
                 {
                     usuarioSelecionado.PasswordHash = passwordHash;
                     usuarioSelecionado.PasswordSalt = passwordSatl;
+                    usuarioSelecionado.LoginFailed = 0;
                     _context.Usuarios.Update(usuarioSelecionado);
                     await _context.SaveChangesAsync();
                     return Ok("Senha alterada com sucesso");

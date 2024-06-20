@@ -18,7 +18,7 @@ namespace Odon.Track.Application.Services
         {
             _context = context;
         }
-        public async Task<IActionResult> GetProfessores()
+        public async Task<IActionResult> GetProfessores(int mostrarInativos)
         {
             var professores = await _context.Professors
                 .Include(p=> p.Usuario)
@@ -29,11 +29,66 @@ namespace Odon.Track.Application.Services
             
             foreach (var item in professores)
             {
+                if (mostrarInativos == 1)
+                {
+                    List<string> disciplinas = new();
+                    foreach (var disciplina in item.DisciplinasProfessores)
+                    {
+                        if (disciplina.Id_Professor == item.Id)
+                            disciplinas.Add(disciplina.Disciplina.Nome);
+                    }
+                    professoresDisciplinas.Add(new()
+                    {
+                        Id = item.Id,
+                        Nome = item.Nome,
+                        NomeDisciplina = disciplinas,
+                        CodigoUnifenas = item.Usuario.IdentificadorUnifenas,
+                        Bloqueado = item.Usuario.Blocked,
+                        Ativo = item.Ativo
+                    });
+                }
+
+                else
+                {
+                    if (item.Ativo == 1)
+                    {
+                        List<string> disciplinas = new();
+                        foreach (var disciplina in item.DisciplinasProfessores)
+                        {
+                            if (disciplina.Id_Professor == item.Id)
+                                disciplinas.Add(disciplina.Disciplina.Nome);
+                        }
+                        professoresDisciplinas.Add(new()
+                        {
+                            Id = item.Id,
+                            Nome = item.Nome,
+                            NomeDisciplina = disciplinas,
+                            CodigoUnifenas = item.Usuario.IdentificadorUnifenas,
+                            Bloqueado = item.Usuario.Blocked,
+                            Ativo = item.Ativo
+                        });
+                    }
+                }
+            }
+            return Ok(new { professoresDisciplinas });
+        }
+
+        public async Task<IActionResult> GetProfessoresInativos()
+        {
+            var professores = await _context.Professors
+                .Include(p => p.Usuario)
+                .Include(p => p.DisciplinasProfessores)
+                .ThenInclude(dp => dp.Disciplina)
+                .ToListAsync();
+            List<GetProfessoresDisciplinasResponse> professoresDisciplinas = new();
+
+            foreach (var item in professores)
+            {
                 List<string> disciplinas = new();
                 foreach (var disciplina in item.DisciplinasProfessores)
                 {
                     if (disciplina.Id_Professor == item.Id)
-                        disciplinas.Add(disciplina.Disciplina.Nome);                                    
+                        disciplinas.Add(disciplina.Disciplina.Nome);
                 }
                 professoresDisciplinas.Add(new()
                 {
@@ -41,7 +96,8 @@ namespace Odon.Track.Application.Services
                     Nome = item.Nome,
                     NomeDisciplina = disciplinas,
                     CodigoUnifenas = item.Usuario.IdentificadorUnifenas,
-                    Bloqueado = item.Usuario.Blocked
+                    Bloqueado = item.Usuario.Blocked,
+                    Ativo = item.Ativo
                 });
             }
             return Ok(new { professoresDisciplinas });
@@ -73,7 +129,8 @@ namespace Odon.Track.Application.Services
                     Nome = item.Nome,
                     NomeDisciplina = disciplinas,
                     IdentificadorUnifenas = item.Usuario.IdentificadorUnifenas,
-                    Email = item.Usuario.Email
+                    Email = item.Usuario.Email,
+                    Ativo = item.Ativo
                 };
             }
 
@@ -111,5 +168,46 @@ namespace Odon.Track.Application.Services
             else
                 return BadRequest("Houve um erro interno.");
         }
+
+        public async Task<IActionResult> AddDisciplinaProfessor(PostAddDisciplinaProfessorRequest request)
+        {
+            var disciplina = await _context.Disciplinas.FirstOrDefaultAsync(d => d.Id == request.idDisciplina);
+            if (disciplina != null)
+            {
+                var professor = await _context.Professors.FirstOrDefaultAsync(p => p.Id == request.idProfessor);
+                if (professor != null)
+                {
+                    DisciplinasProfessor dp = new();
+                    dp.Id_Professor = request.idProfessor;
+                    dp.Id_Disciplinas = request.idDisciplina;
+                    _context.DisciplinasProfessor.Add(dp);
+                    _context.SaveChanges();
+                    return Ok("Disciplina vinculada a professor.");
+                }
+                else
+                    return BadRequest("Professor inválido.");
+            }
+            else return BadRequest("Disciplina inválida.");
+        }
+
+        public async Task<IActionResult> UpdateProfessor(PatchUpdateProfessorRequest request)
+        {
+            var professor = await _context.Professors.FirstOrDefaultAsync(p => p.Id == request.Id);
+
+            if (professor != null)
+            {
+                var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == professor.IdUsuario);
+
+                usuario.Blocked = request.Ativo ? 0 : 1;
+                professor.Ativo = request.Ativo ? 1 : 0;
+                professor.Nome = request.Nome;
+                _context.Professors.Update(professor);
+                _context.Usuarios.Update(usuario);
+                await _context.SaveChangesAsync();
+                return Ok("Dados atualizados com sucesso.");
+            }
+            else
+                return BadRequest("Ouve um erro ao atualizar os dados.");
+        }        
     }
 }

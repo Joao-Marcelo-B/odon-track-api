@@ -78,5 +78,11 @@ namespace Odon.Track.Application.Services
 
             return Ok(new { responseDisciplinas });
         }
+
+        public async Task<IActionResult> GetDisciplinaByNome(string nome)
+        {
+            var disciplinas = await _context.Disciplinas.Where(d => d.Nome.Contains(nome)).ToListAsync();
+            return Ok(disciplinas);
+        }
     }
 }

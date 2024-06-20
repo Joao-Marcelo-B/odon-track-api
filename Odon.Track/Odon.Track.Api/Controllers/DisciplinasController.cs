@@ -34,5 +34,10 @@ namespace Odon.Track.Api.Controllers
         {
             return await _disciplinasService.GetDisciplinas();
         }
+        [HttpGet("disciplinaByNome/{nome}")]
+        public async Task<IActionResult> GetDisciplinaByNome(string nome)
+        {
+            return await _disciplinasService.GetDisciplinaByNome(nome);
+        }
     }
 }

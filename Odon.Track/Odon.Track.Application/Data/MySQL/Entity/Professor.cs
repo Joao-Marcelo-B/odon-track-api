@@ -18,6 +18,9 @@ public partial class Professor
     [Column("nome")]
     public string Nome { get; set; } = null!;
 
+    [Column("ativo")]
+    public int Ativo { get; set; }
+
     [ForeignKey(nameof(IdUsuario))]
     public virtual Usuario Usuario { get; set; } = null!;
 

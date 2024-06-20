@@ -12,7 +12,7 @@ namespace Odon.Track.Application.Contract.Professores
         public int Id { get; set; }
         public string Nome { get; set; } = null!;
         public List<string> NomeDisciplina { get; set; }
-
+        public int Ativo { get; set; }
         public string IdentificadorUnifenas { get; set; }
         public string Email { get; set; }
 

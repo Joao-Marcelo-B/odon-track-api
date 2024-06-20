@@ -19,11 +19,11 @@ namespace Odon.Track.Api.Controllers
             _services = services;
         }
 
-        [HttpGet]
+        [HttpGet("mostrarInativos={mostrarInativos}")]
         [Authorize(Roles = RolesForUsers.Professor)]
-        public async Task<IActionResult> GetProfessores()
+        public async Task<IActionResult> GetProfessores(int mostrarInativos)
         {
-            return await _services.GetProfessores();
+            return await _services.GetProfessores(mostrarInativos);
         }
 
         [HttpGet("{id}")]
@@ -39,10 +39,22 @@ namespace Odon.Track.Api.Controllers
             return await _services.GetProfessoresByNome(nome);
         }
 
-        [HttpPost("excluir/{id}")]
+        [HttpDelete("excluirDisciplina/{id}")]
         public async Task<IActionResult> DeleteDisciplinaProfessor(int id, [FromBody] DeleteProfessorDisciplinaRequest request)
         {
             return await _services.DeleteDisciplinaProfessor(id, request);
+        }
+
+        [HttpPost("addDisciplinaProfessor")]
+        public async Task<IActionResult> AddDisciplinaProfessor([FromBody] PostAddDisciplinaProfessorRequest request)
+        {
+            return await _services.AddDisciplinaProfessor(request);
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> UpdateProfessor(PatchUpdateProfessorRequest request)
+        {
+            return await _services.UpdateProfessor(request);
         }
 
 
