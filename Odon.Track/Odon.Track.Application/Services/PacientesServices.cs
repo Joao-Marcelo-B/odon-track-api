@@ -87,7 +87,7 @@ namespace Odon.Track.Application.Services
         public async Task<IActionResult> GetPacienteByNome(string nome)
         {
             var pacientes = await _context.Pacientes
-                .Where(x => x.Nome.ToLower().Contains(nome.ToLower()))
+                .Where(x => x.Nome.ToLower().Contains(nome.ToLower()) && x.Ativo == 1)
                 .ToListAsync();
 
             if (!pacientes.Any())

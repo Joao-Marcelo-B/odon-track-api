@@ -29,11 +29,16 @@ namespace Odon.Track.Api.Controllers
         public async Task<IActionResult> GetProntuarios([FromQuery] string nomePaciente, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) =>
             await _services.GetProntuarios(pageNumber, pageSize, nomePaciente);
 
-        [HttpGet("triagem")]
-        public async Task<IActionResult> GetTriagem([FromQuery] string nomePaciente,[FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        [HttpPatch("triagem/filtro")]
+        public async Task<IActionResult> GetTriagem(
+        [FromQuery] string nomePaciente,
+        [FromBody] PatchBuscarTriagemRequeste filtro,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
         {
-            return await _services.GetTriagem(pageNumber, pageSize, nomePaciente);
+            return await _services.GetTriagem(filtro, pageNumber, pageSize, nomePaciente);
         }
+
 
         [HttpGet("triagem/{id}")]
         public async Task<IActionResult> GetTriagemById(int id) =>

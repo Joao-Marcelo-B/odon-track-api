@@ -25,15 +25,29 @@ namespace Odon.Track.Application.Services
             if (triagemExiste)
                 return BadRequest(OdonTrackErrors.TriagemFound);
 
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.Id == request.IdUsuario);
+
+            if (usuario == null)
+                return BadRequest("Erro de usuario");
+
+            Professor professor = null;
+            Estudante estudante = null;
+            if (usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2)
+                professor = await _context.Professors.FirstOrDefaultAsync(x => x.IdUsuario == usuario.Id);
+            else
+                estudante = await _context.Estudantes.FirstOrDefaultAsync(x => x.IdUsuario == usuario.Id);
+
+
             var triagem = new Triagem()
             {
                 IdPaciente = request.IdPaciente,
                 EncaminharPeriodo = request.EncaminharPeriodo,
                 EspecializacaoCirurgia = request.EspecializacaoCirurgia ? 1 : 0,
                 EspecializacaoProteseImplante = request.EspecializacaoProteseImplante ? 1 : 0,
-                IdProfessorAssinatura = request.IdProfessorAssinatura,
                 OutrasEspecializacoes = request.OutrasEspecializacoes,
-                IdEstudanteAssinatura = request.IdEstudanteAssinatura,
+                IdProfessorAssinatura = professor != null ? professor.Id : null,
+                IdEstudanteAssinatura = estudante != null ? estudante.Id : null,
+                Status = request.Status.ToString(),
                 DataCadastro = DateTime.Now
             };
             await _context.Triagens.AddAsync(triagem);
@@ -89,10 +103,26 @@ namespace Odon.Track.Application.Services
 
             await _context.SaveChangesAsync();
 
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.Id == request.IdUsuario);
+
+            if (usuario == null)
+                return BadRequest("Erro de usuario");
+
+            Professor professor = null;
+            Estudante estudante = null;
+            if (usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2)
+                professor = await _context.Professors.FirstOrDefaultAsync(x => x.IdUsuario == usuario.Id);
+            else
+                estudante = await _context.Estudantes.FirstOrDefaultAsync(x => x.IdUsuario == usuario.Id);
+
+
             triagem.EncaminharPeriodo = request.EncaminharPeriodo;
             triagem.EspecializacaoCirurgia = request.EspecializacaoCirurgia ? 1 : 0;
             triagem.EspecializacaoProteseImplante = request.EspecializacaoProteseImplante ? 1 : 0;
             triagem.OutrasEspecializacoes = request.OutrasEspecializacoes;
+            triagem.IdEstudanteAssinatura = estudante != null ? estudante.Id : triagem.IdEstudanteAssinatura;
+            triagem.IdProfessorAssinatura = professor != null ? professor.Id : triagem.IdProfessorAssinatura;
+            triagem.Status = request.Status.ToString();
 
             await _context.SaveChangesAsync();
 
@@ -160,7 +190,7 @@ namespace Odon.Track.Application.Services
             return Ok(new { Prontuarios = response, Count = prontuariosCount });
         }
 
-        public async Task<IActionResult> GetTriagem(int pageNumber, int pageSize, string nomePaciente)
+        public async Task<IActionResult> GetTriagem(PatchBuscarTriagemRequeste filtro, int pageNumber, int pageSize, string nomePaciente)
         {
             // Construindo a consulta base
             var query = _context.Triagens
@@ -174,6 +204,32 @@ namespace Odon.Track.Application.Services
             if (!string.IsNullOrEmpty(nomePaciente))
             {
                 query = query.Where(x => x.Paciente.Nome.Contains(nomePaciente));
+            }
+
+            // Aplicando filtros adicionais, se fornecidos
+            if (filtro.IdProntuario.HasValue)
+            {
+                query = query.Where(x => x.Id == filtro.IdProntuario.Value);
+            }
+
+            if (filtro.IdEstudante.HasValue)
+            {
+                query = query.Where(x => x.IdEstudanteAssinatura == filtro.IdEstudante.Value);
+            }
+
+            if (filtro.IdProfessor.HasValue)
+            {
+                query = query.Where(x => x.IdProfessorAssinatura == filtro.IdProfessor.Value);
+            }
+
+            if (filtro.DataCadastro.HasValue)
+            {
+                query = query.Where(x => x.DataCadastro.Date == filtro.DataCadastro.Value.Date);
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Status))
+            {
+                query = query.Where(x => x.Status == filtro.Status);
             }
 
             // Obtendo o número total de triagens (para paginação)
@@ -193,12 +249,13 @@ namespace Odon.Track.Application.Services
                 NomePaciente = x.Paciente.Nome,
                 NomeEstudante = x.EstudanteAssinatura != null ? x.EstudanteAssinatura.Nome : "--",
                 NomeProfessor = x.ProfessorAssinatura != null ? x.ProfessorAssinatura.Nome : "--",
-                Status = "Aprovado"
+                Status = x.Status
             });
 
             // Retornando a resposta com os resultados paginados e a contagem total
             return Ok(new { Triagens = response, Count = triagensCount });
         }
+
 
 
         public async Task<IActionResult> GetTriagemById(int id)
@@ -234,6 +291,7 @@ namespace Odon.Track.Application.Services
             response.Professor.Nome = professor != null ? professor.Nome : "";
             response.Estudante.Id = estudante != null ? estudante.Id : 0;
             response.Estudante.Nome = estudante != null ? estudante.Nome : "";
+            response.Status = triagem.Status.ToString();
 
             foreach(var item in tratamentos)
             {
