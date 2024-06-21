@@ -19,6 +19,7 @@ namespace Odon.Track.Application.Contract.Prontuarios
         public string OutrasEspecializacoes { get; set; }
         public DateTime DataCadastro { get; set; }
         public List<Horarios> HorariosDisponiveisAtendimento { get; set; }
+        public string Status {  get; set; }
     }
 
     public class Pessoa 

@@ -3,8 +3,7 @@
     public class PostCadastrarTriagemRequest
     {
         public int IdPaciente { get; set; }
-        public int IdProfessorAssinatura { get; set; }
-        public int IdEstudanteAssinatura { get; set; }
+        public int IdUsuario { get; set; }
         public List<Tratamento> Tratamentos { get; set; }
         public int EncaminharPeriodo { get; set; }
 
@@ -12,6 +11,7 @@
         public bool EspecializacaoProteseImplante { get; set; }
         public string OutrasEspecializacoes { get; set; }
         public List<EHorarioDisponivelAtendimento> HorariosDisponiveisAtendimento { get; set; }
+        public int Status {  get; set; }
     }
 
     public class Tratamento

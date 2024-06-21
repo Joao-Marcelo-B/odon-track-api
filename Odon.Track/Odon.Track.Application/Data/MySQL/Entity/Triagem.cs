@@ -10,9 +10,9 @@ public partial class Triagem
     [Column("id_paciente")]
     public int IdPaciente { get; set; }
     [Column("id_professor_assinatura")]
-    public int IdProfessorAssinatura { get; set; }
+    public int? IdProfessorAssinatura { get; set; }
     [Column("id_estudante_assinatura")]
-    public int IdEstudanteAssinatura { get; set; }
+    public int? IdEstudanteAssinatura { get; set; }
 
     [Column("encaminhar_periodo")]
     public int EncaminharPeriodo { get; set; }
@@ -28,6 +28,8 @@ public partial class Triagem
 
     [Column("data_cadastro")]
     public DateTime DataCadastro { get; set; }
+    [Column("status")]
+    public string Status { get; set; }
 
     [ForeignKey(nameof(IdPaciente))]
     public Paciente Paciente { get; set; } = null!;
