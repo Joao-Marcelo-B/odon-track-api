@@ -6,126 +6,162 @@ namespace Odon.Track.Application.Data.MySQL.Entity;
 [Table("prontuario")]
 public partial class Prontuario
 {
-    [Column("id")]
-    public int? Id { get; set; } = null;
-
-    [Column("id_paciente")]
-    public int? IdPaciente { get; set; } = null;
-
-    [Column("id_professor_vinculado")]
-    public int? IdProfessorVinculado { get; set; } = null;
-    [Column("id_estudante_vinculado")]
-    public int? IdEstudanteVinculado { get; set; } = null;
-
-    [Column("id_prontuario_status")]
-    public int? IdProntuarioStatus { get; set; } = null;
-    [Column("assinado_professor")]
-    public int? AssinadoProfessor { get; set; } = null;
-
-    [Column("queixa_principal")]
-    public string QueixaPrincipal { get; set; } = null;
-
-    [Column("historia_doenca_atual")]
-    public string HistoriaDoencaAtual { get; set; } = null;
-
-    [Column("teve_catapora")]
-    public int? TeveCatapora { get; set; } = null;
-
-    [Column("teve_sarampo")]
-    public int? TeveSarampo { get; set; } = null;
-
-    [Column("teve_amigdalite")]
-    public int? TeveAmigdalite { get; set; } = null;
-
-    [Column("outras_doenca_infancia")]
-    public string OutrasDoencaInfancia { get; set; } = null;
-
-    [Column("teve_febre_reumatica")]
-    public int? TeveFebreReumatica { get; set; } = null;
-
-    [Column("teve_sopros")]
-    public int? TeveSopros { get; set; } = null;
-
-    [Column("teve_patologias_de_valvulas")]
-    public int? TevePatologiasDeValvulas { get; set; } = null;
-
-    [Column("teve_anomalias_congenitas_cardiacas")]
-    public int? TeveAnomaliasCongenitasCardiacas { get; set; } = null;
-
-    [Column("teve_hipertensao")]
-    public int? TeveHipertensao { get; set; } = null;
-
-    [Column("teve_arritmias")]
-    public int? TeveArritmias { get; set; } = null;
-
-    [Column("teve_infarto_do_miocardio")]
-    public int? TeveInfartoDoMiocardio { get; set; } = null;
-
-    [Column("teve_angina_ou_dor_torax")]
-    public int? TeveAnginaOuDorTorax { get; set; } = null;
-
-    [Column("fez_cirurgias_cardiacas")]
-    public int? FezCirurgiasCardiacas { get; set; } = null;
-
-    [Column("tem_alergia_medicamentos")]
-    public int? TemAlergiaMedicamentos { get; set; } = null;
-
-    [Column("quais_medicamentos")]
-    public string QuaisMedicamentos { get; set; } = null;
-
-    [Column("outras_alergias")]
-    public string OutrasAlergias { get; set; } = null;
-
-    [Column("faz_uso_medicamento")]
-    public int? FazUsoMedicamento { get; set; } = null;
-
-    [Column("descricao_medicamento_usado")]
-    public string DescricaoMedicamentoUsado { get; set; } = null;
-
-    [Column("visitas_medicas")]
-    public string VisitasMedicas { get; set; } = null;
-
-    [Column("observacoes")]
-    public string Observacoes { get; set; } = null;
-
-    [Column("dados_relevantes_historia_medica")]
-    public string DadosRelevantesHistoriaMedica { get; set; } = null;
-
-    [Column("hereditario_pai")]
-    public string HereditarioPai { get; set; } = null;
-
-    [Column("hereditario_mae")]
-    public string HereditarioMae { get; set; } = null; 
-
-    [Column("hereditario_irmaos")]
-    public string HereditarioIrmaos { get; set; } = null; 
-
-    [Column("habito_alcool")]
-    public int? HabitoAlcool { get; set; } = null;
-
-    [Column("habito_alcool_inicio")]
-    public DateTime? HabitoAlcoolInicio { get; set; } = null;
-
-    [Column("habito_alcool_frequencia")]
-    public string HabitoAlcoolFrequencia { get; set; } = null;
-
-    [Column("habito_fumo")]
-    public int? HabitoFumo { get; set; } = null;
-
-    [Column("habito_fumo_inicio")]
-    public DateTime? HabitoFumoInicio { get; set; } = null;
-
-    [Column("habito_fumo_frequencia")]
-    public string HabitoFumoFrequencia { get; set; } = null; 
-
-    [Column("outros_habitos_nocivos")]
-    public string OutrosHabitosNocivos { get; set; } = null; 
-
-    [Column("caminho_mapa_periodental")]
-    public string CaminhoMapaPeriodental { get; set; } = null; 
-
-    [Column("data_cadastro")]
-    public DateTime? DataCadastro { get; set; } = null;
+    [Column("id")] public int Id { get; set; }
+    [Column("id_paciente")] public int? IdPaciente { get; set; } = null;
+    [Column("id_professor_vinculado")] public int? IdProfessorVinculado { get; set; } = null;
+    [Column("id_estudante_vinculado")] public int? IdEstudanteVinculado { get; set; } = null;
+    [Column("id_prontuario_status")] public int? IdProntuarioStatus { get; set; } = null;
+    [Column("assinado_professor")] public int? AssinadoProfessor { get; set; } = null;
+    [Column("data_cadastro")] public DateTime? DataCadastro { get; set; } = null;
+    [Column("queixa_principal")] public string QueixaPrincipal { get; set; } = null;
+    [Column("historia_doenca_atual")] public string HistoriaDoencaAtual { get; set; } = null;
+    [Column("teve_catapora")] public int? TeveCatapora { get; set; } = null;
+    [Column("teve_caxumba")] public int? TeveCaxumba { get; set; } = null;
+    [Column("teve_sarampo")] public int? TeveSarampo { get; set; } = null;
+    [Column("teve_amigdalite")] public int? TeveAmigdalite { get; set; } = null;
+    [Column("outras_doenca_infancia")] public string OutrasDoencaInfancia { get; set; } = null;
+    [Column("teve_febre_reumatica")] public int? TeveFebreReumatica { get; set; } = null;
+    [Column("teve_sopros")] public int? TeveSopros { get; set; } = null;
+    [Column("teve_patologias_de_valvulas")] public int? TevePatologiasDeValvulas { get; set; } = null;
+    [Column("teve_anomalias_congenitas_cardiacas")] public int? TeveAnomaliasCongenitasCardiacas { get; set; } = null;
+    [Column("teve_hipertensao")] public int? TeveHipertensao { get; set; } = null;
+    [Column("teve_arritmias")] public int? TeveArritmias { get; set; } = null;
+    [Column("teve_infarto_do_miocardio")] public int? TeveInfartoDoMiocardio { get; set; } = null;
+    [Column("teve_angina_ou_dor_torax")] public int? TeveAnginaOuDorTorax { get; set; } = null;
+    [Column("fez_cirurgias_cardiacas")] public int? FezCirurgiasCardiacas { get; set; } = null;
+    [Column("marca_passo")] public int? MarcaPasso { get; set; } = null;
+    [Column("teve_avc")] public int? TeveAVC { get; set; } = null;
+    [Column("outros_disturbios_cardiovasculares")] public string OutrosDisturbiosCardiovasculares { get; set; } = null;
+    [Column("asma")] public int? Asma { get; set; } = null;
+    [Column("doenca_pulmonares")] public int? DoencaPulmonares { get; set; } = null;
+    [Column("sinusite")] public int? Sinusite { get; set; } = null;
+    [Column("rinite")] public int? Rinite { get; set; } = null;
+    [Column("outros_disturbios_respiratorios")] public string OutrosDisturbiosRespiratorios { get; set; } = null;
+    [Column("diabetes")] public int? Diabetes { get; set; } = null;
+    [Column("disfuncao_tireoide")] public int? DisfuncaoTireoide { get; set; } = null;
+    [Column("menarca")] public int? Menarca { get; set; } = null;
+    [Column("menopausa")] public int? Menopausa { get; set; } = null;
+    [Column("gravidez")] public int? Gravidez { get; set; } = null;
+    [Column("partos")] public int? Partos { get; set; } = null;
+    [Column("outros_disturbios_endocrinos")] public string OutrosDisturbiosEndocrinos { get; set; } = null;
+    [Column("desmaios")] public int? Desmaios { get; set; } = null;
+    [Column("convulsoes")] public int? Convulsoes { get; set; } = null;
+    [Column("enxaquecas")] public int? Enxaquecas { get; set; } = null;
+    [Column("cefaleias")] public int? Cefaleias { get; set; } = null;
+    [Column("nevralgia_na_face")] public int? NevralgiaNaFace { get; set; } = null;
+    [Column("outros_disturbios_neurologicos")] public string OutrosDisturbiosNeurologicos { get; set; } = null;
+    [Column("anemia")] public int? Anemia { get; set; } = null;
+    [Column("hemorragia")] public int? Hemorragia { get; set; } = null;
+    [Column("hemofilia")] public int? Hemofilia { get; set; } = null;
+    [Column("leucemia")] public int? Leucemia { get; set; } = null;
+    [Column("outros_disturbios_hematologicos")] public string OutrosDisturbiosHematologicos { get; set; } = null;
+    [Column("doou_ou_recebeu_sangue")] public int? DoouOuRecebeuSangue { get; set; } = null;
+    [Column("data_doacao_sangue")] public DateTime? DataDoacaoSangue { get; set; } = null;
+    [Column("tratamento_psiquiatrico")] public int? TratamentoPsiquiatrico { get; set; } = null;
+    [Column("depressao")] public int? Depressao { get; set; } = null;
+    [Column("ansiedade")] public int? Ansiedade { get; set; } = null;
+    [Column("outros_disturbios_psiquiatricos")] public string OutrosDisturbiosPsiquiatricos { get; set; } = null;
+    [Column("ja_sofreu_traumatismo_na_face")] public int? JaSofreuTraumatismoNaFace { get; set; } = null;
+    [Column("artrite")] public int? Artrite { get; set; } = null;
+    [Column("reumatismo")] public int? Reumatismo { get; set; } = null;
+    [Column("osteoporose")] public int? Osteoporose { get; set; } = null;
+    [Column("outros_disturbios_articulacoes_ou_ossos")] public string OutrosDisturbiosArticulacoesOuOssos { get; set; } = null;
+    [Column("bruxismo_centrico")] public int? BruxismoCentrico { get; set; } = null;
+    [Column("bruxismo_excentrico")] public int? BruxismoExcentrico { get; set; } = null;
+    [Column("mastigacao_unilateral")] public int? MastigacaoUnilateral { get; set; } = null;
+    [Column("dor_regiao_dos_ouvidos")] public int? DorRegiaoDosOuvidos { get; set; } = null;
+    [Column("estalido_na_abertura_e_fechamento_bucal")] public int? EstalidoNaAberturaEFechamentoBucal { get; set; } = null;
+    [Column("outros_disturbios_articulacao_temporamandibular")] public string OutrosDisturbiosArticulacaoTemporamandibular { get; set; } = null;
+    [Column("hepatite")] public int? Hepatite { get; set; } = null;
+    [Column("herpes")] public int? Herpes { get; set; } = null;
+    [Column("hiv")] public int? HIV { get; set; } = null;
+    [Column("tuberculose")] public int? Tuberculose { get; set; } = null;
+    [Column("doenca_sexualmente_transmissivel")] public int? DoencaSexualmenteTransmissivel { get; set; } = null;
+    [Column("quais_doenca_transmissiveis")] public string QuaisDoencaTransmissiveis { get; set; } = null;
+    [Column("outras_doencas_transmissiveis")] public string OutrasDoencasTransmissiveis { get; set; } = null;
+    [Column("anestesia")] public int? Anestesia { get; set; } = null;
+    [Column("alimentos")] public int? Alimentos { get; set; } = null;
+    [Column("cosmeticos")] public int? Cosmeticos { get; set; } = null;
+    [Column("urticaria")] public int? Urticaria { get; set; } = null;
+    [Column("quais_alergias")] public string QuaisAlergias { get; set; } = null;
+    [Column("medicamentos")] public int? Medicamentos { get; set; } = null;
+    [Column("quais_medicamentos")] public string QuaisMedicamentos { get; set; } = null;
+    [Column("outras_alergias")] public string OutrasAlergias { get; set; } = null;
+    [Column("faz_uso_de_medicamentos")] public int? FazUsoDeMedicamentos { get; set; } = null;
+    [Column("nome_comercial")] public string NomeComercial { get; set; } = null;
+    [Column("nome_generico")] public string NomeGenerico { get; set; } = null;
+    [Column("dosagem")] public string Dosagem { get; set; } = null;
+    [Column("frequencia_uso")] public string FrequenciaUso { get; set; } = null;
+    [Column("visitas_medicas")] public string VisitasMedicas { get; set; } = null;
+    [Column("hospitalizacoes")] public string Hospitalizacoes { get; set; } = null;
+    [Column("observacoes")] public string Observacoes { get; set; } = null;
+    [Column("dados_relevantes_historia_medica")] public string DadosRelevantesHistoriaMedica { get; set; } = null;
+    [Column("pai")] public string Pai { get; set; } = null;
+    [Column("mae")] public string Mae { get; set; } = null;
+    [Column("irmaos")] public string Irmaos { get; set; } = null;
+    [Column("cardiopatias")] public int? Cardiopatias { get; set; } = null;
+    [Column("hipertensao")] public int? Hipertensao { get; set; } = null;
+    [Column("diabete_hereditaria")] public int? DiabeteHereditaria { get; set; } = null;
+    [Column("asma_hereditaria")] public int? AsmaHereditaria { get; set; } = null;
+    [Column("disturbio_sangramento")] public int? DisturbioSangramento { get; set; } = null;
+    [Column("alergias_hereditaria")] public int? AlergiasHereditaria { get; set; } = null;
+    [Column("neoplastias_malignas")] public int? NeoplastiasMalignas { get; set; } = null;
+    [Column("doenca_neurologicas")] public int? DoencaNeurologicas { get; set; } = null;
+    [Column("tuberculose_hereditaria")] public int? TuberculoseHereditaria { get; set; } = null;
+    [Column("complemento")] public string Complemento { get; set; } = null;
+    [Column("outras_doencas_hereditarias")] public string OutrasDoencasHereditarias { get; set; } = null;
+    [Column("habito_alcool")] public int? HabitoAlcool { get; set; } = null;
+    [Column("inicio_alcool")] public string InicioAlcool { get; set; } = null;
+    [Column("frequencia_alcool")] public string FrequenciaAlcool { get; set; } = null;
+    [Column("habito_fumo")] public int? HabitoFumo { get; set; } = null;
+    [Column("inicio_fumo")] public string InicioFumo { get; set; } = null;
+    [Column("frequencia_fumo")] public string FrequenciaFumo { get; set; } = null;
+    [Column("outros_habitos_nocivos")] public string OutrosHabitosNocivos { get; set; } = null;
+    [Column("escovacao")] public string Escovacao { get; set; } = null;
+    [Column("fio_dental")] public string FioDental { get; set; } = null;
+    [Column("enxaguatorio_bucal")] public string EnxaguatorioBucal { get; set; } = null;
+    [Column("observacoes_dentes")] public string ObservacoesDentes { get; set; } = null;
+    [Column("observacoes_diagnostico_dentes")] public string ObservacoesDiagnosticoDentes { get; set; } = null;
+    [Column("plano_cronologico_tratamento")] public string PlanoCronologicoTratamento { get; set; } = null;
+    [Column("endodontia_dente")] public string EndodontiaDente { get; set; } = null;
+    [Column("numero_canais")] public int? NumeroCanais { get; set; } = null;
+    [Column("diagnostico_pulpar_normal")] public int? DiagnosticoPulparNormal { get; set; } = null;
+    [Column("pulpite_reversivel")] public int? PulpiteReversivel { get; set; } = null;
+    [Column("pulpite_irreversivel")] public int? PulpiteIrreversivel { get; set; } = null;
+    [Column("necrose")] public int? Necrose { get; set; } = null;
+    [Column("dente_ja_tratado")] public int? DenteJaTratado { get; set; } = null;
+    [Column("insesivel")] public int? Insesivel { get; set; } = null;
+    [Column("sensivel")] public int? Sensivel { get; set; } = null;
+    [Column("muito_sensivel")] public int? MuitoSensivel { get; set; } = null;
+    [Column("presenca_de_abcesso")] public int? PresencaDeAbcesso { get; set; } = null;
+    [Column("intra_bucal")] public int? IntraBucal { get; set; } = null;
+    [Column("extra_bucal")] public int? ExtraBucal { get; set; } = null;
+    [Column("com_fistula")] public int? ComFistula { get; set; } = null;
+    [Column("sem_fistula")] public int? SemFistula { get; set; } = null;
+    [Column("regio_periapical_normal")] public int? RegioPeriapicalNormal { get; set; } = null;
+    [Column("com_lesao")] public int? ComLesao { get; set; } = null;
+    [Column("difusa")] public int? Difusa { get; set; } = null;
+    [Column("circunscrita")] public int? Circunscrita { get; set; } = null;
+    [Column("ausente")] public int? Ausente { get; set; } = null;
+    [Column("claro")] public int? Claro { get; set; } = null;
+    [Column("hemorragico")] public int? Hemorragico { get; set; } = null;
+    [Column("purulento")] public int? Purulento { get; set; } = null;
+    [Column("dor_entre_as_sessoes")] public int? DorEntreAsSessoes { get; set; } = null;
+    [Column("hipoclorito_de_sodio_porcentagem")] public int? HipocloritoDeSodioPorcentagem { get; set; } = null;
+    [Column("outras_solucao_irrigadora")] public string OutrasSolucaoIrrigadora { get; set; } = null;
+    [Column("cimento_obturador")] public string CimentoObturador { get; set; } = null;
+    [Column("condensacao_lateral")] public int? CondensacaoLateral { get; set; } = null;
+    [Column("outra_tecnica_de_obturacao")] public string OutraTecnicaDeObturação { get; set; } = null;
+    [Column("material_restaurador_provisorio")] public string MaterialRestauradorProvisorio { get; set; } = null;
+    [Column("curativo_sessao_1")] public string CurativoSessao1 { get; set; } = null;
+    [Column("curativo_sessao_2")] public string CurativoSessao2 { get; set; } = null;
+    [Column("curativo_sessao_3")] public string CurativoSessao3 { get; set; } = null;
+    [Column("curativo_sessao_4")] public string CurativoSessao4 { get; set; } = null;
+    [Column("curativo_sessao_5")] public string CurativoSessao5 { get; set; } = null;
+    [Column("curativo_sessao_6")] public string CurativoSessao6 { get; set; } = null;
+    [Column("observacoes_curativos")] public string ObservacoesCurativos { get; set; } = null;
+    [Column("restauracao_definitica_do_dente")] public string RestauracaoDefinitivaDoDente { get; set; } = null;
+    [Column("numero_de_sessoes_realizadas")] public int? NumeroDeSessoesRealizadas { get; set; } = null;
 
 
     [ForeignKey(nameof(IdPaciente))]

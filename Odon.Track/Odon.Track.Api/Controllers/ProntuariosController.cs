@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Odon.Track.Application.Authorization;
 using Odon.Track.Application.Contract.Prontuarios;
+using Odon.Track.Application.GetToken;
 using Odon.Track.Application.Services;
 
 namespace Odon.Track.Api.Controllers
@@ -14,7 +15,7 @@ namespace Odon.Track.Api.Controllers
         [HttpPost]
         [Authorize(Roles = RolesForAccess.CadastrarProntuario)]
         public async Task<IActionResult> PostCadastrarProntuario([FromBody] PostCadastrarProntuarioRequest request) =>
-            await _services.PostCadastrarProntuario(request);
+            await _services.PostCadastrarProntuario(request, GetHeaderValues.GetIdUsuario(Request.HttpContext.User.Claims));
 
         [HttpPost("triagem")]
         [Authorize(Roles = RolesForAccess.CadastrarTriagem)]
