@@ -33,5 +33,7 @@ namespace Odon.Track.Application.Contract.Pacientes
         public string Escola { get; set; }
         public string Serie { get; set; }
         public string Turno { get; set; }
+        public string Indicacao { get; set; }
+
     }
 }

@@ -134,6 +134,7 @@ namespace Odon.Track.Application.Services
                 Escola = request.Escola,
                 Serie = request.Serie,
                 Turno = request.Turno,
+                Indicacao = request.Indicacao,
             };
             await _context.Pacientes.AddAsync(paciente);
             await _context.SaveChangesAsync();
@@ -245,6 +246,7 @@ namespace Odon.Track.Application.Services
             paciente.Escola = request.Escola;
             paciente.Serie = request.Serie;
             paciente.Turno = request.Turno;
+            paciente.Indicacao = request.Indicacao;
 
             await _context.SaveChangesAsync();
 

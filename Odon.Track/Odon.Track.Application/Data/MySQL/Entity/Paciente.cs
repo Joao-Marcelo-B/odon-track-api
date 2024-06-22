@@ -89,6 +89,9 @@ public partial class Paciente
     [Column("turno")]
     public string? Turno { get; set; }
 
+    [Column("indicacao")]
+    public string Indicacao { get; set; }
+
     public virtual ICollection<Endereco> Enderecos { get; } = new List<Endereco>();
 
     [ForeignKey(nameof(IdPacienteStatus))]
