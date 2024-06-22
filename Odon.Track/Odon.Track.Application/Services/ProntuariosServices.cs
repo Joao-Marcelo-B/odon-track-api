@@ -7,6 +7,7 @@ using Odon.Track.Application.Data.UpdateEntities;
 using Odon.Track.Application.Errors;
 using Odon.Track.Application.Responses;
 using Odon.Track.Application.ConvertTypes;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace Odon.Track.Application.Services
 {
@@ -109,18 +110,21 @@ namespace Odon.Track.Application.Services
                 else
                     prontuario.IdEstudanteVinculado = idUsuario;
 
+                
+
                 await _context.Prontuarios.AddAsync(prontuario);
                 await _context.SaveChangesAsync();
             }
-            Prontuario insertDataProntuario = InsertDataProntuario(request);
+            
+            Prontuario updateDataProntuario = InsertDataProntuario(request);
 
-            prontuario.InsertValueProntuario(insertDataProntuario, prontuario);
+            prontuario.UpdateValueProntuario(updateDataProntuario);
+
+            await UpdateEndodontia(request, prontuario.Id);
 
             await InsertDescricaoDentes(request.DescricaoDente, prontuario.Id);
 
             await InsertDiagnosticoDente(request.DiagnosticosDente, prontuario.Id);
-
-            await InsertOdontometria(request.Odontometria, prontuario.Id);
 
             _context.Prontuarios.Update(prontuario);
             await _context.SaveChangesAsync();
@@ -128,7 +132,46 @@ namespace Odon.Track.Application.Services
             return Updated();
         }
 
-        private async Task InsertOdontometria(Odontometria newOdontometria,int idProntuario)         
+        private async Task UpdateEndodontia(PostCadastrarProntuarioRequest request, int idProntuario)
+        {
+            if(request.Endodontia == null || request.Endodontia.Count <= 0)
+                return;
+
+            foreach (var endo in request.Endodontia)
+            {
+                EndodontiaEntity endodontia = null;
+                if (endo.Id == null || endo.Id == 0)
+                {
+                    endodontia = new EndodontiaEntity
+                    {
+                        IdProntuario = idProntuario,
+                        Dente = endo.Dente
+                    };
+                    await _context.Endodontias.AddAsync(endodontia);
+                }
+                else
+                {
+                    endodontia = await _context.Endodontias.FirstOrDefaultAsync(x => x.Id.Equals(endo.Id));
+                    if (endodontia == null)
+                    {
+                        endodontia = new EndodontiaEntity
+                        {
+                            IdProntuario = idProntuario,
+                            Dente = endo.Dente
+                        };
+                        await _context.Endodontias.AddAsync(endodontia);
+                    }
+                }
+
+                var updateEndodontia = InsertDataEndodontia(endo);
+
+                endodontia.UpdateValueEndodontia(updateEndodontia);
+
+                await InsertOdontometria(endo.Odontometria, idProntuario, endodontia.Id);
+            }
+        }
+
+        private async Task InsertOdontometria(Odontometria newOdontometria,int idProntuario, int idEndodontia)         
         {
             if(newOdontometria == null)
                 return;
@@ -141,25 +184,25 @@ namespace Odon.Track.Application.Services
                     case nameof(ETipoOdontometria.Canal):
                         if(newOdontometria.Canal == null)
                             break;
-                        await InsertOdontometriaDescricoes(idProntuario, property.Name, newOdontometria.Canal.Descricao);
+                        await InsertOdontometriaDescricoes(idProntuario, idEndodontia, property.Name, newOdontometria.Canal);
                         break;
                     case nameof(ETipoOdontometria.CAD):
-                        await InsertOdontometriaDescricoes(idProntuario, property.Name, newOdontometria.CAD.Descricao);
+                        await InsertOdontometriaDescricoes(idProntuario, idEndodontia, property.Name, newOdontometria.CAD);
                         break;
                     case nameof(ETipoOdontometria.CRD):
-                        await InsertOdontometriaDescricoes(idProntuario, property.Name, newOdontometria.CRD.Descricao);
+                        await InsertOdontometriaDescricoes(idProntuario, idEndodontia, property.Name, newOdontometria.CRD);
                         break;
                     case nameof(ETipoOdontometria.CRT):
-                        await InsertOdontometriaDescricoes(idProntuario, property.Name, newOdontometria.CRT.Descricao);
+                        await InsertOdontometriaDescricoes(idProntuario, idEndodontia, property.Name, newOdontometria.CRT);
                         break;
                     case nameof(ETipoOdontometria.DiametroAnatomico):
-                        await InsertOdontometriaDescricoes(idProntuario, property.Name, newOdontometria.DiametroAnatomico.Descricao);
+                        await InsertOdontometriaDescricoes(idProntuario, idEndodontia, property.Name, newOdontometria.DiametroAnatomico);
                         break;
                     case nameof(ETipoOdontometria.DiametroCirurgico):
-                        await InsertOdontometriaDescricoes(idProntuario, property.Name, newOdontometria.DiametroCirurgico.Descricao);
+                        await InsertOdontometriaDescricoes(idProntuario, idEndodontia, property.Name, newOdontometria.DiametroCirurgico);
                         break;
                     case nameof(ETipoOdontometria.PontoDeReferenciaPontoDeReferencia):
-                        await InsertOdontometriaDescricoes(idProntuario, property.Name, newOdontometria.PontoDeReferenciaPontoDeReferencia.Descricao);
+                        await InsertOdontometriaDescricoes(idProntuario, idEndodontia, property.Name, newOdontometria.PontoDeReferenciaPontoDeReferencia);
                         break;
                 }
             }
@@ -168,7 +211,7 @@ namespace Odon.Track.Application.Services
             
         }
 
-        private async Task InsertOdontometriaDescricoes(int idProntuario, string tipo, Dictionary<int, string> descricao)
+        private async Task InsertOdontometriaDescricoes(int idProntuario, int idEndodontia ,string tipo, Dictionary<int, string> descricao)
         {
             foreach(var key in descricao.Keys)
             {
@@ -208,16 +251,16 @@ namespace Odon.Track.Application.Services
                 switch (property.Name)
                 {
                     case nameof(ETipoDiagnostico.Gengivite):
-                        await InsertDiagnostigoDenteTipo(property.Name, idProntuario, diagnosticosDente.Gengivite.Dentes);
+                        await InsertDiagnostigoDenteTipo(property.Name, idProntuario, diagnosticosDente.Gengivite);
                         break;
                     case nameof(ETipoDiagnostico.PeriodontiteLeve):
-                        await InsertDiagnostigoDenteTipo(property.Name, idProntuario, diagnosticosDente.PeriodontiteLeve.Dentes);
+                        await InsertDiagnostigoDenteTipo(property.Name, idProntuario, diagnosticosDente.PeriodontiteLeve);
                         break;
                     case nameof(ETipoDiagnostico.PeriodontiteGrave):
-                        await InsertDiagnostigoDenteTipo(property.Name, idProntuario, diagnosticosDente.PeriodontiteGrave.Dentes);
+                        await InsertDiagnostigoDenteTipo(property.Name, idProntuario, diagnosticosDente.PeriodontiteGrave);
                         break;
                     case nameof(ETipoDiagnostico.EComplicada):
-                        await InsertDiagnostigoDenteTipo(property.Name, idProntuario, diagnosticosDente.EComplicada.Dentes);
+                        await InsertDiagnostigoDenteTipo(property.Name, idProntuario, diagnosticosDente.EComplicada);
                         break;
                 }   
             }
@@ -400,36 +443,6 @@ namespace Odon.Track.Application.Services
                 Escovacao = request.HabitoHigieneBucal.Escovacao,
                 FioDental = request.HabitoHigieneBucal.FioDental,
                 EnxaguatorioBucal = request.HabitoHigieneBucal.EnxaguatorioBucal,
-                EndodontiaDente = request.Endodontia.Dente,
-                NumeroCanais = request.Endodontia.NumeroDeCanais,
-                DiagnosticoPulparNormal = request.Endodontia.ExameClinico.DiagnosticoPulpar.Normal.ConvertBoolForIntNull(),
-                PulpiteIrreversivel = request.Endodontia.ExameClinico.DiagnosticoPulpar.PulpiteIrreversivel.ConvertBoolForIntNull(),
-                PulpiteReversivel = request.Endodontia.ExameClinico.DiagnosticoPulpar.PulpiteReversivel.ConvertBoolForIntNull(),
-                Necrose = request.Endodontia.ExameClinico.DiagnosticoPulpar.Necrose.ConvertBoolForIntNull(),
-                DenteJaTratado = request.Endodontia.ExameClinico.DiagnosticoPulpar.DenteJaTratado.ConvertBoolForIntNull(),
-                Insesivel = request.Endodontia.ExameClinico.TesteDePercussao.Insesivel.ConvertBoolForIntNull(),
-                Sensivel = request.Endodontia.ExameClinico.TesteDePercussao.Sensivel.ConvertBoolForIntNull(),
-                MuitoSensivel = request.Endodontia.ExameClinico.TesteDePercussao.MuitoSensivel.ConvertBoolForIntNull(),
-                PresencaDeAbcesso = request.Endodontia.ExameClinico.PresencaDeAbcesso.Presente.ConvertBoolForIntNull(),
-                IntraBucal = request.Endodontia.ExameClinico.PresencaDeAbcesso.IntraBucal.ConvertBoolForIntNull(),
-                ExtraBucal = request.Endodontia.ExameClinico.PresencaDeAbcesso.Extrabucal.ConvertBoolForIntNull(),
-                ComFistula = request.Endodontia.ExameClinico.PresencaDeAbcesso.ComFistula.ConvertBoolForIntNull(),
-                SemFistula = request.Endodontia.ExameClinico.PresencaDeAbcesso.SemFistula.ConvertBoolForIntNull(),
-                RegioPeriapicalNormal = request.Endodontia.ExameClinico.ExameRadiografico.RegiaoPeriapical.Normal.ConvertBoolForIntNull(),
-                ComLesao = request.Endodontia.ExameClinico.ExameRadiografico.RegiaoPeriapical.ComLesao.ConvertBoolForIntNull(),
-                Difusa = request.Endodontia.ExameClinico.ExameRadiografico.RegiaoPeriapical.Difusa.ConvertBoolForIntNull(),
-                Circunscrita = request.Endodontia.ExameClinico.ExameRadiografico.RegiaoPeriapical.Circunscrita.ConvertBoolForIntNull(),
-                Ausente = request.Endodontia.ExameClinico.ExsudatoNosCanais.Ausente.ConvertBoolForIntNull(),
-                Claro = request.Endodontia.ExameClinico.ExsudatoNosCanais.Claro.ConvertBoolForIntNull(),
-                Hemorragico = request.Endodontia.ExameClinico.ExsudatoNosCanais.Hemorragico.ConvertBoolForIntNull(),
-                Purulento = request.Endodontia.ExameClinico.ExsudatoNosCanais.Purulento.ConvertBoolForIntNull(),
-                DorEntreAsSessoes = request.Endodontia.ExameClinico.DorEntreAsSessoes.ConvertBoolForIntNull(),
-                HipocloritoDeSodioPorcentagem = request.Endodontia.ExameClinico.SolucaoIrrigadora.HipocloritoDeSodioAPorcentagem.ConvertBoolForIntNull(),
-                OutrasSolucaoIrrigadora = request.Endodontia.ExameClinico.SolucaoIrrigadora.Outra,
-                CimentoObturador = request.Endodontia.ExameClinico.CimentoObturador,
-                CondensacaoLateral = request.Endodontia.ExameClinico.TecnicaDeObturacao.CondensacaoLateral.ConvertBoolForIntNull(),
-                OutraTecnicaDeObturação = request.Endodontia.ExameClinico.TecnicaDeObturacao.Outra,
-                MaterialRestauradorProvisorio = request.Endodontia.ExameClinico.MaterialRestauradorProvisorio,
                 CurativoSessao1 = request.Curativos.PrimeiraSessao,
                 CurativoSessao2 = request.Curativos.SegundaSessao,
                 CurativoSessao3 = request.Curativos.TerceiraSessao,
@@ -439,7 +452,48 @@ namespace Odon.Track.Application.Services
                 ObservacoesCurativos = request.Curativos.Observacoes,
             };
 
+            
+
             return prontuario;
+        }
+
+        private EndodontiaEntity InsertDataEndodontia(Endodontia endo)
+        {
+            var endodontia = new EndodontiaEntity()
+{
+                Dente = endo.Dente,
+                NumeroCanais = endo.NumeroDeCanais,
+                DiagnosticoPulparNormal = endo.ExameClinico.DiagnosticoPulpar.Normal.ConvertBoolForIntNull(),
+                PulpiteIrreversivel = endo.ExameClinico.DiagnosticoPulpar.PulpiteIrreversivel.ConvertBoolForIntNull(),
+                PulpiteReversivel = endo.ExameClinico.DiagnosticoPulpar.PulpiteReversivel.ConvertBoolForIntNull(),
+                Necrose = endo.ExameClinico.DiagnosticoPulpar.Necrose.ConvertBoolForIntNull(),
+                DenteJaTratado = endo.ExameClinico.DiagnosticoPulpar.DenteJaTratado.ConvertBoolForIntNull(),
+                Insesivel = endo.ExameClinico.TesteDePercussao.Insesivel.ConvertBoolForIntNull(),
+                Sensivel = endo.ExameClinico.TesteDePercussao.Sensivel.ConvertBoolForIntNull(),
+                MuitoSensivel = endo.ExameClinico.TesteDePercussao.MuitoSensivel.ConvertBoolForIntNull(),
+                PresencaDeAbcesso = endo.ExameClinico.PresencaDeAbcesso.Presente.ConvertBoolForIntNull(),
+                IntraBucal = endo.ExameClinico.PresencaDeAbcesso.IntraBucal.ConvertBoolForIntNull(),
+                ExtraBucal = endo.ExameClinico.PresencaDeAbcesso.Extrabucal.ConvertBoolForIntNull(),
+                ComFistula = endo.ExameClinico.PresencaDeAbcesso.ComFistula.ConvertBoolForIntNull(),
+                SemFistula = endo.ExameClinico.PresencaDeAbcesso.SemFistula.ConvertBoolForIntNull(),
+                RegioPeriapicalNormal = endo.ExameClinico.ExameRadiografico.RegiaoPeriapical.Normal.ConvertBoolForIntNull(),
+                ComLesao = endo.ExameClinico.ExameRadiografico.RegiaoPeriapical.ComLesao.ConvertBoolForIntNull(),
+                Difusa = endo.ExameClinico.ExameRadiografico.RegiaoPeriapical.Difusa.ConvertBoolForIntNull(),
+                Circunscrita = endo.ExameClinico.ExameRadiografico.RegiaoPeriapical.Circunscrita.ConvertBoolForIntNull(),
+                Ausente = endo.ExameClinico.ExsudatoNosCanais.Ausente.ConvertBoolForIntNull(),
+                Claro = endo.ExameClinico.ExsudatoNosCanais.Claro.ConvertBoolForIntNull(),
+                Hemorragico = endo.ExameClinico.ExsudatoNosCanais.Hemorragico.ConvertBoolForIntNull(),
+                Purulento = endo.ExameClinico.ExsudatoNosCanais.Purulento.ConvertBoolForIntNull(),
+                DorEntreAsSessoes = endo.ExameClinico.DorEntreAsSessoes.ConvertBoolForIntNull(),
+                HipocloritoDeSodioPorcentagem = endo.ExameClinico.SolucaoIrrigadora.HipocloritoDeSodioAPorcentagem.ConvertBoolForIntNull(),
+                OutrasSolucaoIrrigadora = endo.ExameClinico.SolucaoIrrigadora.Outra,
+                CimentoObturador = endo.ExameClinico.CimentoObturador,
+                CondensacaoLateral = endo.ExameClinico.TecnicaDeObturacao.CondensacaoLateral.ConvertBoolForIntNull(),
+                OutraTecnicaDeObturação = endo.ExameClinico.TecnicaDeObturacao.Outra,
+                MaterialRestauradorProvisorio = endo.ExameClinico.MaterialRestauradorProvisorio,
+            };
+
+            return endodontia;
         }
 
         public async Task<IActionResult> PathAlterarTriagem(PathAlterarTriagemRequest request)

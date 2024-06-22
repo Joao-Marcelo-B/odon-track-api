@@ -23,8 +23,7 @@ public class PostCadastrarProntuarioRequest
     public HabitoHigieneBucal HabitoHigieneBucal { get; set; } = null;
     public DescricaoDente DescricaoDente { get; set; } = null;
     public DiagnosticosDente DiagnosticosDente { get; set; } = null;
-    public Endodontia Endodontia { get; set; } = null;
-    public Odontometria Odontometria { get; set; } = null;
+    public List<Endodontia> Endodontia { get; set; } = null;
     public Curativos Curativos { get; set; } = null;
 
 }
@@ -45,21 +44,21 @@ public class Odontometria
 {
     public Odontometria()
     {
-        Canal = new Canal();
-        CAD = new CAD();
-        CRD = new CRD();
-        CRT = new CRT();
-        DiametroAnatomico = new DiametroAnatomico();
-        DiametroCirurgico = new DiametroCirurgico();
-        PontoDeReferenciaPontoDeReferencia = new PontoDeReferenciaPontoDeReferencia();
+        Canal = new();
+        CAD = new();
+        CRD = new();
+        CRT = new();
+        DiametroAnatomico = new();
+        DiametroCirurgico = new();
+        PontoDeReferenciaPontoDeReferencia = new();
     }
-    public Canal Canal { get; set; } = null;
-    public CAD CAD { get; set; } = null;
-    public CRD CRD { get; set; } = null;
-    public CRT CRT { get; set; } = null;
-    public DiametroAnatomico DiametroAnatomico { get; set; } = null;
-    public DiametroCirurgico DiametroCirurgico { get; set; } = null;
-    public PontoDeReferenciaPontoDeReferencia PontoDeReferenciaPontoDeReferencia { get; set; } = null;
+    public Dictionary<int, string> Canal { get; set; } = null;
+    public Dictionary<int, string> CAD { get; set; } = null;
+    public Dictionary<int, string> CRD { get; set; } = null;
+    public Dictionary<int, string> CRT { get; set; } = null;
+    public Dictionary<int, string> DiametroAnatomico { get; set; } = null;
+    public Dictionary<int, string> DiametroCirurgico { get; set; } = null;
+    public Dictionary<int, string> PontoDeReferenciaPontoDeReferencia { get; set; } = null;
 }
 
 public enum ETipoOdontometria
@@ -73,74 +72,13 @@ public enum ETipoOdontometria
     PontoDeReferenciaPontoDeReferencia
 }
 
-public class PontoDeReferenciaPontoDeReferencia
-{
-    public PontoDeReferenciaPontoDeReferencia()
-    {
-        Descricao = new Dictionary<int, string>();
-    }
-    public Dictionary<int,string> Descricao { get; set; } = null;
-}
-
-public class DiametroCirurgico
-{
-    public DiametroCirurgico()
-    {
-        Descricao = new Dictionary<int, string>();
-    }
-    public Dictionary<int,string> Descricao { get; set; } = null;
-}
-
-public class DiametroAnatomico
-{
-    public DiametroAnatomico()
-    {
-        Descricao = new Dictionary<int, string>();
-    }
-    public Dictionary<int,string> Descricao { get; set; } = null;
-}
-
-public class CRT
-{
-    public CRT()
-    {
-        Descricao = new Dictionary<int, string>();
-    }
-    public Dictionary<int, string> Descricao { get; set; } = null;
-}
-
-public class CRD
-{
-    public CRD()
-    {
-        Descricao = new Dictionary<int, string>();
-    }
-    public Dictionary<int, string> Descricao { get; set; } = null;
-}
-
-public class Canal
-{
-    public Canal()
-    {
-        Descricao = new Dictionary<int, string>();
-    }
-    public Dictionary<int, string> Descricao { get; set; } = null;
-}
-
-public class CAD
-{
-    public CAD()
-    {
-        Descricao = new Dictionary<int, string>();
-    }
-    public Dictionary<int, string> Descricao { get; set; } = null;
-}
-
 public class Endodontia
 {
+    public int? Id { get; set; } = null;
     public string Dente { get; set; } = null;
     public int? NumeroDeCanais { get; set; } = null;
     public ExameClinico ExameClinico { get; set; } = null;
+    public Odontometria Odontometria { get; set; } = null;
 }
 
 public class  ExameClinico
@@ -225,15 +163,15 @@ public class DiagnosticosDente
 {
     public DiagnosticosDente()
     {
-        Gengivite = new Gengivite();
-        PeriodontiteLeve = new PeriodontiteLeve();
-        PeriodontiteGrave = new PeriodontiteGrave();
-        EComplicada = new EComplicada();
+        Gengivite = new Dentes();
+        PeriodontiteLeve = new Dentes();
+        PeriodontiteGrave = new Dentes();
+        EComplicada = new Dentes();
     }
-    public Gengivite Gengivite { get; set; }
-    public PeriodontiteLeve PeriodontiteLeve { get; set; }
-    public PeriodontiteGrave PeriodontiteGrave { get; set; }
-    public EComplicada EComplicada { get; set; }
+    public Dentes Gengivite { get; set; }
+    public Dentes PeriodontiteLeve { get; set; }
+    public Dentes PeriodontiteGrave { get; set; }
+    public Dentes EComplicada { get; set; }
     public string Observacoes { get; set; }
 }
 
@@ -243,42 +181,6 @@ public enum ETipoDiagnostico
     PeriodontiteLeve,
     PeriodontiteGrave,
     EComplicada
-}
-
-public class Gengivite
-{
-    public Gengivite()
-    {
-        Dentes = new Dentes();
-    }
-    public Dentes Dentes { get; set; }
-}
-
-public class PeriodontiteLeve
-{
-    public PeriodontiteLeve()
-    {
-        Dentes = new Dentes();
-    }
-    public Dentes Dentes { get; set; }
-}
-
-public class EComplicada
-{
-    public EComplicada()
-    {
-        Dentes = new Dentes();
-    }
-    public Dentes Dentes { get; set; }
-}
-
-public class PeriodontiteGrave
-{
-    public PeriodontiteGrave()
-    {
-        Dentes = new Dentes();
-    }
-    public Dentes Dentes { get; set; }
 }
 
 public class Dentes

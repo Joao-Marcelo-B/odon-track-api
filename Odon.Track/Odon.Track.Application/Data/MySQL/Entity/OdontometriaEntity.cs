@@ -10,6 +10,8 @@ namespace Odon.Track.Application.Data.MySQL.Entity
         public int Id { get; set; }
         [Column("id_prontuario")]
         public int IdProntuario { get; set; }
+        [Column("id_endodontia")]
+        public int IdEndodontia { get; set; }
         [Column("tipo_odontometria")]
         public string TipoOdontometria { get; set; }
         [Column("index_da_coluna")]
