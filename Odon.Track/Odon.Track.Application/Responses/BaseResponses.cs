@@ -14,6 +14,11 @@ namespace Odon.Track.Application.Responses
             return new OkResult();
         }
 
+        public OkObjectResult Updated()
+        {
+            return new OkObjectResult(new { message = "modified"});
+        }
+
         public CreatedResult Created(object message)
         {
             return new CreatedResult("", message);
