@@ -11,6 +11,14 @@ namespace Odon.Track.Application.Data.UpdateEntities
             {
                 var value = property.GetValue(source);
 
+                if (property.Name.Equals("Id") || 
+                    property.Name.Equals("IdPaciente") || 
+                    property.Name.Equals("IdProfessorVinculado") || 
+                    property.Name.Equals("IdEstudanteVinculado") || 
+                    property.Name.Equals("IdProntuarioStatus") ||
+                    property.Name.Equals("DataCadastro"))
+                    continue;
+
                 if (value is Paciente || value is Professor || value is Estudante)
                     continue;
 
@@ -29,6 +37,9 @@ namespace Odon.Track.Application.Data.UpdateEntities
             var properties = typeof(EndodontiaEntity).GetProperties();
             foreach (var property in properties)
             {
+                if(property.Name.Equals("Id") || property.Name.Equals("IdProntuario"))
+                    continue;
+
                 var value = property.GetValue(source);
 
                 if (value is DateTime && ((DateTime)value).ToString() == DateTime.MinValue.ToString())

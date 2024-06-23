@@ -27,5 +27,6 @@
         public static string ResponsavelNotFound = "Responsavel não exite";
         public static string EnderecoNotFound = "Endereço não exite";
         public static string ConsultaNotFound = "Consulta não encontrada";
+        public static string ProntuarioNotFound = "Esse prontuário não foi encontrado ou não existe.";
     }
 }

@@ -17,6 +17,10 @@ namespace Odon.Track.Api.Controllers
         public async Task<IActionResult> PostCadastrarProntuario([FromBody] PostCadastrarProntuarioRequest request) =>
             await _services.PostCadastrarProntuario(request, GetHeaderValues.GetIdUsuario(Request.HttpContext.User.Claims));
 
+        [HttpGet("details/{idProntuario}")]
+        public async Task<IActionResult> GetProntuarioDetails([FromRoute] int idProntuario) =>
+            await _services.GetProntuarioDetails(idProntuario);
+
         [HttpPost("triagem")]
         [Authorize(Roles = RolesForAccess.CadastrarTriagem)]
         public async Task<IActionResult> PostCadastrarTriagem([FromBody] PostCadastrarTriagemRequest request) =>

@@ -132,6 +132,18 @@ public partial class Prontuario
     [Column("observacoes_curativos")] public string ObservacoesCurativos { get; set; } = null;
     [Column("restauracao_definitica_do_dente")] public string RestauracaoDefinitivaDoDente { get; set; } = null;
     [Column("numero_de_sessoes_realizadas")] public int? NumeroDeSessoesRealizadas { get; set; } = null;
+    [Column("gastrite")] public int? Gastrite { get; set; } = null;
+    [Column("ulceras")] public int? Ulceras { get; set; } = null;
+    [Column("cirrose")] public int? Cirrose { get; set; } = null;
+    [Column("outros_disturbios_gastrointestinais")] public string OutrosDisturbiosGastrointestinais { get; set; } = null;
+    [Column("infeccoes_do_trato_urinario")] public int? InfeccoesDoTratoUrinario { get; set; } = null;
+    [Column("doenca_ginecologicas")] public int? DoencaGinecologicas { get; set; } = null;
+    [Column("nefrite")] public int? Nefrite { get; set; } = null;
+    [Column("insuficiencia_renal")] public int? InsuficienciaRenal { get; set; } = null;
+    [Column("faz_hemodialise")] public int? FazHemodialise { get; set; } = null;
+    [Column("quais_hemodialises")] public string QuaisHemodialises { get; set; } = null;
+    [Column("outros_disturbios_genitourinarias")] public string OutrosDisturbiosGenitourinarias { get; set; } = null;
+
 
 
     [ForeignKey(nameof(IdPaciente))]

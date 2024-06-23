@@ -9,7 +9,7 @@ namespace Odon.Track.Application.Data.MySQL.Entity
         [Key, Column("id")] public int Id { get; set; }
         [Column("id_prontuario")] public int IdProntuario { get; set; }
         [Column("dente")] public string Dente { get; set; } = null;
-        [Column("numero_canais")] public int? NumeroCanais { get; set; } = null;
+        [Column("numero_de_canais")] public int? NumeroCanais { get; set; } = null;
         [Column("diagnostico_pulpar_normal")] public int? DiagnosticoPulparNormal { get; set; } = null;
         [Column("pulpite_reversivel")] public int? PulpiteReversivel { get; set; } = null;
         [Column("pulpite_irreversivel")] public int? PulpiteIrreversivel { get; set; } = null;

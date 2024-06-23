@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Text.Json.Serialization;
 
 namespace Odon.Track.Application.Contract.Prontuarios;
 
 public class PostCadastrarProntuarioRequest
 {
+    [JsonIgnore]
+    public int? IdProntuario { get; set; } = null;
     public int? IdPaciente { get; set; } = null;
     public string Status { get; set; } = null;
     public string QueixaPrincipal { get; set; } = null;
@@ -42,23 +45,14 @@ public class Curativos
 
 public class Odontometria
 {
-    public Odontometria()
-    {
-        Canal = new();
-        CAD = new();
-        CRD = new();
-        CRT = new();
-        DiametroAnatomico = new();
-        DiametroCirurgico = new();
-        PontoDeReferenciaPontoDeReferencia = new();
-    }
-    public Dictionary<int, string> Canal { get; set; } = null;
-    public Dictionary<int, string> CAD { get; set; } = null;
-    public Dictionary<int, string> CRD { get; set; } = null;
-    public Dictionary<int, string> CRT { get; set; } = null;
-    public Dictionary<int, string> DiametroAnatomico { get; set; } = null;
-    public Dictionary<int, string> DiametroCirurgico { get; set; } = null;
-    public Dictionary<int, string> PontoDeReferenciaPontoDeReferencia { get; set; } = null;
+    public int Id { get; set; }
+    public string Canal { get; set; } = null;
+    public string CAD { get; set; } = null;
+    public string CRD { get; set; } = null;
+    public string CRT { get; set; } = null;
+    public string DiametroAnatomico { get; set; } = null;
+    public string DiametroCirurgico { get; set; } = null;
+    public string PontoDeReferenciaPontoDeReferencia { get; set; } = null;
 }
 
 public enum ETipoOdontometria
@@ -78,21 +72,22 @@ public class Endodontia
     public string Dente { get; set; } = null;
     public int? NumeroDeCanais { get; set; } = null;
     public ExameClinico ExameClinico { get; set; } = null;
-    public Odontometria Odontometria { get; set; } = null;
+    public List<Odontometria> Odontometria { get; set; } = null;
 }
 
 public class  ExameClinico
 {
+    public string MaterialRestauradorProvisorio { get; set; } = null;
+    public bool? DorEntreAsSessoes { get; set; } = null;
+    public string CimentoObturador { get; set; } = null;
     public DiagnosticoPulpar DiagnosticoPulpar { get; set; } = null;
     public TesteDePercussao TesteDePercussao { get; set; } = null;
     public PresencaDeAbcesso PresencaDeAbcesso { get; set; } = null;
     public ExameRadiografico ExameRadiografico { get; set; } = null;
     public ExsudatoNosCanais ExsudatoNosCanais { get; set; } = null;
-    public bool? DorEntreAsSessoes { get; set; } = null;
     public SolucaoIrrigadora SolucaoIrrigadora { get; set; } = null;
-    public string CimentoObturador { get; set; } = null;
     public TecnicaDeObturacao TecnicaDeObturacao { get; set; } = null;
-    public string MaterialRestauradorProvisorio{ get; set; } = null;
+   
 }
 
 public class TecnicaDeObturacao
@@ -327,15 +322,26 @@ public class HistoriaMedicaPregressaEAtual
 {
     public DoencaInfancia DoencaInfancia { get; set; } = null;
     public DistubiosCardiovasculares DistubiosCardiovasculares { get; set; } = null;
+    public DistubiosGenitourinarias DistubiosGenitourinarias { get; set; } = null;
+    public DisturbiosGastrointestinais DisturbiosGastrointestinais { get; set; } = null;
     public DistubiosRespiratorios DistubiosRespiratorios { get; set; } = null;
     public DistubiosEndocrinos DistubiosEndocrinos { get; set; } = null;
     public DisturbiosNeurologicos DisturbiosNeurologicos { get; set; } = null;
     public DisturbiosHematologicos DisturbiosHematologicos { get; set; } = null;
     public DisturbiosPsiquiatricos DisturbiosPsiquiatricos { get; set; } = null;
-    public DisturbiosArticulacoesOuOssos DisturbioosArticulacoesOuOssos { get; set; } = null;
+    public DisturbiosArticulacoesOuOssos DisturbiosArticulacoesOuOssos { get; set; } = null;
     public DisturbiosArticulacaoTemporamandibular DisturbiosArticulacaoTemporamandibular { get; set; } = null;
     public DoencaTransmissiveis DoencaTransmissiveis { get; set; } = null;
     public Alergias Alergias { get; set; } = null;
+}
+
+public class DisturbiosGastrointestinais
+{
+    public bool? Gastrite { get; set; } = null;
+    public bool? Ulceras { get; set; } = null;
+    public bool? Cirrose { get; set; } = null;
+    public string Outras { get; set; } = null;
+
 }
 
 public class  DoencaInfancia
@@ -376,12 +382,16 @@ public class DistubiosGenitourinarias
 {
     public bool? InfeccoesTratoUrinario { get; set; } = null;
     public bool? DoencasGionecologicas { get; set; } = null;
-    public bool? DoencasRenais { get; set; } = null;
+    public DoencasRenais DoencasRenais { get; set; } = null;
+    public string Outras { get; set; } = null;
+}
+
+public class DoencasRenais
+{
     public bool? Nefrite { get; set; } = null;
     public bool? InsuficienciaRenal { get; set; } = null;
     public bool? FazHemodialise { get; set; } = null;
     public string Quais { get; set; } = null;
-    public string Outras { get; set; } = null;
 }
 
 public class DistubiosEndocrinos
