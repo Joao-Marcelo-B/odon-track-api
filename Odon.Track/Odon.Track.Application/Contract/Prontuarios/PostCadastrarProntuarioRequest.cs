@@ -13,10 +13,6 @@ public class PostCadastrarProntuarioRequest
     public string HistoriaDoencaAtual { get; set; } = null;
     public string RestauracaoDefinitivaDoDente { get; set; } = null;
     public int? NumeroDeSessoesRealizadas { get; set; } = null;
-    public string VisitasMedicas { get; set; } = null;
-    public string Hospitalizacoes { get; set; } = null;
-    public string Observacoes { get; set; } = null;
-    public string DadosRelevantesHistoriaMedica { get; set; } = null;
     public string PlanoCronologicoTratamento { get; set; } = null;
     public HistoriaMedicaPregressaEAtual HistoriaMedicaPregressaEAtual { get; set; } = null;
     public UsoMedicamentos UsoMedicamentos { get; set; } = null;
@@ -316,6 +312,10 @@ public class UsoMedicamentos
     public string NomeGenerico { get; set; } = null;
     public string Dosagem { get; set; } = null;
     public string FrequenciaUso { get; set; } = null;
+    public string VisitasMedicas { get; set; } = null;
+    public string Hospitalizacoes { get; set; } = null;
+    public string Observacoes { get; set; } = null;
+    public string DadosRelevantesHistoriaMedica { get; set; } = null;
 }
 
 public class HistoriaMedicaPregressaEAtual
