@@ -24,12 +24,12 @@ namespace Odon.Track.Api.Controllers
         public async Task<IActionResult> PostUploadImagem([FromForm] PostUploadImagemRequest request) =>
             await _services.PostUploadImagem(request);
 
-        [HttpGet("{idProntuario}")]
+        [HttpGet("imagens/{idProntuario}")]
         public async Task<IActionResult> GetImagensProntuario([FromRoute] int idProntuario, [FromQuery] string tipoImagem = "") =>
             await _services.GetImagensProntuario(idProntuario, tipoImagem);
         
 
-        [HttpGet("details/{idProntuario}")]
+        [HttpGet("{idProntuario}")]
         public async Task<IActionResult> GetProntuarioDetails([FromRoute] int idProntuario) =>
             await _services.GetProntuarioDetails(idProntuario);
 

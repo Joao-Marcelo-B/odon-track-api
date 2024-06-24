@@ -946,6 +946,9 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         var diag = diagnosticosDentes.FirstOrDefault(x => x.TipoDiagnostico.Equals("Gengivite"));
         foreach(var dente in diag.Dentes.Split(","))
         {
+            if(string.IsNullOrEmpty(dente))
+                continue;
+
             var property = typeof(Dentes).GetProperty(dente);
             property.SetValue(data.Gengivite, true);
         }
@@ -959,6 +962,9 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         var diag = diagnosticosDentes.FirstOrDefault(x => x.TipoDiagnostico.Equals("PeriodontiteLeve"));
         foreach (var dente in diag.Dentes.Split(","))
         {
+            if (string.IsNullOrEmpty(dente))
+                continue;
+
             var property = typeof(Dentes).GetProperty(dente);
             property.SetValue(data.PeriodontiteLeve, true);
         }
@@ -972,6 +978,9 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         var diag = diagnosticosDentes.FirstOrDefault(x => x.TipoDiagnostico.Equals("PeriodontiteGrave"));
         foreach (var dente in diag.Dentes.Split(","))
         {
+            if (string.IsNullOrEmpty(dente))
+                continue;
+
             var property = typeof(Dentes).GetProperty(dente);
             property.SetValue(data.PeriodontiteGrave, true);
         }
@@ -985,6 +994,9 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         var diag = diagnosticosDentes.FirstOrDefault(x => x.TipoDiagnostico.Equals("EComplicada"));
         foreach (var dente in diag.Dentes.Split(","))
         {
+            if (string.IsNullOrEmpty(dente))
+                continue;
+
             var property = typeof(Dentes).GetProperty(dente);
             property.SetValue(data.EComplicada, true);
         }
