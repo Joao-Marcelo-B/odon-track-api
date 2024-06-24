@@ -38,5 +38,6 @@ namespace Odon.Track.Application.Data.MySQL.Entity
         [Column("condensacao_lateral")] public int? CondensacaoLateral { get; set; } = null;
         [Column("outra_tecnica_de_obturacao")] public string OutraTecnicaDeObturação { get; set; } = null;
         [Column("material_restaurador_provisorio")] public string MaterialRestauradorProvisorio { get; set; } = null;
+        [Column("quantidade_de_sodio_a_porcentagem")] public string QuantidadeDeSodioAPorcentagem { get; set; } = null;
     }
 }

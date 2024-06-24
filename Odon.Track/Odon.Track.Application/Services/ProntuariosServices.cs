@@ -7,6 +7,9 @@ using Odon.Track.Application.Data.UpdateEntities;
 using Odon.Track.Application.Errors;
 using Odon.Track.Application.Responses;
 using Odon.Track.Application.ConvertTypes;
+using Microsoft.IdentityModel.Tokens;
+using System.Linq;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace Odon.Track.Application.Services;
 
@@ -585,6 +588,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             CondensacaoLateral = endo.ExameClinico.TecnicaDeObturacao.CondensacaoLateral.ConvertBoolForIntNull(),
             OutraTecnicaDeObturação = endo.ExameClinico.TecnicaDeObturacao.Outra,
             MaterialRestauradorProvisorio = endo.ExameClinico.MaterialRestauradorProvisorio,
+            QuantidadeDeSodioAPorcentagem = endo.ExameClinico.SolucaoIrrigadora.QuantidadeDeSodioAPorcentagem,
         };
 
         return endodontia;
@@ -1050,7 +1054,8 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                     SolucaoIrrigadora = new()
                     {
                         HipocloritoDeSodioAPorcentagem = endo.HipocloritoDeSodioPorcentagem.ConvertIntNullForBool(),
-                        Outra = endo.OutrasSolucaoIrrigadora
+                        QuantidadeDeSodioAPorcentagem = endo.QuantidadeDeSodioAPorcentagem,
+                        Outra = endo.OutrasSolucaoIrrigadora,
                     },
                     TecnicaDeObturacao = new()
                     {
@@ -1323,6 +1328,94 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         };
 
         return request;
+    }
+
+    public async Task<IActionResult> PostUploadImagem(PostUploadImagemRequest request)
+    {
+        if(request.IdProntuario <= 0)
+            return BadRequest(OdonTrackErrors.ProntuarioNotFound);
+
+        if (request.Imagem == null || request.Imagem.Length <= 0)
+            return BadRequest(OdonTrackErrors.ImagemEmpty);
+
+        var prontuario = await _context.Prontuarios.AnyAsync(x => x.Id.Equals(request.IdProntuario));
+        if (!prontuario)
+            return BadRequest(OdonTrackErrors.ProntuarioNotFound);
+
+        var permittedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+        var ext = Path.GetExtension(request.Imagem.FileName).ToLowerInvariant();
+        if (string.IsNullOrEmpty(ext) || !permittedExtensions.Contains(ext))
+            return BadRequest(OdonTrackErrors.ImagemInvalid);
+
+        string fileName = $"{request.IdProntuario}_{request.TipoImagem.ToString()}_{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.{request.Imagem.ContentType.Replace("image/", "")}";
+
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "imagens-prontuarios", fileName);
+        if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "imagens-prontuarios")))
+            Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "imagens-prontuarios"));
+
+        using (var strem = new FileStream(path, FileMode.Create))
+        {
+            await request.Imagem.CopyToAsync(strem);
+        }
+
+        await _context.ImagensProntuarios.AddAsync(new()
+        {
+            IdProntuario = request.IdProntuario,
+            Path = path,
+            TipoImagem = request.TipoImagem.ToString()
+        });
+        await _context.SaveChangesAsync();
+
+        return Created();
+    }
+
+    public async Task<IActionResult> GetImagensProntuario(int idProntuario, string tipoImagem = "")
+    {
+        if (idProntuario <= 0)
+            return BadRequest(OdonTrackErrors.ProntuarioNotFound);
+
+        var prontuario = await _context.Prontuarios.AnyAsync(x => x.Id.Equals(idProntuario));
+        if (!prontuario)
+            return BadRequest(OdonTrackErrors.ProntuarioNotFound);
+
+        if (!string.IsNullOrEmpty(tipoImagem))
+        {
+            var imagensTipo = await _context.ImagensProntuarios.Where(x => x.IdProntuario.Equals(idProntuario) && x.TipoImagem.Equals(tipoImagem)).ToListAsync();
+            if (imagensTipo.Count == 0)
+                return NoContent();
+
+            var imagensResponseTipo = new List<string>();
+            foreach (var imagem in imagensTipo)
+            {
+                var imagemPath = Path.Combine(Directory.GetCurrentDirectory(), imagem.Path);
+                if (!File.Exists(imagemPath))
+                    continue;
+
+                var imagemBytes = File.ReadAllBytes(imagemPath);
+                var base64String = Convert.ToBase64String(imagemBytes);
+                imagensResponseTipo.Add(base64String);
+            }
+
+            return Ok(imagensResponseTipo);
+        }
+
+        var imagens = await _context.ImagensProntuarios.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
+        if(imagens.Count == 0)
+            return NoContent();
+
+        var imagensResponse = new List<string>();
+        foreach(var imagem in imagens)
+        {
+            var imagemPath = Path.Combine(Directory.GetCurrentDirectory(), imagem.Path);
+            if(!File.Exists(imagemPath))
+                continue;
+
+            var imagemBytes = File.ReadAllBytes(imagemPath);
+            var base64String = Convert.ToBase64String(imagemBytes);
+            imagensResponse.Add(base64String);
+        }
+
+        return Ok(imagensResponse);
     }
 
 }

@@ -7,8 +7,8 @@ using Odon.Track.Application.Services;
 
 namespace Odon.Track.Api.Controllers
 {
-    [ApiController]
     [Route("[controller]")]
+    [ApiController]
     [Authorize(Roles = RolesForUsers.Professor + "," + RolesForUsers.Estudante)]
     public class ProntuariosController(ProntuariosServices _services) : ControllerBase
     {
@@ -16,6 +16,18 @@ namespace Odon.Track.Api.Controllers
         [Authorize(Roles = RolesForAccess.CadastrarProntuario)]
         public async Task<IActionResult> PostCadastrarProntuario([FromBody] PostCadastrarProntuarioRequest request) =>
             await _services.PostCadastrarProntuario(request, GetHeaderValues.GetIdUsuario(Request.HttpContext.User.Claims));
+
+        [HttpPost("imagem")]
+        [Authorize(Roles = RolesForAccess.CadastrarProntuario)]
+        [RequestSizeLimit(10048576)]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> PostUploadImagem([FromForm] PostUploadImagemRequest request) =>
+            await _services.PostUploadImagem(request);
+
+        [HttpGet("imagem/{idProntuario}")]
+        public async Task<IActionResult> GetImagensProntuario([FromRoute] int idProntuario, [FromQuery] string tipoImagem = "") =>
+            await _services.GetImagensProntuario(idProntuario, tipoImagem);
+        
 
         [HttpGet("details/{idProntuario}")]
         public async Task<IActionResult> GetProntuarioDetails([FromRoute] int idProntuario) =>

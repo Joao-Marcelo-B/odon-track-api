@@ -14,6 +14,16 @@ IConfiguration configuration = new ConfigurationBuilder()
 AppSettings appSettings = new AppSettings(configuration);
 
 services.AddLogging();
+services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 services.AddServices();
 services.AddContexts(appSettings);
 services.AddCustomControllers();
@@ -41,7 +51,7 @@ if (app.Environment.IsDevelopment())
         c.ConfigObject.DefaultModelsExpandDepth = -1;
     });
 }
-
+app.UseRouting();
 app.UseExceptionHandler(error => error.UseCustomError());
 app.UseAuthentication();
 app.UseCookiePolicy();

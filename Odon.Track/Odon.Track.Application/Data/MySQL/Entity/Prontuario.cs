@@ -182,8 +182,6 @@ public partial class Prontuario
     [Column("observacoes_exame_fisico")]
     public string ObservacoesExameFisico { get; set; } = null;
 
-
-
     [ForeignKey(nameof(IdPaciente))]
     public Paciente Paciente { get; set; } = null;
 

@@ -102,6 +102,7 @@ public class TecnicaDeObturacao
 public class SolucaoIrrigadora
 {
     public bool? HipocloritoDeSodioAPorcentagem { get; set; } = null;
+    public string QuantidadeDeSodioAPorcentagem { get; set; } = null;
     public string Outra { get; set; } = null;
 }
 

@@ -9,6 +9,16 @@ namespace Odon.Track.Application.Responses
             return new OkObjectResult(message);
         }
 
+        public NoContentResult NoContent()
+        {
+            return new NoContentResult();
+        }
+
+        public FileContentResult FileResponse(byte[] file, string contentType)
+        {
+            return new FileContentResult(file, contentType);
+        }
+
         public OkResult Ok()
         {
             return new OkResult();
