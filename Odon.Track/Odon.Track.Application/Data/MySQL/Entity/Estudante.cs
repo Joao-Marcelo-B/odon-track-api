@@ -15,6 +15,8 @@ public class Estudante
     public string Nome { get; set; } = null!;
     [Column("periodo_atual")]
     public int PeriodoAtual { get; set; } = 1;
+    [Column("ativo")]
+    public int Ativo { get; set; }
 
     [ForeignKey(nameof(IdUsuario))]
     public virtual Usuario Usuario { get; set; } = null!;

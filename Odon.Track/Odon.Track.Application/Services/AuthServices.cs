@@ -43,6 +43,7 @@ namespace Odon.Track.Application.Services
             {
                 Email = request.Email,
                 IdTipoUsuario = request.TipoUsuario,
+                
                 IdentificadorUnifenas = request.Identificador,
                 Blocked = 1,
                 PasswordHash = passwordHash,
@@ -58,6 +59,7 @@ namespace Odon.Track.Application.Services
                     IdUsuario = user.Id,
                     PeriodoAtual = 1,
                     Nome = request.Nome,
+                    Ativo = 1
                 };
                 await _context.Estudantes.AddAsync(estudante);
             } else if (request.TipoUsuario.Equals(1) || request.TipoUsuario.Equals(2))
@@ -66,6 +68,7 @@ namespace Odon.Track.Application.Services
                 {
                     Nome = request.Nome,
                     IdUsuario = user.Id,
+                    Ativo = 1
                 };
                 await _context.Professors.AddAsync(professor);
             }
