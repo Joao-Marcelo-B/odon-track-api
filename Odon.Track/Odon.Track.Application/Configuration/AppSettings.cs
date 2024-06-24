@@ -13,8 +13,6 @@ namespace Odon.Track.Application.Configuration
             if (string.IsNullOrEmpty(ConnOdonTrack))
                 ConnOdonTrack = appSettingsSection["ConnOdonTrack"];
 
-            Console.WriteLine(ConnOdonTrack);
-
             AllowOrigins = Environment.GetEnvironmentVariable("AllowOrigins");
             if (string.IsNullOrEmpty(AllowOrigins))
                 AllowOrigins = appSettingsSection["AllowOrigins"];

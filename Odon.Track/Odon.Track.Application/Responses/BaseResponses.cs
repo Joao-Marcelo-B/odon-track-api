@@ -20,6 +20,11 @@ namespace Odon.Track.Application.Responses
             return new FileContentResult(file, contentType);
         }
 
+        public OkObjectResult Deleted()
+        {
+            return new OkObjectResult(new { message = "deleted" });
+        }
+
         public OkResult Ok()
         {
             return new OkResult();

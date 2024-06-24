@@ -90,7 +90,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
     public async Task<IActionResult> PostCadastrarProntuario(PostCadastrarProntuarioRequest request, int idUsuario)
     {
         
-        var paciente = await _context.Pacientes.FirstOrDefaultAsync(x => x.Id.Equals(request.IdPaciente));
+        var paciente = await _context.Pacientes.FirstOrDefaultAsync(x => x.Id.Equals(request.Paciente.Id));
         if (paciente == null)
             return BadRequest(OdonTrackErrors.PacienteNotFound);
 
@@ -102,11 +102,11 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         isProfessor = usuario.IdTipoUsuario == 3 ? false : true;
 
-        var prontuario = await _context.Prontuarios.FirstOrDefaultAsync(x => x.IdPaciente.Equals(request.IdPaciente));
+        var prontuario = await _context.Prontuarios.FirstOrDefaultAsync(x => x.IdPaciente.Equals(request.Paciente.Id));
         if (prontuario == null)
         {
             prontuario = new Prontuario();
-            prontuario.IdPaciente = request.IdPaciente;
+            prontuario.IdPaciente = request.Paciente.Id;
             prontuario.DataCadastro = DateTime.Now;
             prontuario.IdProntuarioStatus = 1000;
             if(isProfessor)
@@ -917,13 +917,23 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         if (prontuario == null)
             return BadRequest(OdonTrackErrors.ProntuarioNotFound);
 
+        var paciente = await _context.Pacientes.FirstOrDefaultAsync(x => x.Id.Equals(prontuario.IdPaciente));
+        if(paciente == null)
+            return BadRequest(OdonTrackErrors.PacienteNotFound);
+
         var endodontia = await _context.Endodontias.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
 
         var descricaoDentes = await _context.ProntuarioDescricaoDentes.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
 
         var diagnosticoDentes = await _context.ProntuarioDiagnosticosDentes.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
 
-        var data = ProntuarioData(prontuario);
+        var data = CreateResponseProntuaruiDetails(prontuario);
+
+        data.Paciente = new()
+        {
+            Id = paciente.Id,
+            Nome = paciente.Nome,
+        };
 
         data = await EndodontiaData(idProntuario, data, endodontia);
 
@@ -1121,13 +1131,12 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         return data;
     }
 
-    private PostCadastrarProntuarioRequest ProntuarioData(Prontuario prontuario)
+    private PostCadastrarProntuarioRequest CreateResponseProntuaruiDetails(Prontuario prontuario)
     {
         var request = new PostCadastrarProntuarioRequest
         {
             IdProntuario = prontuario.Id,
             Status = prontuario.IdProntuarioStatus.ToString(),
-            IdPaciente = prontuario.IdPaciente,
             QueixaPrincipal = prontuario.QueixaPrincipal,
             HistoriaDoencaAtual = prontuario.HistoriaDoencaAtual,
             PlanoCronologicoTratamento = prontuario.PlanoCronologicoTratamento,
@@ -1467,7 +1476,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         _context.ImagensProntuarios.Remove(imagem);
         await _context.SaveChangesAsync();
 
-        return Ok();
+        return Deleted();
     }
 
     public async Task<IActionResult> PatchCadastrarReavaliacaoAnamnese()
