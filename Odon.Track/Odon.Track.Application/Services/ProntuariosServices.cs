@@ -927,7 +927,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         data = DiagnosticoDentes(data, diagnosticoDentes);
 
-        return Ok(new { Data = data});
+        return Ok(data);
     }
 
     private PostCadastrarProntuarioRequest DiagnosticoDentes(PostCadastrarProntuarioRequest data, List<ProntuarioDiagnosticosDente> diagnosticosDentes)
