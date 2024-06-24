@@ -29,6 +29,7 @@
         public static string ConsultaNotFound = "Consulta não encontrada";
         public static string ImagemEmpty = "Arquivo de imagem vazia.";
         public static string ImagemInvalid = "Tipo de arquivo não permitido.";
+        public static string ImagemNotFound = "Imagem não existe ou não encontrada.";
         public static string ProntuarioNotFound = "Esse prontuário não foi encontrado ou não existe.";
     }
 }

@@ -17,6 +17,11 @@ namespace Odon.Track.Api.Controllers
         public async Task<IActionResult> PostCadastrarProntuario([FromBody] PostCadastrarProntuarioRequest request) =>
             await _services.PostCadastrarProntuario(request, GetHeaderValues.GetIdUsuario(Request.HttpContext.User.Claims));
 
+        [HttpPatch("reavaliacao/anamnese")]
+        [Authorize(Roles = RolesForAccess.CadastrarProntuario)]
+        public async Task<IActionResult> PatchCadastrarReavaliacaoAnamnese() =>
+            await _services.PatchCadastrarReavaliacaoAnamnese();
+
         [HttpPost("imagem")]
         [Authorize(Roles = RolesForAccess.CadastrarProntuario)]
         [RequestSizeLimit(10048576)]
@@ -27,7 +32,10 @@ namespace Odon.Track.Api.Controllers
         [HttpGet("imagens/{idProntuario}")]
         public async Task<IActionResult> GetImagensProntuario([FromRoute] int idProntuario, [FromQuery] string tipoImagem = "") =>
             await _services.GetImagensProntuario(idProntuario, tipoImagem);
-        
+
+        [HttpDelete("imagem/{idImagem}")]
+        public async Task<IActionResult> DeleteImagemProntuario([FromRoute] int idImagem = 0) =>
+            await _services.DeleteImagemProntuario(idImagem);
 
         [HttpGet("{idProntuario}")]
         public async Task<IActionResult> GetProntuarioDetails([FromRoute] int idProntuario) =>

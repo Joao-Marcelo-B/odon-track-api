@@ -1450,4 +1450,29 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         return Ok(new { Imagens = imagensResponse });
     }
 
+    public async Task<IActionResult> DeleteImagemProntuario(int idImagem)
+    {
+        if (idImagem <= 0)
+            return BadRequest(OdonTrackErrors.ImagemNotFound);
+
+        var imagem = await _context.ImagensProntuarios.FirstOrDefaultAsync(x => x.Id.Equals(idImagem));
+        if (imagem == null)
+            return BadRequest(OdonTrackErrors.ImagemNotFound);
+
+        var imagemPath = Path.Combine("/app", imagem.Path);
+        if (!File.Exists(imagemPath))
+            return BadRequest(OdonTrackErrors.ImagemNotFound);
+
+        File.Delete(imagemPath);
+        _context.ImagensProntuarios.Remove(imagem);
+        await _context.SaveChangesAsync();
+
+        return Ok();
+    }
+
+    public async Task<IActionResult> PatchCadastrarReavaliacaoAnamnese()
+    {
+
+        return Updated();
+    }
 }
