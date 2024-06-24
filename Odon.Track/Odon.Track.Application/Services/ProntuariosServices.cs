@@ -1361,9 +1361,9 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         string fileName = $"{request.IdProntuario}_{request.TipoImagem.ToString()}_{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.{request.Imagem.ContentType.Replace("image/", "")}";
 
-        var path = Path.Combine("/app", "/imagens-prontuario", fileName);
+        var path = Path.Combine("/app/imagens-prontuario/", fileName);
         if (!Directory.Exists(Path.Combine("/app", "imagens-prontuario")))
-            Directory.CreateDirectory(Path.Combine("/app", "imagens-prontuarios"));
+            Directory.CreateDirectory(Path.Combine("/app/imagens-prontuario"));
 
         using (var strem = new FileStream(path, FileMode.Create))
         {
