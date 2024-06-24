@@ -13,6 +13,7 @@ namespace Odon.Track.Application.Data.UpdateEntities
 
                 if (property.Name.Equals("Id") || 
                     property.Name.Equals("IdPaciente") || 
+                    property.Name.Equals("IdProntuario") || 
                     property.Name.Equals("IdProfessorVinculado") || 
                     property.Name.Equals("IdEstudanteVinculado") || 
                     property.Name.Equals("IdProntuarioStatus") ||

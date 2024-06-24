@@ -141,6 +141,10 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         if(request.Endodontia == null || request.Endodontia.Count <= 0)
             return;
 
+        var endodontiaOld = await _context.Endodontias.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
+        if(endodontiaOld != null && endodontiaOld.Count > 0)
+            _context.Endodontias.RemoveRange(endodontiaOld);
+
         foreach (var endo in request.Endodontia)
         {
             EndodontiaEntity endodontia = null;
@@ -1447,4 +1451,3 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
     }
 
 }
-        

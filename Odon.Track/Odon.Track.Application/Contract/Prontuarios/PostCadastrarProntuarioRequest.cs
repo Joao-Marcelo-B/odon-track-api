@@ -5,7 +5,6 @@ namespace Odon.Track.Application.Contract.Prontuarios;
 
 public class PostCadastrarProntuarioRequest
 {
-    [JsonIgnore]
     public int? IdProntuario { get; set; } = null;
     public int? IdPaciente { get; set; } = null;
     public string Status { get; set; } = null;
