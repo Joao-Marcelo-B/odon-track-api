@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Odon.Track.Application.Responses
 {
-    public class BaseResponses(ILogger<BaseResponses> _log)
+    public class BaseResponses
     {
         public OkObjectResult Ok(object message)
         {
@@ -45,7 +45,7 @@ namespace Odon.Track.Application.Responses
 
         public BadRequestObjectResult BadRequest(object message)
         {
-            _log.LogInformation($"BadRequest: {message}");
+            Console.WriteLine($"BadRequest: {message}");
             return new BadRequestObjectResult(new { message });
         }
     }
