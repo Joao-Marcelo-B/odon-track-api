@@ -111,10 +111,8 @@ public partial class Prontuario
     [Column("complemento")] public string Complemento { get; set; } = null;
     [Column("outras_doencas_hereditarias")] public string OutrasDoencasHereditarias { get; set; } = null;
     [Column("habito_alcool")] public int? HabitoAlcool { get; set; } = null;
-    [Column("inicio_alcool")] public string InicioAlcool { get; set; } = null;
     [Column("frequencia_alcool")] public string FrequenciaAlcool { get; set; } = null;
     [Column("habito_fumo")] public int? HabitoFumo { get; set; } = null;
-    [Column("inicio_fumo")] public string InicioFumo { get; set; } = null;
     [Column("frequencia_fumo")] public string FrequenciaFumo { get; set; } = null;
     [Column("outros_habitos_nocivos")] public string OutrosHabitosNocivos { get; set; } = null;
     [Column("escovacao")] public string Escovacao { get; set; } = null;
@@ -129,7 +127,6 @@ public partial class Prontuario
     [Column("curativo_sessao_4")] public string CurativoSessao4 { get; set; } = null;
     [Column("curativo_sessao_5")] public string CurativoSessao5 { get; set; } = null;
     [Column("curativo_sessao_6")] public string CurativoSessao6 { get; set; } = null;
-    [Column("observacoes_curativos")] public string ObservacoesCurativos { get; set; } = null;
     [Column("restauracao_definitica_do_dente")] public string RestauracaoDefinitivaDoDente { get; set; } = null;
     [Column("numero_de_sessoes_realizadas")] public int? NumeroDeSessoesRealizadas { get; set; } = null;
     [Column("gastrite")] public int? Gastrite { get; set; } = null;
@@ -143,6 +140,47 @@ public partial class Prontuario
     [Column("faz_hemodialise")] public int? FazHemodialise { get; set; } = null;
     [Column("quais_hemodialises")] public string QuaisHemodialises { get; set; } = null;
     [Column("outros_disturbios_genitourinarias")] public string OutrosDisturbiosGenitourinarias { get; set; } = null;
+    [Column("pressao_arterial")]
+    public string PressaoArterial { get; set; } = null;
+
+    [Column("frequencia_respiratoria")]
+    public string FrequenciaRespiratoria { get; set; } = null;
+
+    [Column("pulso")]
+    public string Pulso { get; set; } = null;
+
+    [Column("temperatura_axiliar")]
+    public string TemperaturaAxiliar { get; set; } = null;
+
+    [Column("ectoscopia")]
+    public string Ectoscopia { get; set; } = null;
+
+    [Column("oroscopia")]
+    public string Oroscopia { get; set; } = null;
+
+    [Column("exames_complementares_solicitados")]
+    public string ExamesComplementaresSolicitados { get; set; } = null;
+
+    [Column("pedido_avaliacao_medica")]
+    public bool? PedidoAvaliacaoMedica { get; set; } = null;
+
+    [Column("motivo")]
+    public string Motivo { get; set; } = null;
+
+    [Column("data_pedido_avaliacao_medica")]
+    public DateTime? DataPedidoAvaliacaoMedica { get; set; } = null;
+
+    [Column("parecer_medico")]
+    public string ParecerMedico { get; set; } = null;
+
+    [Column("paciente_portador_de")]
+    public string PacientePortadorDe { get; set; } = null;
+
+    [Column("necessita_de_cuidados_especiais_relacao")]
+    public string NecessitaDeCuidadosEspeciaisRelacao { get; set; } = null;
+
+    [Column("observacoes_exame_fisico")]
+    public string ObservacoesExameFisico { get; set; } = null;
 
 
 

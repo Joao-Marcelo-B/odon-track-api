@@ -57,6 +57,7 @@ public partial class OdontrackContext : DbContext
     public virtual DbSet<Responsavel> Responsaveis { get; set; }
     public virtual DbSet<EndodontiaEntity> Endodontias { get; set; }
     public virtual DbSet<ProntuarioDiagnosticosDente> ProntuarioDiagnosticosDentes { get; set; }
+    public virtual DbSet<RetornoEntity> RetornosEntity { get; set; }
     public virtual DbSet<OdontometriaEntity> Odontometrias { get; set; }
     public virtual DbSet<Consulta> Consultas { get; set; }
 

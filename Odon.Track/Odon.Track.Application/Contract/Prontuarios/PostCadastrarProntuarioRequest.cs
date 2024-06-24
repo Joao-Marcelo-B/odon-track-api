@@ -26,6 +26,7 @@ public class PostCadastrarProntuarioRequest
     public HabitoHigieneBucal HabitoHigieneBucal { get; set; } = null;
     public DescricaoDente DescricaoDente { get; set; } = null;
     public DiagnosticosDente DiagnosticosDente { get; set; } = null;
+    public ExameFisico ExameFisico { get; set; } = null;
     public List<Endodontia> Endodontia { get; set; } = null;
     public Curativos Curativos { get; set; } = null;
 
@@ -39,7 +40,6 @@ public class Curativos
     public string QuartaSessao { get; set; } = null;
     public string QuintaSessao { get; set; } = null;
     public string SextaSessao { get; set; } = null;
-    public string Observacoes { get; set; } = null;
 }
 
 
@@ -73,6 +73,13 @@ public class Endodontia
     public int? NumeroDeCanais { get; set; } = null;
     public ExameClinico ExameClinico { get; set; } = null;
     public List<Odontometria> Odontometria { get; set; } = null;
+    public  List<Retorno> Retornos { get; set; } = null;
+}
+
+public class Retorno
+{
+    public int? Id { get; set; } = null;
+    public DateTime? DataRetorno { get; set; } = null;
 }
 
 public class  ExameClinico
@@ -286,10 +293,8 @@ public class HistoriaFamiliar
 public class Habitos
 {
     public bool? Alcool { get; set; } = null;
-    public string InicioAlcool { get; set; } = null;
     public string FrequenciaAlcool { get; set; } = null;
     public bool? Fumo { get; set; } = null;
-    public string InicioFumo { get; set; } = null;
     public string FrequenciaFumo { get; set; } = null;
     public string OutrosHabitosNocivos { get; set; } = null;
 }

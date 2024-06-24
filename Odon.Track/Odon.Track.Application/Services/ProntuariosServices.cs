@@ -171,7 +171,33 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             endodontia.UpdateValueEndodontia(updateEndodontia);
 
             await InsertOdontometria(endo.Odontometria, idProntuario, endodontia.Id);
+
+            await InsertRetorno(endodontia.Id, endo.Retornos);
         }
+    }
+
+    private async Task InsertRetorno(int idEndodontia, List<Retorno> retornos)
+    {
+        foreach (var item in retornos)
+        {
+            if (item.Id > 0)
+            {
+                var retorno = await _context.RetornosEntity.FirstOrDefaultAsync(x => x.Id.Equals(item.Id));
+                if (retorno == null)
+                {
+                    retorno = new RetornoEntity
+                    {
+                        IdEndodontia = idEndodontia,
+                        DataRetorno = item.DataRetorno
+                    };
+                    await _context.RetornosEntity.AddAsync(retorno);
+                }
+                retorno.DataRetorno = item.DataRetorno;
+                continue;
+            }
+        }
+
+        await _context.SaveChangesAsync();
     }
 
     private async Task InsertOdontometria(List<Odontometria> odontometrias, int idProntuario, int idEndodontia)
@@ -479,10 +505,8 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             Complemento = request.TendenciasHereditarias.Complemento,
             OutrasDoencasHereditarias = request.TendenciasHereditarias.OutrasDoencas,
             HabitoAlcool = request.Habitos.Alcool.ConvertBoolForIntNull(),
-            InicioAlcool = request.Habitos.InicioAlcool,
             FrequenciaAlcool = request.Habitos.FrequenciaAlcool,
             HabitoFumo = request.Habitos.Fumo.ConvertBoolForIntNull(),
-            InicioFumo = request.Habitos.InicioFumo,
             FrequenciaFumo = request.Habitos.FrequenciaFumo,
             OutrosHabitosNocivos = request.Habitos.OutrosHabitosNocivos,
             Escovacao = request.HabitoHigieneBucal.Escovacao,
@@ -494,7 +518,6 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             CurativoSessao4 = request.Curativos.QuartaSessao,
             CurativoSessao5 = request.Curativos.QuintaSessao,
             CurativoSessao6 = request.Curativos.SextaSessao,
-            ObservacoesCurativos = request.Curativos.Observacoes,
             DoouOuRecebeuSangue = request.HistoriaMedicaPregressaEAtual.DisturbiosHematologicos.DoouOuRecebeuSangue.ConvertBoolForIntNull(),
             ObservacoesDentes = request.DescricaoDente.Observacoes,
             ObservacoesDiagnosticoDentes = request.DiagnosticosDente.Observacoes,
@@ -509,6 +532,20 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             InsuficienciaRenal = request.HistoriaMedicaPregressaEAtual.DistubiosGenitourinarias.DoencasRenais.InsuficienciaRenal.ConvertBoolForIntNull(),
             OutrosDisturbiosGenitourinarias = request.HistoriaMedicaPregressaEAtual.DistubiosGenitourinarias.Outras,
             QuaisHemodialises = request.HistoriaMedicaPregressaEAtual.DistubiosGenitourinarias.DoencasRenais.Quais,
+            Pulso = request.ExameFisico.Pulso,
+            DataPedidoAvaliacaoMedica = request.ExameFisico.DataPedidoAvaliacaoMedica,
+            PedidoAvaliacaoMedica = request.ExameFisico.PedidoAvaliacaoMedica,
+            PressaoArterial = request.ExameFisico.PressaoArterial,
+            TemperaturaAxiliar = request.ExameFisico.TemperaturaAxiliar,
+            Ectoscopia = request.ExameFisico.Ectoscopia,
+            ExamesComplementaresSolicitados = request.ExameFisico.ExamesComplementaresSolicitados,
+            FrequenciaRespiratoria = request.ExameFisico.FrequenciaRespiratoria,
+            Motivo = request.ExameFisico.Motivo,
+            Oroscopia = request.ExameFisico.Oroscopia,
+            NecessitaDeCuidadosEspeciaisRelacao = request.ExameFisico.NecessitaDeCuidadosEspeciaisRelacao,
+            ObservacoesExameFisico = request.ExameFisico.Observacoes,
+            PacientePortadorDe = request.ExameFisico.PacientePortadorDe,
+            ParecerMedico = request.ExameFisico.ParecerMedico,
         };
 
         return prontuario;
@@ -1045,6 +1082,18 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                     PontoDeReferenciaPontoDeReferencia = odonto.PontoDeRefencia,
                 });
             }
+
+            var retornos = await _context.RetornosEntity.Where(x => x.IdEndodontia.Equals(endo.Id)).ToListAsync();
+            endodontia.Retornos = new List<Retorno>();
+            foreach (var retorno in retornos)
+            {
+                endodontia.Retornos.Add(new Retorno
+                {
+                    Id = retorno.Id,
+                    DataRetorno = retorno.DataRetorno,
+                });
+            }
+
             data.Endodontia.Add(endodontia);
         }
 
@@ -1067,6 +1116,23 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             PlanoCronologicoTratamento = prontuario.PlanoCronologicoTratamento,
             RestauracaoDefinitivaDoDente = prontuario.RestauracaoDefinitivaDoDente,
             NumeroDeSessoesRealizadas = prontuario.NumeroDeSessoesRealizadas,
+            ExameFisico = new()
+            {
+                DataPedidoAvaliacaoMedica = prontuario.DataPedidoAvaliacaoMedica,
+                PedidoAvaliacaoMedica = prontuario.PedidoAvaliacaoMedica,
+                PressaoArterial = prontuario.PressaoArterial,
+                TemperaturaAxiliar = prontuario.TemperaturaAxiliar,
+                Ectoscopia = prontuario.Ectoscopia,
+                ExamesComplementaresSolicitados = prontuario.ExamesComplementaresSolicitados,
+                FrequenciaRespiratoria = prontuario.FrequenciaRespiratoria,
+                Motivo = prontuario.Motivo,
+                NecessitaDeCuidadosEspeciaisRelacao = prontuario.NecessitaDeCuidadosEspeciaisRelacao,
+                Observacoes = prontuario.ObservacoesExameFisico,
+                Oroscopia = prontuario.Oroscopia,
+                PacientePortadorDe = prontuario.PacientePortadorDe,
+                ParecerMedico = prontuario.ParecerMedico,
+                Pulso = prontuario.Pulso
+            },
             HistoriaMedicaPregressaEAtual = new HistoriaMedicaPregressaEAtual
             {
                 DoencaInfancia = new DoencaInfancia
@@ -1226,10 +1292,8 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             Habitos = new Habitos
             {
                 Alcool = prontuario.HabitoAlcool.ConvertIntNullForBool(),
-                InicioAlcool = prontuario.InicioAlcool,
                 FrequenciaAlcool = prontuario.FrequenciaAlcool,
                 Fumo = prontuario.HabitoFumo.ConvertIntNullForBool(),
-                InicioFumo = prontuario.InicioFumo,
                 FrequenciaFumo = prontuario.FrequenciaFumo,
                 OutrosHabitosNocivos = prontuario.OutrosHabitosNocivos
             },
@@ -1247,7 +1311,6 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                 QuartaSessao = prontuario.CurativoSessao4,
                 QuintaSessao = prontuario.CurativoSessao5,
                 SextaSessao = prontuario.CurativoSessao6,
-                Observacoes = prontuario.ObservacoesCurativos
             },
             DescricaoDente = new DescricaoDente
             {
