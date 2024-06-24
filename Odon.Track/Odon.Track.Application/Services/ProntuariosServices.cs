@@ -407,10 +407,10 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         {
             QueixaPrincipal = request.QueixaPrincipal,
             HistoriaDoencaAtual = request.HistoriaDoencaAtual,
-            VisitasMedicas = request.VisitasMedicas,
-            Hospitalizacoes = request.Hospitalizacoes,
-            Observacoes = request.Observacoes,
-            DadosRelevantesHistoriaMedica = request.DadosRelevantesHistoriaMedica,
+            VisitasMedicas = request.UsoMedicamentos.VisitasMedicas,
+            Hospitalizacoes = request.UsoMedicamentos.Hospitalizacoes,
+            Observacoes = request.UsoMedicamentos.Observacoes,
+            DadosRelevantesHistoriaMedica = request.UsoMedicamentos.DadosRelevantesHistoriaMedica,
             PlanoCronologicoTratamento = request.PlanoCronologicoTratamento,
             RestauracaoDefinitivaDoDente = request.RestauracaoDefinitivaDoDente,
             NumeroDeSessoesRealizadas = request.NumeroDeSessoesRealizadas,
@@ -1109,10 +1109,6 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             IdPaciente = prontuario.IdPaciente,
             QueixaPrincipal = prontuario.QueixaPrincipal,
             HistoriaDoencaAtual = prontuario.HistoriaDoencaAtual,
-            VisitasMedicas = prontuario.VisitasMedicas,
-            Hospitalizacoes = prontuario.Hospitalizacoes,
-            Observacoes = prontuario.Observacoes,
-            DadosRelevantesHistoriaMedica = prontuario.DadosRelevantesHistoriaMedica,
             PlanoCronologicoTratamento = prontuario.PlanoCronologicoTratamento,
             RestauracaoDefinitivaDoDente = prontuario.RestauracaoDefinitivaDoDente,
             NumeroDeSessoesRealizadas = prontuario.NumeroDeSessoesRealizadas,
@@ -1267,7 +1263,11 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                 NomeComercial = prontuario.NomeComercial,
                 NomeGenerico = prontuario.NomeGenerico,
                 Dosagem = prontuario.Dosagem,
-                FrequenciaUso = prontuario.FrequenciaUso
+                FrequenciaUso = prontuario.FrequenciaUso,
+                VisitasMedicas = prontuario.VisitasMedicas,
+                Hospitalizacoes = prontuario.Hospitalizacoes,
+                Observacoes = prontuario.Observacoes,
+                DadosRelevantesHistoriaMedica = prontuario.DadosRelevantesHistoriaMedica,
             },
             HistoriaFamiliar = new HistoriaFamiliar
             {
