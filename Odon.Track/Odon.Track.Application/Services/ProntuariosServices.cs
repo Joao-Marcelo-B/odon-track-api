@@ -1361,9 +1361,9 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         string fileName = $"{request.IdProntuario}_{request.TipoImagem.ToString()}_{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.{request.Imagem.ContentType.Replace("image/", "")}";
 
-        var path = Path.Combine("/app", "/imagens-prontuarios", fileName);
-        if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "imagens-prontuarios")))
-            Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "imagens-prontuarios"));
+        var path = Path.Combine("/app", "/imagens-prontuario", fileName);
+        if (!Directory.Exists(Path.Combine("/app", "imagens-prontuario")))
+            Directory.CreateDirectory(Path.Combine("/app", "imagens-prontuarios"));
 
         using (var strem = new FileStream(path, FileMode.Create))
         {
@@ -1427,7 +1427,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         var imagensResponse = new List<GetImagensProntuarioResponse>();
         foreach(var imagem in imagens)
         {
-            var imagemPath = Path.Combine(Directory.GetCurrentDirectory(), imagem.Path);
+            var imagemPath = Path.Combine("/app", imagem.Path);
             if(!File.Exists(imagemPath))
                 continue;
 
