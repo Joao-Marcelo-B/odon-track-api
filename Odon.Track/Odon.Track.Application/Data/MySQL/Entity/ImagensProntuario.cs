@@ -14,5 +14,9 @@ namespace Odon.Track.Application.Data.MySQL.Entity
         public string TipoImagem { get; set; }
         [Column("path")]
         public string Path { get; set; }
+        [Column("filename")]
+        public string Filename { get; set; }
+        [Column("content_type")]
+        public string ContentType { get; set; }
     }
 }

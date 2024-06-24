@@ -24,7 +24,7 @@ namespace Odon.Track.Api.Controllers
         public async Task<IActionResult> PostUploadImagem([FromForm] PostUploadImagemRequest request) =>
             await _services.PostUploadImagem(request);
 
-        [HttpGet("imagem/{idProntuario}")]
+        [HttpGet("imagens/{idProntuario}")]
         public async Task<IActionResult> GetImagensProntuario([FromRoute] int idProntuario, [FromQuery] string tipoImagem = "") =>
             await _services.GetImagensProntuario(idProntuario, tipoImagem);
         

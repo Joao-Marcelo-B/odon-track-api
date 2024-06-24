@@ -5,6 +5,21 @@ namespace Odon.Track.Application.Contract.Prontuarios;
 
 public class PostCadastrarProntuarioRequest
 {
+    public PostCadastrarProntuarioRequest()
+    {
+        HistoriaMedicaPregressaEAtual = new();
+        UsoMedicamentos = new();
+        HistoriaFamiliar = new();
+        TendenciasHereditarias = new();
+        Habitos = new();
+        HabitoHigieneBucal = new();
+        DescricaoDente = new();
+        DiagnosticosDente = new();
+        ExameFisico = new();
+        Endodontia = new();
+        Curativos = new();
+    }
+
     [JsonIgnore]
     public int? IdProntuario { get; set; } = null;
     public int? IdPaciente { get; set; } = null;
@@ -67,9 +82,9 @@ public class Endodontia
     public int? Id { get; set; } = null;
     public string Dente { get; set; } = null;
     public int? NumeroDeCanais { get; set; } = null;
-    public ExameClinico ExameClinico { get; set; } = null;
-    public List<Odontometria> Odontometria { get; set; } = null;
-    public  List<Retorno> Retornos { get; set; } = null;
+    public ExameClinico ExameClinico { get; set; } = new();
+    public List<Odontometria> Odontometria { get; set; } = new();
+    public  List<Retorno> Retornos { get; set; } = new();
 }
 
 public class Retorno
@@ -83,13 +98,13 @@ public class  ExameClinico
     public string MaterialRestauradorProvisorio { get; set; } = null;
     public bool? DorEntreAsSessoes { get; set; } = null;
     public string CimentoObturador { get; set; } = null;
-    public DiagnosticoPulpar DiagnosticoPulpar { get; set; } = null;
-    public TesteDePercussao TesteDePercussao { get; set; } = null;
-    public PresencaDeAbcesso PresencaDeAbcesso { get; set; } = null;
-    public ExameRadiografico ExameRadiografico { get; set; } = null;
-    public ExsudatoNosCanais ExsudatoNosCanais { get; set; } = null;
-    public SolucaoIrrigadora SolucaoIrrigadora { get; set; } = null;
-    public TecnicaDeObturacao TecnicaDeObturacao { get; set; } = null;
+    public DiagnosticoPulpar DiagnosticoPulpar { get; set; } = new();
+    public TesteDePercussao TesteDePercussao { get; set; } = new();
+    public PresencaDeAbcesso PresencaDeAbcesso { get; set; } = new();
+    public ExameRadiografico ExameRadiografico { get; set; } = new();
+    public ExsudatoNosCanais ExsudatoNosCanais { get; set; } = new();
+    public SolucaoIrrigadora SolucaoIrrigadora { get; set; } = new();
+    public TecnicaDeObturacao TecnicaDeObturacao { get; set; } = new();
    
 }
 
@@ -116,6 +131,10 @@ public class ExsudatoNosCanais
 
 public class ExameRadiografico
 {
+    public ExameRadiografico()
+    {
+        RegiaoPeriapical = new();
+    }
     public RegiaoPeriapical RegiaoPeriapical { get; set; } = null;
 }
 
@@ -150,12 +169,6 @@ public class TesteDePercussao
     public bool? Insesivel { get; set; } = null;
     public bool? Sensivel { get; set; } = null;
     public bool? MuitoSensivel { get; set; } = null;
-}
-
-public class ControlePlacaBacteriana
-{
-    public IFormFile ImagemControlePlacaBacteriana { get; set; } = null;
-    public string Observacao { get; set; } = null;
 }
 
 public class DiagnosticosDente
@@ -326,6 +339,22 @@ public class UsoMedicamentos
 
 public class HistoriaMedicaPregressaEAtual
 {
+    public HistoriaMedicaPregressaEAtual()
+    {
+        DoencaInfancia = new();
+        DistubiosCardiovasculares = new();
+        DistubiosGenitourinarias = new();
+        DisturbiosGastrointestinais = new();
+        DistubiosRespiratorios = new();
+        DistubiosEndocrinos = new();
+        DisturbiosNeurologicos = new();
+        DisturbiosHematologicos = new();
+        DisturbiosPsiquiatricos = new();
+        DisturbiosArticulacoesOuOssos = new();
+        DisturbiosArticulacaoTemporamandibular = new();
+        DoencaTransmissiveis = new();
+        Alergias = new();
+    }
     public DoencaInfancia DoencaInfancia { get; set; } = null;
     public DistubiosCardiovasculares DistubiosCardiovasculares { get; set; } = null;
     public DistubiosGenitourinarias DistubiosGenitourinarias { get; set; } = null;
@@ -386,6 +415,10 @@ public class DistubiosRespiratorios
 
 public class DistubiosGenitourinarias
 {
+    public DistubiosGenitourinarias()
+    {
+        DoencasRenais = new();
+    }
     public bool? InfeccoesTratoUrinario { get; set; } = null;
     public bool? DoencasGionecologicas { get; set; } = null;
     public DoencasRenais DoencasRenais { get; set; } = null;

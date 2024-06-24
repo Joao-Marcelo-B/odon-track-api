@@ -1362,7 +1362,9 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         {
             IdProntuario = request.IdProntuario,
             Path = path,
-            TipoImagem = request.TipoImagem.ToString()
+            TipoImagem = request.TipoImagem.ToString(),
+            Filename = fileName,
+            ContentType = request.Imagem.ContentType
         });
         await _context.SaveChangesAsync();
 
@@ -1384,7 +1386,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             if (imagensTipo.Count == 0)
                 return NoContent();
 
-            var imagensResponseTipo = new List<string>();
+            var imagensResponseTipo = new List<GetImagensProntuarioResponse>();
             foreach (var imagem in imagensTipo)
             {
                 var imagemPath = Path.Combine(Directory.GetCurrentDirectory(), imagem.Path);
@@ -1393,17 +1395,24 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
                 var imagemBytes = File.ReadAllBytes(imagemPath);
                 var base64String = Convert.ToBase64String(imagemBytes);
-                imagensResponseTipo.Add(base64String);
+                imagensResponseTipo.Add(new()
+                {
+                    IdImagem = imagem.Id,
+                    TipoImagem = imagem.TipoImagem,
+                    ContentType = imagem.ContentType,
+                    Filename = imagem.Filename,
+                    Imagem = base64String,
+                });
             }
 
-            return Ok(imagensResponseTipo);
+            return Ok(new { Imagens = imagensResponseTipo });
         }
 
         var imagens = await _context.ImagensProntuarios.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
         if(imagens.Count == 0)
             return NoContent();
 
-        var imagensResponse = new List<string>();
+        var imagensResponse = new List<GetImagensProntuarioResponse>();
         foreach(var imagem in imagens)
         {
             var imagemPath = Path.Combine(Directory.GetCurrentDirectory(), imagem.Path);
@@ -1412,10 +1421,17 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
             var imagemBytes = File.ReadAllBytes(imagemPath);
             var base64String = Convert.ToBase64String(imagemBytes);
-            imagensResponse.Add(base64String);
+            imagensResponse.Add(new()
+            {
+                IdImagem = imagem.Id,
+                TipoImagem = imagem.TipoImagem,
+                ContentType = imagem.ContentType,
+                Filename = imagem.Filename,
+                Imagem = base64String,
+            });
         }
 
-        return Ok(imagensResponse);
+        return Ok(new { Imagens = imagensResponse });
     }
 
 }
