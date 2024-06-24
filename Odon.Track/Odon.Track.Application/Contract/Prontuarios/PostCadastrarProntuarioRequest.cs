@@ -5,21 +5,6 @@ namespace Odon.Track.Application.Contract.Prontuarios;
 
 public class PostCadastrarProntuarioRequest
 {
-    public PostCadastrarProntuarioRequest()
-    {
-        HistoriaMedicaPregressaEAtual = new();
-        UsoMedicamentos = new();
-        HistoriaFamiliar = new();
-        TendenciasHereditarias = new();
-        Habitos = new();
-        HabitoHigieneBucal = new();
-        DescricaoDente = new();
-        DiagnosticosDente = new();
-        ExameFisico = new();
-        Endodontia = new();
-        Curativos = new();
-    }
-
     [JsonIgnore]
     public int? IdProntuario { get; set; } = null;
     public int? IdPaciente { get; set; } = null;
@@ -29,17 +14,17 @@ public class PostCadastrarProntuarioRequest
     public string RestauracaoDefinitivaDoDente { get; set; } = null;
     public int? NumeroDeSessoesRealizadas { get; set; } = null;
     public string PlanoCronologicoTratamento { get; set; } = null;
-    public HistoriaMedicaPregressaEAtual HistoriaMedicaPregressaEAtual { get; set; } = null;
-    public UsoMedicamentos UsoMedicamentos { get; set; } = null;
-    public HistoriaFamiliar HistoriaFamiliar { get; set; } = null;
-    public TendenciasHereditarias TendenciasHereditarias { get; set; } = null;
-    public Habitos Habitos { get; set; } = null;
-    public HabitoHigieneBucal HabitoHigieneBucal { get; set; } = null;
-    public DescricaoDente DescricaoDente { get; set; } = null;
-    public DiagnosticosDente DiagnosticosDente { get; set; } = null;
-    public ExameFisico ExameFisico { get; set; } = null;
-    public List<Endodontia> Endodontia { get; set; } = null;
-    public Curativos Curativos { get; set; } = null;
+    public HistoriaMedicaPregressaEAtual HistoriaMedicaPregressaEAtual { get; set; } = new();
+    public UsoMedicamentos UsoMedicamentos { get; set; } = new();
+    public HistoriaFamiliar HistoriaFamiliar { get; set; } = new();
+    public TendenciasHereditarias TendenciasHereditarias { get; set; } = new();
+    public Habitos Habitos { get; set; } = new();
+    public HabitoHigieneBucal HabitoHigieneBucal { get; set; } = new();
+    public DescricaoDente DescricaoDente { get; set; } = new();
+    public DiagnosticosDente DiagnosticosDente { get; set; } = new();
+    public ExameFisico ExameFisico { get; set; } = new();
+    public List<Endodontia> Endodontia { get; set; } = new();
+    public Curativos Curativos { get; set; } = new();
 
 }
 
@@ -130,12 +115,8 @@ public class ExsudatoNosCanais
 }
 
 public class ExameRadiografico
-{
-    public ExameRadiografico()
-    {
-        RegiaoPeriapical = new();
-    }
-    public RegiaoPeriapical RegiaoPeriapical { get; set; } = null;
+{ 
+    public RegiaoPeriapical RegiaoPeriapical { get; set; } = new();
 }
 
 public class RegiaoPeriapical
@@ -173,18 +154,12 @@ public class TesteDePercussao
 
 public class DiagnosticosDente
 {
-    public DiagnosticosDente()
-    {
-        Gengivite = new Dentes();
-        PeriodontiteLeve = new Dentes();
-        PeriodontiteGrave = new Dentes();
-        EComplicada = new Dentes();
-    }
-    public Dentes Gengivite { get; set; }
-    public Dentes PeriodontiteLeve { get; set; }
-    public Dentes PeriodontiteGrave { get; set; }
-    public Dentes EComplicada { get; set; }
-    public string Observacoes { get; set; }
+
+    public Dentes Gengivite { get; set; } = new();
+    public Dentes PeriodontiteLeve { get; set; } = new();
+    public Dentes PeriodontiteGrave { get; set; } = new();
+    public Dentes EComplicada { get; set; } = new();
+    public string Observacoes { get; set; } = null;
 }
 
 public enum ETipoDiagnostico
@@ -339,35 +314,19 @@ public class UsoMedicamentos
 
 public class HistoriaMedicaPregressaEAtual
 {
-    public HistoriaMedicaPregressaEAtual()
-    {
-        DoencaInfancia = new();
-        DistubiosCardiovasculares = new();
-        DistubiosGenitourinarias = new();
-        DisturbiosGastrointestinais = new();
-        DistubiosRespiratorios = new();
-        DistubiosEndocrinos = new();
-        DisturbiosNeurologicos = new();
-        DisturbiosHematologicos = new();
-        DisturbiosPsiquiatricos = new();
-        DisturbiosArticulacoesOuOssos = new();
-        DisturbiosArticulacaoTemporamandibular = new();
-        DoencaTransmissiveis = new();
-        Alergias = new();
-    }
-    public DoencaInfancia DoencaInfancia { get; set; } = null;
-    public DistubiosCardiovasculares DistubiosCardiovasculares { get; set; } = null;
-    public DistubiosGenitourinarias DistubiosGenitourinarias { get; set; } = null;
-    public DisturbiosGastrointestinais DisturbiosGastrointestinais { get; set; } = null;
-    public DistubiosRespiratorios DistubiosRespiratorios { get; set; } = null;
-    public DistubiosEndocrinos DistubiosEndocrinos { get; set; } = null;
-    public DisturbiosNeurologicos DisturbiosNeurologicos { get; set; } = null;
-    public DisturbiosHematologicos DisturbiosHematologicos { get; set; } = null;
-    public DisturbiosPsiquiatricos DisturbiosPsiquiatricos { get; set; } = null;
-    public DisturbiosArticulacoesOuOssos DisturbiosArticulacoesOuOssos { get; set; } = null;
-    public DisturbiosArticulacaoTemporamandibular DisturbiosArticulacaoTemporamandibular { get; set; } = null;
-    public DoencaTransmissiveis DoencaTransmissiveis { get; set; } = null;
-    public Alergias Alergias { get; set; } = null;
+    public DoencaInfancia DoencaInfancia { get; set; } = new();
+    public DistubiosCardiovasculares DistubiosCardiovasculares { get; set; } = new();
+    public DistubiosGenitourinarias DistubiosGenitourinarias { get; set; } = new();
+    public DisturbiosGastrointestinais DisturbiosGastrointestinais { get; set; } = new();
+    public DistubiosRespiratorios DistubiosRespiratorios { get; set; } = new();
+    public DistubiosEndocrinos DistubiosEndocrinos { get; set; } = new();
+    public DisturbiosNeurologicos DisturbiosNeurologicos { get; set; } = new();
+    public DisturbiosHematologicos DisturbiosHematologicos { get; set; } = new();
+    public DisturbiosPsiquiatricos DisturbiosPsiquiatricos { get; set; } = new();
+    public DisturbiosArticulacoesOuOssos DisturbiosArticulacoesOuOssos { get; set; } = new();
+    public DisturbiosArticulacaoTemporamandibular DisturbiosArticulacaoTemporamandibular { get; set; } = new();
+    public DoencaTransmissiveis DoencaTransmissiveis { get; set; } = new();
+    public Alergias Alergias { get; set; } = new();
 }
 
 public class DisturbiosGastrointestinais
@@ -415,13 +374,9 @@ public class DistubiosRespiratorios
 
 public class DistubiosGenitourinarias
 {
-    public DistubiosGenitourinarias()
-    {
-        DoencasRenais = new();
-    }
     public bool? InfeccoesTratoUrinario { get; set; } = null;
     public bool? DoencasGionecologicas { get; set; } = null;
-    public DoencasRenais DoencasRenais { get; set; } = null;
+    public DoencasRenais DoencasRenais { get; set; } = new();
     public string Outras { get; set; } = null;
 }
 
