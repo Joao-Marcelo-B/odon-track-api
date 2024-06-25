@@ -42,6 +42,7 @@ public partial class OdontrackContext : DbContext
     public virtual DbSet<ProntuarioStatus> ProntuarioStatuses { get; set; }
 
     public virtual DbSet<ReavaliacaoAnamnese> ReavaliacaoAnamneses { get; set; }
+    public virtual DbSet<ProntuarioAssinaturaUsuario> ProntuarioAssinaturaUsuario { get; set; }
 
     public virtual DbSet<TipoUsuario> TipoUsuarios { get; set; }
 

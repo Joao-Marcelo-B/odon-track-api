@@ -110,30 +110,36 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             prontuario = new Prontuario();
             prontuario.IdPaciente = request.Paciente.Id;
             prontuario.DataCadastro = DateTime.Now;
-            prontuario.IdProntuarioStatus = 1000;
+            prontuario.IdProntuarioStatus = (usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2) ? 2000 : 1000;
 
             if(usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2)
             {
                 prontuario.IdProfessorVinculado = professor.Id;
-                prontuario.AssinadoProfessor = 1;
                 prontuario.IdProntuarioStatus = 2000;
             }
             else
+            {
                 prontuario.IdEstudanteVinculado = estudante.Id;
+                await InsertHistoryAssinaturaProntuario(idUsuario, prontuario.Id);
+            }
 
             await _context.Prontuarios.AddAsync(prontuario);
             await _context.SaveChangesAsync();
         }
 
-        if (prontuario != null && prontuario.AssinadoProfessor == 0 && (usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2))
+        if (prontuario != null && (usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2))
         {
             prontuario.IdProfessorVinculado = professor.Id;
-            prontuario.AssinadoProfessor = 1;
             prontuario.IdProntuarioStatus = 2000;
+            await InsertHistoryAssinaturaProntuario(idUsuario, prontuario.Id);
         } else
         {
-            if(prontuario != null)
+            if(prontuario != null && estudante != null)
+            {
                 prontuario.IdEstudanteVinculado = estudante.Id;
+                await InsertHistoryAssinaturaProntuario(idUsuario, prontuario.Id);
+            }
+
         }
         await _context.SaveChangesAsync();
 
@@ -156,6 +162,17 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         await _context.SaveChangesAsync();
 
         return Updated();
+    }
+
+    public async Task InsertHistoryAssinaturaProntuario(int idUsuario, int idProntuario)
+    {
+        await _context.ProntuarioAssinaturaUsuario.AddAsync(new()
+        {
+            IdProntuario = idProntuario,
+            IdUsuario = idUsuario
+        });
+
+        await _context.SaveChangesAsync();
     }
 
     private async Task InsertReavaliacaoAnamnese(List<ReavaliacaoDeAnamnese> reavaliacaoDeAnamneses, int idProntuario, int? idEstudante = null, int? idProfessor = null, bool isProf = false)

@@ -11,7 +11,6 @@ public partial class Prontuario
     [Column("id_professor_vinculado")] public int? IdProfessorVinculado { get; set; } = null;
     [Column("id_estudante_vinculado")] public int? IdEstudanteVinculado { get; set; } = null;
     [Column("id_prontuario_status")] public int? IdProntuarioStatus { get; set; } = null;
-    [Column("assinado_professor")] public int? AssinadoProfessor { get; set; } = null;
     [Column("data_cadastro")] public DateTime? DataCadastro { get; set; } = null;
     [Column("queixa_principal")] public string QueixaPrincipal { get; set; } = null;
     [Column("historia_doenca_atual")] public string HistoriaDoencaAtual { get; set; } = null;
