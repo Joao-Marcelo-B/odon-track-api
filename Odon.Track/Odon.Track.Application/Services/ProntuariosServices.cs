@@ -129,7 +129,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         }
         await _context.SaveChangesAsync();
 
-        if (request.IdProntuario == 0 && prontuario != null)
+        if (request.IdProntuario == null || request.IdProntuario == 0 && prontuario != null)
             return BadRequest(OdonTrackErrors.ProntuarioJaExiste);
 
         Prontuario updateDataProntuario = InsertDataProntuario(request);
