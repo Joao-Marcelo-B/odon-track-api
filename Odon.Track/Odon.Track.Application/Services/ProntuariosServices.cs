@@ -1184,6 +1184,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                 TerminoTratamento = endo.TerminoTratamento,
                 NumeroDeSessoesRealizadas = endo.NumeroDeSessoesRealizadas,
                 RestauracaoDefinitivaDoDente = endo.RestauracaoDefinitivaDoDente,
+                Observacoes = endo.Observacoes,
                 Curativos = new()
                 {
                     PrimeiraSessao = endo.CurativoSessao1,
