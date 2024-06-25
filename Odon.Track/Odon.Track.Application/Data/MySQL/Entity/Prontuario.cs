@@ -87,10 +87,7 @@ public partial class Prontuario
     [Column("quais_medicamentos")] public string QuaisMedicamentos { get; set; } = null;
     [Column("outras_alergias")] public string OutrasAlergias { get; set; } = null;
     [Column("faz_uso_de_medicamentos")] public int? FazUsoDeMedicamentos { get; set; } = null;
-    [Column("nome_comercial")] public string NomeComercial { get; set; } = null;
-    [Column("nome_generico")] public string NomeGenerico { get; set; } = null;
-    [Column("dosagem")] public string Dosagem { get; set; } = null;
-    [Column("frequencia_uso")] public string FrequenciaUso { get; set; } = null;
+    [Column("descricao_medicamentos")] public string DescricaoMedicamentos { get; set; } = null;
     [Column("visitas_medicas")] public string VisitasMedicas { get; set; } = null;
     [Column("hospitalizacoes")] public string Hospitalizacoes { get; set; } = null;
     [Column("observacoes")] public string Observacoes { get; set; } = null;

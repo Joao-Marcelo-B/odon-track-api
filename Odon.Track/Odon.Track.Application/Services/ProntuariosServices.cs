@@ -581,10 +581,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             QuaisMedicamentos = request.HistoriaMedicaPregressaEAtual.Alergias.QuaisMedicamentos,
             OutrasAlergias = request.HistoriaMedicaPregressaEAtual.Alergias.Outras,
             FazUsoDeMedicamentos = request.UsoMedicamentos.FazUsoDeMedicamentos.ConvertBoolForIntNull(),
-            NomeComercial = request.UsoMedicamentos.NomeComercial,
-            NomeGenerico = request.UsoMedicamentos.NomeGenerico,
-            Dosagem = request.UsoMedicamentos.Dosagem,
-            FrequenciaUso = request.UsoMedicamentos.FrequenciaUso,
+            DescricaoMedicamentos = request.UsoMedicamentos.DescricaoMedicamentos,
             Pai = request.HistoriaFamiliar.Pai,
             Mae = request.HistoriaFamiliar.Mae,
             Irmaos = request.HistoriaFamiliar.Irmaos,
@@ -1420,10 +1417,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             UsoMedicamentos = new UsoMedicamentos
             {
                 FazUsoDeMedicamentos = prontuario.FazUsoDeMedicamentos.ConvertIntNullForBool(),
-                NomeComercial = prontuario.NomeComercial,
-                NomeGenerico = prontuario.NomeGenerico,
-                Dosagem = prontuario.Dosagem,
-                FrequenciaUso = prontuario.FrequenciaUso,
+                DescricaoMedicamentos = prontuario.DescricaoMedicamentos,
                 VisitasMedicas = prontuario.VisitasMedicas,
                 Hospitalizacoes = prontuario.Hospitalizacoes,
                 Observacoes = prontuario.Observacoes,

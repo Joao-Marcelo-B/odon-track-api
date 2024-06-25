@@ -315,10 +315,7 @@ public class TendenciasHereditarias
 public class UsoMedicamentos
 {
     public bool? FazUsoDeMedicamentos { get; set; } = null;
-    public string NomeComercial { get; set; } = null;
-    public string NomeGenerico { get; set; } = null;
-    public string Dosagem { get; set; } = null;
-    public string FrequenciaUso { get; set; } = null;
+    public string DescricaoMedicamentos { get; set; } = null;
     public string VisitasMedicas { get; set; } = null;
     public string Hospitalizacoes { get; set; } = null;
     public string Observacoes { get; set; } = null;
