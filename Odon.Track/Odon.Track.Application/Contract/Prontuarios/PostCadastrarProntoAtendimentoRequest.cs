@@ -42,6 +42,7 @@ public partial class PostProntuarioProntoAtendimentoRequest
     public string Diagnostico { get; set; } = null!;
     public string CidadeFichaFeita { get; set; } = null!;
     public DateTime DataFichaFeita { get; set; }
+    public string Status { get; set; } = "Pendente";
     public List<CondutaProntoAtendimento> CondutaProntoAtendimentos { get; set; } = new List<CondutaProntoAtendimento>();
 }
 

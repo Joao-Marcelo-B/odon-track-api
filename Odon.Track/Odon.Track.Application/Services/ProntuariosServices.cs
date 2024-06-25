@@ -94,7 +94,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             return BadRequest(OdonTrackErrors.PacienteNotFound);
 
         var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.Id.Equals(idUsuario));
-        if(usuario == null)
+        if (usuario == null)
             return BadRequest(OdonTrackErrors.UsuarioNotFound);
 
         var estudante = await _context.Estudantes.FirstOrDefaultAsync(x => x.IdUsuario.Equals(idUsuario));
@@ -112,7 +112,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             prontuario.DataCadastro = DateTime.Now;
             prontuario.IdProntuarioStatus = (usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2) ? 2000 : 1000;
 
-            if(usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2)
+            if (usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2)
             {
                 prontuario.IdProfessorVinculado = professor.Id;
                 prontuario.IdProntuarioStatus = 2000;
@@ -132,9 +132,10 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             prontuario.IdProfessorVinculado = professor.Id;
             prontuario.IdProntuarioStatus = 2000;
             await InsertHistoryAssinaturaProntuario(idUsuario, prontuario.Id);
-        } else
+        }
+        else
         {
-            if(prontuario != null && estudante != null)
+            if (prontuario != null && estudante != null)
             {
                 prontuario.IdEstudanteVinculado = estudante.Id;
                 await InsertHistoryAssinaturaProntuario(idUsuario, prontuario.Id);
@@ -153,8 +154,8 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         await InsertDiagnosticoDente(request.DiagnosticosDente, prontuario.Id);
 
-        if(estudante == null)
-            await InsertReavaliacaoAnamnese(request.ReavaliacaoAnamnese, prontuario.Id,null, professor.Id,(usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2));
+        if (estudante == null)
+            await InsertReavaliacaoAnamnese(request.ReavaliacaoAnamnese, prontuario.Id, null, professor.Id, (usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2));
         else
             await InsertReavaliacaoAnamnese(request.ReavaliacaoAnamnese, prontuario.Id, estudante.Id, null, (usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2));
 
@@ -211,10 +212,11 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                     TemperaturaAxilar = reavaliacao.TemperaturaAxilar
                 };
                 await _context.ReavaliacaoAnamneses.AddAsync(reavaliacaoAnamnese);
-            } else
+            }
+            else
             {
                 reavaliacaoAnamnese = await _context.ReavaliacaoAnamneses.FirstOrDefaultAsync(x => x.Id.Equals(reavaliacao.Id));
-                if(reavaliacaoAnamnese == null)
+                if (reavaliacaoAnamnese == null)
                 {
                     reavaliacaoAnamnese = new()
                     {
@@ -238,7 +240,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
     private async Task UpdateEndodontia(PostCadastrarProntuarioRequest request, int idProntuario)
     {
-        if(request.Endodontia == null || request.Endodontia.Count <= 0)
+        if (request.Endodontia == null || request.Endodontia.Count <= 0)
             return;
 
         var idsExcluir = await DeleteEndodontia(request.Endodontia, idProntuario);
@@ -258,10 +260,11 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                     Dente = endo.Dente
                 };
                 await _context.Endodontias.AddAsync(endodontia);
-            } else
+            }
+            else
             {
                 endodontia = await _context.Endodontias.FirstOrDefaultAsync(x => x.Id.Equals(endo.Id));
-                if(endodontia == null)
+                if (endodontia == null)
                 {
                     endodontia = new EndodontiaEntity
                     {
@@ -269,7 +272,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                         Dente = endo.Dente
                     };
                     await _context.Endodontias.AddAsync(endodontia);
-                } 
+                }
             }
             await _context.SaveChangesAsync();
 
@@ -326,8 +329,8 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                          Retorno = r,
                          IdEndodontia = e == null ? null : e.Id
                      };
-        
-        foreach(var retornoValid in result)
+
+        foreach (var retornoValid in result)
             if (retornoValid.IdEndodontia == null)
                 _context.RetornosEntity.Remove(retornoValid.Retorno);
 
@@ -465,7 +468,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
     private async Task InsertDiagnosticoDente(DiagnosticosDente diagnosticosDente, int idProntuario)
     {
-        if(diagnosticosDente == null)
+        if (diagnosticosDente == null)
             return;
 
         if (diagnosticosDente.Gengivite == null ||
@@ -476,7 +479,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         Type typeDiag = typeof(DiagnosticosDente);
         foreach (var property in typeDiag.GetProperties())
-        {                
+        {
             switch (property.Name)
             {
                 case nameof(ETipoDiagnostico.Gengivite):
@@ -491,10 +494,10 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                 case nameof(ETipoDiagnostico.EComplicada):
                     await InsertDiagnostigoDenteTipo(property.Name, idProntuario, diagnosticosDente.EComplicada);
                     break;
-            }   
+            }
         }
 
-        
+
     }
 
     private async Task InsertDiagnostigoDenteTipo(string tipo, int idProntuario, Dentes dentes)
@@ -518,7 +521,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             if (denteCheck)
                 checks += property.Name + ",";
         }
-        if(checks.Length > 1)
+        if (checks.Length > 1)
             checks = checks.Remove(checks.Length - 1);
         diagnosticoDentes.Dentes = checks;
 
@@ -557,7 +560,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         await _context.SaveChangesAsync();
     }
-    
+
     private Prontuario InsertDataProntuario(PostCadastrarProntuarioRequest request)
     {
         var prontuario = new Prontuario
@@ -700,7 +703,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
     private EndodontiaEntity InsertDataEndodontia(Endodontia endo)
     {
         var endodontia = new EndodontiaEntity()
-{
+        {
             Dente = endo.Dente,
             NumeroCanais = endo.NumeroDeCanais,
             DiagnosticoPulparNormal = endo.ExameClinico.DiagnosticoPulpar.Normal.ConvertBoolForIntNull(),
@@ -921,7 +924,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
     {
         var triagem = await _context.Triagens.FirstOrDefaultAsync(x => x.Id == id);
 
-        if(triagem == null)
+        if (triagem == null)
             return BadRequest(OdonTrackErrors.TriagemNotFound);
         var paciente = await _context.Pacientes.FirstOrDefaultAsync(x => x.Id == triagem.IdPaciente);
         var professor = await _context.Professors.FirstOrDefaultAsync(x => x.Id == triagem.IdProfessorAssinatura);
@@ -932,7 +935,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         var horarios = await _context.HorariosDisponiveisAtendimento.FirstOrDefaultAsync(x => x.IdTriagem == id);
 
 
-        GetTriagemResponse response =  new GetTriagemResponse();
+        GetTriagemResponse response = new GetTriagemResponse();
         response.Paciente = new Pessoa();
         response.Professor = new Pessoa();
         response.Estudante = new Pessoa();
@@ -952,7 +955,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         response.Estudante.Nome = estudante != null ? estudante.Nome : "";
         response.Status = triagem.Status.ToString();
 
-        foreach(var item in tratamentos)
+        foreach (var item in tratamentos)
         {
             response.Tratamentos.Add(new Tratamento()
             {
@@ -968,7 +971,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                 Descricao = "7:30"
             });
 
-        if(horarios.NoveMeia == 1)
+        if (horarios.NoveMeia == 1)
             response.HorariosDisponiveisAtendimento.Add(new Horarios()
             {
                 Id = "nove_meia",
@@ -992,170 +995,165 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         return Ok(response);
     }
 
-        public async Task<IActionResult> GetProntoAtendimento(int pageNumber, int pageSize, string nomePaciente)
-        {
-            // Construindo a consulta base
-            var query = _context.ProntuarioProntoAtendimentos
-                                .OrderByDescending(x => x.Id)
-                                // .Include(x => x.EstudanteVinculado)
-                                .Include(x => x.CondutaProntoAtendimentos)
-                                .Include(x => x.ProfessorVinculado)
-                                .Include(x => x.Paciente)
-                                .AsQueryable();
+    public async Task<IActionResult> GetProntoAtendimento(int pageNumber, int pageSize, string nomePaciente)
+    {
+        var query = _context.ProntuarioProntoAtendimentos
+                            .OrderByDescending(x => x.Id)
+                            .Include(x => x.EstudanteVinculado)
+                            .Include(x => x.CondutaProntoAtendimentos)
+                            .Include(x => x.ProfessorVinculado)
+                            .Include(x => x.Paciente)
+                            .AsQueryable();
 
-        // Aplicando o filtro de nome do paciente, se fornecido
         if (!string.IsNullOrEmpty(nomePaciente))
         {
             query = query.Where(x => x.Paciente.Nome.Contains(nomePaciente));
         }
 
-        // Obtendo o número total de pronto atendimentos (para paginação)
         var prontoAtendimentosCount = await query.CountAsync();
 
-        // Aplicando paginação
         var prontoAtendimentos = await query
                                         .Skip((pageNumber - 1) * pageSize)
                                         .Take(pageSize)
                                         .ToListAsync();
 
-            // Selecionando os campos desejados para a resposta
-            var response = prontoAtendimentos.Select(x => new
-            {
-                x.Id,
-                DataCadastro = x.DataFichaFeita,
-                NomePaciente = x.Paciente.Nome,
-                NomeEstudante = "--", // x.EstudanteVinculado != null ? x.EstudanteVinculado.Nome : "--",
-                NomeProfessor = x.ProfessorVinculado != null ? x.ProfessorVinculado.Nome : "--",
-                Status = "1",
-                Conduta = x.CondutaProntoAtendimentos
-                
-            });
+        var response = prontoAtendimentos.Select(x => new
+        {
+            x.Id,
+            DataCadastro = x.DataFichaFeita,
+            NomePaciente = x.Paciente.Nome,
+            NomeEstudante = x.EstudanteVinculado != null ? x.EstudanteVinculado.Nome : "--",
+            NomeProfessor = x.ProfessorVinculado != null ? x.ProfessorVinculado.Nome : "--",
+            Status = x.Status,
+            Conduta = x.CondutaProntoAtendimentos
 
-        // Retornando a resposta com os resultados paginados e a contagem total
+        });
+
         return Ok(new { ProntoAtendimentos = response, Count = prontoAtendimentosCount });
     }
 
-        public async Task<IActionResult> PostCadastrarProntoAtendimento(PostProntuarioProntoAtendimentoRequest request, int idUsuario)
+    public async Task<IActionResult> GetProntoAtendimentoById(int id)
+    {
+
+        return Ok();
+    }
+
+    public async Task<IActionResult> PostCadastrarProntoAtendimento(PostProntuarioProntoAtendimentoRequest request, int idUsuario)
+    {
+        ProntuarioProntoAtendimento prontoAtendimento = new();
+        var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == idUsuario);
+        if (usuario == null)
+            return BadRequest("Id do usuário inválido.");
+        string tipoUsuario = "";
+
+        prontoAtendimento.DataFichaFeita = DateTime.Now;
+        prontoAtendimento.QueixaPrincipal = request.QueixaPrincipal;
+        prontoAtendimento.HistoriaMolestiaAtual = request.HistoriaMolestiaAtual;
+        prontoAtendimento.JaTomouAnestesiaOdontologica = request.JaTomouAnestesiaOdontologica;
+        prontoAtendimento.TeveAlgumaReacaoIndesejavel = request.TeveAlgumaReacaoIndesejavel;
+        prontoAtendimento.EstaSobTratamentoMedico = request.EstaSobTratamentoMedico;
+        prontoAtendimento.MotivoTratamentoMedico = request.MotivoTratamentoMedico;
+        prontoAtendimento.EstaTomandoAlgumMedicamento = request.EstaTomandoAlgumMedicamento;
+        prontoAtendimento.QualMedicamentoSubstancia = request.QualMedicamentoSubstancia;
+        prontoAtendimento.EDiabetico = request.EDiabetico;
+        prontoAtendimento.EstaGravida = request.EstaGravida;
+        prontoAtendimento.SofreDisturbiosCardiovasculares = request.SofreDisturbiosCardiovasculares;
+        prontoAtendimento.QualDisturbioCardiovascular = request.QualDisturbioCardiovascular;
+        prontoAtendimento.TemHipertensao = request.TemHipertensao;
+        prontoAtendimento.FazUsoProteseCardiaca = request.FazUsoProteseCardiaca;
+        prontoAtendimento.OutrosDisturbiosCardiovascular = request.OutrosDisturbiosCardiovascular;
+        prontoAtendimento.ApresentaHistoriaHemorragia = request.ApresentaHistoriaHemorragia;
+        prontoAtendimento.ApresentaHistoriaFebreReumatica = request.ApresentaHistoriaFebreReumatica;
+        prontoAtendimento.Bronquite = request.Bronquite;
+        prontoAtendimento.Asma = request.Asma;
+        prontoAtendimento.OutrosDisturbiosRespiratorios = request.OutrosDisturbiosRespiratorios;
+        prontoAtendimento.SofreDisturbioGastroIntestinal = request.SofreDisturbioGastroIntestinal;
+        prontoAtendimento.Gastrite = request.Gastrite;
+        prontoAtendimento.Ulcera = request.Ulcera;
+        prontoAtendimento.Hepatite = request.Hepatite;
+        prontoAtendimento.Cirrose = request.Cirrose;
+        prontoAtendimento.TeveDoencaInfectoContagiosa = request.TeveDoencaInfectoContagiosa;
+        prontoAtendimento.QualDoencaInfectoContagiosa = request.QualDoencaInfectoContagiosa;
+        prontoAtendimento.ExisteDoencaPredominanteFamilia = request.ExisteDoencaPredominanteFamilia;
+        prontoAtendimento.QualDoencaPredominante = request.QualDoencaPredominante;
+        prontoAtendimento.OutrasInformacoesHabitosVicios = request.OutrasInformacoesHabitosVicios;
+        prontoAtendimento.Observacoes = request.Observacoes;
+        prontoAtendimento.PressaoArterialMmMmHg = request.PressaoArterialMmMmHg;
+        prontoAtendimento.Diagnostico = request.Diagnostico;
+        prontoAtendimento.IdPaciente = request.Paciente.IdPaciente;
+        prontoAtendimento.AlergiaAlgumMedicamentoSubstancia = request.AlergiaAlgumMedicamentoSubstancia;
+        prontoAtendimento.QualMedicamentoSubstancia = request.QualMedicamentoSubstancia;
+
+        await _context.ProntuarioProntoAtendimentos.AddAsync(prontoAtendimento);
+        await _context.SaveChangesAsync();
+
+        var ultimoProntoAtendimento = await _context.ProntuarioProntoAtendimentos
+            .OrderByDescending(cpa => cpa.Id)
+            .FirstOrDefaultAsync();
+
+        int idUltimoProntoAtendimento;
+
+        if (ultimoProntoAtendimento != null)
+            idUltimoProntoAtendimento = ultimoProntoAtendimento.Id;
+        else
+            idUltimoProntoAtendimento = 1;
+
+        List<CondutaProntoAtendimento> lista = new();
+
+        foreach (var item in request.CondutaProntoAtendimentos)
         {
-            ProntuarioProntoAtendimento prontoAtendimento = new();
-            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == idUsuario);
-            if (usuario == null)
-                return BadRequest("Id do usuário inválido.");
-            string tipoUsuario = "";
-         
-            prontoAtendimento.DataFichaFeita = DateTime.Now;
-            prontoAtendimento.QueixaPrincipal = request.QueixaPrincipal;
-            prontoAtendimento.HistoriaMolestiaAtual = request.HistoriaMolestiaAtual;
-            prontoAtendimento.JaTomouAnestesiaOdontologica = request.JaTomouAnestesiaOdontologica;
-            prontoAtendimento.TeveAlgumaReacaoIndesejavel = request.TeveAlgumaReacaoIndesejavel;
-            prontoAtendimento.EstaSobTratamentoMedico = request.EstaSobTratamentoMedico;
-            prontoAtendimento.MotivoTratamentoMedico = request.MotivoTratamentoMedico;
-            prontoAtendimento.EstaTomandoAlgumMedicamento = request.EstaTomandoAlgumMedicamento;
-            prontoAtendimento.QualMedicamentoSubstancia = request.QualMedicamentoSubstancia;
-            prontoAtendimento.EDiabetico = request.EDiabetico;
-            prontoAtendimento.EstaGravida = request.EstaGravida;
-            prontoAtendimento.SofreDisturbiosCardiovasculares = request.SofreDisturbiosCardiovasculares;
-            prontoAtendimento.QualDisturbioCardiovascular = request.QualDisturbioCardiovascular;
-            prontoAtendimento.TemHipertensao = request.TemHipertensao;
-            prontoAtendimento.FazUsoProteseCardiaca = request.FazUsoProteseCardiaca;
-            prontoAtendimento.OutrosDisturbiosCardiovascular = request.OutrosDisturbiosCardiovascular;
-            prontoAtendimento.ApresentaHistoriaHemorragia = request.ApresentaHistoriaHemorragia;
-            prontoAtendimento.ApresentaHistoriaFebreReumatica = request.ApresentaHistoriaFebreReumatica;
-            prontoAtendimento.Bronquite = request.Bronquite;
-            prontoAtendimento.Asma = request.Asma;
-            prontoAtendimento.OutrosDisturbiosRespiratorios = request.OutrosDisturbiosRespiratorios;
-            prontoAtendimento.SofreDisturbioGastroIntestinal = request.SofreDisturbioGastroIntestinal;
-            prontoAtendimento.Gastrite = request.Gastrite;
-            prontoAtendimento.Ulcera = request.Ulcera;
-            prontoAtendimento.Hepatite = request.Hepatite;
-            prontoAtendimento.Cirrose = request.Cirrose;
-            prontoAtendimento.TeveDoencaInfectoContagiosa = request.TeveDoencaInfectoContagiosa;
-            prontoAtendimento.QualDoencaInfectoContagiosa = request.QualDoencaInfectoContagiosa;
-            prontoAtendimento.ExisteDoencaPredominanteFamilia = request.ExisteDoencaPredominanteFamilia;
-            prontoAtendimento.QualDoencaPredominante = request.QualDoencaPredominante;
-            prontoAtendimento.OutrasInformacoesHabitosVicios = request.OutrasInformacoesHabitosVicios;
-            prontoAtendimento.Observacoes = request.Observacoes;
-            prontoAtendimento.PressaoArterialMmMmHg = request.PressaoArterialMmMmHg;
-            prontoAtendimento.Diagnostico = request.Diagnostico;
-            prontoAtendimento.IdPaciente = request.Paciente.IdPaciente;
-            prontoAtendimento.AlergiaAlgumMedicamentoSubstancia = request.AlergiaAlgumMedicamentoSubstancia;
-            prontoAtendimento.QualMedicamentoSubstancia = request.QualMedicamentoSubstancia;
-
-            await _context.ProntuarioProntoAtendimentos.AddAsync(prontoAtendimento);
-            await _context.SaveChangesAsync();
-
-            var ultimoProntoAtendimento = await _context.ProntuarioProntoAtendimentos
-                .OrderByDescending(cpa => cpa.Id)
-                .FirstOrDefaultAsync();
-
-            int idUltimoProntoAtendimento;
-
-            if (ultimoProntoAtendimento != null)
-                idUltimoProntoAtendimento = ultimoProntoAtendimento.Id;
-            else
-                idUltimoProntoAtendimento = 1;
-
-            List<CondutaProntoAtendimento> lista = new();
-                     
-            foreach (var item in request.CondutaProntoAtendimentos)
-            {
-                CondutaProntoAtendimento condutaProntoAtendimento = new();
-                condutaProntoAtendimento.ProntuarioProntoAtendimentoId = idUltimoProntoAtendimento;
-                condutaProntoAtendimento.CodSus = item.CodSus;
-                condutaProntoAtendimento.Conduta = item.Conduta;
-                lista.Add(condutaProntoAtendimento);
-            }
-
-            await _context.CondutaProntoAtendimentos.AddRangeAsync(lista);
-            await _context.SaveChangesAsync();
-
-
-            if (usuario.IdTipoUsuario == 1)
-            {
-                tipoUsuario = "administrador";
-                prontoAtendimento.ProfessorAssinou = 1;
-                var idProfessor = await _context.Professors.FirstOrDefaultAsync(p => p.IdUsuario == usuario.Id);
-                prontoAtendimento.IdProfessorVinculado = idProfessor.Id;
-                _context.ProntuarioProntoAtendimentos.Update(prontoAtendimento);
-            }
-            else if (usuario.IdTipoUsuario == 2)
-            {
-                tipoUsuario = "professor";
-                prontoAtendimento.ProfessorAssinou = 1;
-                var idProfessor = await _context.Professors.FirstOrDefaultAsync(p => p.IdUsuario == usuario.Id);
-                prontoAtendimento.IdProfessorVinculado = idProfessor.Id;
-                _context.ProntuarioProntoAtendimentos.Update(prontoAtendimento);
-            }
-            else
-            {
-                tipoUsuario = "estudante";
-                ProntuarioPmEstudante pmEstudante = new ProntuarioPmEstudante();
-                var idEsutdante = await _context.Estudantes.FirstOrDefaultAsync(e => e.IdUsuario == usuario.Id);
-                pmEstudante.EstudanteId = idEsutdante.Id;
-                pmEstudante.ProntuarioPmIdentificador = idUltimoProntoAtendimento;
-                await _context.ProntuarioPmEstudantes.AddAsync(pmEstudante);
-                prontoAtendimento.AlunoAssinou = 1;
-                _context.ProntuarioProntoAtendimentos.Update(prontoAtendimento);
-            }
-
-            await _context.SaveChangesAsync();
-            return Ok();
+            CondutaProntoAtendimento condutaProntoAtendimento = new();
+            condutaProntoAtendimento.ProntuarioProntoAtendimentoId = idUltimoProntoAtendimento;
+            condutaProntoAtendimento.CodSus = item.CodSus;
+            condutaProntoAtendimento.Conduta = item.Conduta;
+            lista.Add(condutaProntoAtendimento);
         }
 
-        public async Task<IActionResult> GetProntoAtendimento()
+        await _context.CondutaProntoAtendimentos.AddRangeAsync(lista);
+        await _context.SaveChangesAsync();
+
+
+        if (usuario.IdTipoUsuario == 1)
         {
-            var prontuarios = await _context.ProntuarioProntoAtendimentos.AnyAsync();
-            return Ok(prontuarios);
+            tipoUsuario = "administrador";
+            prontoAtendimento.ProfessorAssinou = 1;
+            var idProfessor = await _context.Professors.FirstOrDefaultAsync(p => p.IdUsuario == usuario.Id);
+            prontoAtendimento.IdProfessorVinculado = idProfessor.Id;
+            prontoAtendimento.Status = "Aprovado";
+            _context.ProntuarioProntoAtendimentos.Update(prontoAtendimento);
+        }
+        else if (usuario.IdTipoUsuario == 2)
+        {
+            tipoUsuario = "professor";
+            prontoAtendimento.ProfessorAssinou = 1;
+            var idProfessor = await _context.Professors.FirstOrDefaultAsync(p => p.IdUsuario == usuario.Id);
+            prontoAtendimento.IdProfessorVinculado = idProfessor.Id;
+            prontoAtendimento.Status = "Aprovado";
+            _context.ProntuarioProntoAtendimentos.Update(prontoAtendimento);
+        }
+        else
+        {
+            tipoUsuario = "estudante";
+            prontoAtendimento.ProfessorAssinou = 1;
+            var idEstudante = await _context.Estudantes.FirstOrDefaultAsync(e => e.IdUsuario == usuario.Id);
+            prontoAtendimento.IdEstudanteVinculado = idEstudante.Id;
+            prontoAtendimento.Status = "Pendente";
+            _context.ProntuarioProntoAtendimentos.Update(prontoAtendimento);
         }
 
+        await _context.SaveChangesAsync();
+        return Ok();
+    }
 
-        public async Task<IActionResult> GetReavaliacaoAnamnese(int idPaciente, int pageNumber, int pageSize)
-        {
-            if(idPaciente == 0)
-                return BadRequest(OdonTrackErrors.PacienteNotFound);
+
+
+    public async Task<IActionResult> GetReavaliacaoAnamnese(int idPaciente, int pageNumber, int pageSize)
+    {
+        if (idPaciente == 0)
+            return BadRequest(OdonTrackErrors.PacienteNotFound);
 
         var prontuario = await _context.Prontuarios.FirstOrDefaultAsync(x => x.IdPaciente.Equals(idPaciente));
-        if(prontuario == null)
+        if (prontuario == null)
             return BadRequest(OdonTrackErrors.ProntuarioNotFound);
 
         var reavaliacoesAnamnese = await _context.ReavaliacaoAnamneses.Where(x => x.IdProntuario.Equals(prontuario.Id))
@@ -1188,7 +1186,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             return BadRequest(OdonTrackErrors.ProntuarioNotFound);
 
         var paciente = await _context.Pacientes.FirstOrDefaultAsync(x => x.Id.Equals(prontuario.IdPaciente));
-        if(paciente == null)
+        if (paciente == null)
             return BadRequest(OdonTrackErrors.PacienteNotFound);
 
         var endodontia = await _context.Endodontias.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
@@ -1263,9 +1261,9 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
     {
         DiagnosticosDente data = new();
         var diag = diagnosticosDentes.FirstOrDefault(x => x.TipoDiagnostico.Equals("Gengivite"));
-        foreach(var dente in diag.Dentes.Split(","))
+        foreach (var dente in diag.Dentes.Split(","))
         {
-            if(string.IsNullOrEmpty(dente))
+            if (string.IsNullOrEmpty(dente))
                 continue;
 
             var property = typeof(Dentes).GetProperty(dente);
@@ -1337,7 +1335,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
     private async Task<PostCadastrarProntuarioRequest> EndodontiaData(int idProntuario, PostCadastrarProntuarioRequest data, List<EndodontiaEntity> endodontias)
     {
         data.Endodontia = new List<Endodontia>();
-        foreach(var endo in endodontias)
+        foreach (var endo in endodontias)
         {
             var endodontia = new Endodontia
             {
@@ -1406,7 +1404,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                     {
                         CondensacaoLateral = endo.CondensacaoLateral.ConvertIntNullForBool(),
                         Outra = endo.OutraTecnicaDeObturação,
-                    },  
+                    },
                     TesteDePercussao = new()
                     {
                         Insensivel = endo.Insensivel.ConvertIntNullForBool(),
@@ -1418,7 +1416,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
             var odontometria = await _context.Odontometrias.Where(x => x.IdProntuario.Equals(idProntuario) && x.IdEndodontia.Equals(endo.Id)).ToListAsync();
             endodontia.Odontometria = new List<Odontometria>();
-            foreach(var odonto in odontometria)
+            foreach (var odonto in odontometria)
             {
                 endodontia.Odontometria.Add(new Odontometria
                 {
@@ -1662,7 +1660,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
     public async Task<IActionResult> PostUploadImagem(PostUploadImagemRequest request)
     {
-        if(request.IdProntuario <= 0)
+        if (request.IdProntuario <= 0)
             return BadRequest(OdonTrackErrors.ProntuarioNotFound);
 
         if (request.Imagem == null || request.Imagem.Length <= 0)
@@ -1739,14 +1737,14 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         }
 
         var imagens = await _context.ImagensProntuarios.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
-        if(imagens.Count == 0)
+        if (imagens.Count == 0)
             return NoContent();
 
         var imagensResponse = new List<GetImagensProntuarioResponse>();
-        foreach(var imagem in imagens)
+        foreach (var imagem in imagens)
         {
             var imagemPath = Path.Combine("/app", imagem.Path);
-            if(!File.Exists(imagemPath))
+            if (!File.Exists(imagemPath))
                 continue;
 
             var imagemBytes = File.ReadAllBytes(imagemPath);

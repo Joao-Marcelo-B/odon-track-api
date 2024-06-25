@@ -11,7 +11,7 @@ namespace Odon.Track.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize(Roles = RolesForUsers.Professor + "," + RolesForUsers.Estudante)]
+    [Authorize(Roles = RolesForUsers.Administrador + "," + RolesForUsers.Professor + "," + RolesForUsers.Estudante)]
     public class ProntuariosController(ProntuariosServices _services) : ControllerBase
     {
         [HttpPost]
@@ -74,6 +74,7 @@ namespace Odon.Track.Api.Controllers
         public async Task<IActionResult> GetReavaliacaoAnamnese([FromQuery]int idPaciente, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) =>
             await _services.GetReavaliacaoAnamnese(idPaciente, pageNumber, pageSize);
 
+        [Authorize(Roles = RolesForUsers.Administrador + "," + RolesForUsers.Professor + "," + RolesForUsers.Estudante)]
         [HttpPost("pronto/atendimento")]
         public async Task<IActionResult> PostCadastrarProntoAtendimento([FromBody] PostProntuarioProntoAtendimentoRequest request) =>
             await _services.PostCadastrarProntoAtendimento(request,GetHeaderValues.GetIdUsuario(Request.HttpContext.User.Claims));
