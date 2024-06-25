@@ -235,7 +235,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         foreach (var endo in request.Endodontia)
         {
             EndodontiaEntity endodontia = null;
-            if (endo.Id > 0)
+            if (endo.Id == null || endo.Id <= 0)
             {
                 endodontia = new EndodontiaEntity
                 {
