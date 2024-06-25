@@ -17,7 +17,7 @@ namespace Odon.Track.Application.Services
             _context = context;
         }
 
-        public async Task<IActionResult> GetEstudantes()
+        public async Task<IActionResult> GetEstudantes(int mostrarInativos)
         {
             
             var estudantes = await _context.Estudantes.ToListAsync();
@@ -25,13 +25,33 @@ namespace Odon.Track.Application.Services
 
             GetEstudantesResponse estudante = new ();
             foreach (var item in estudantes)
-                estudante.Estudantes.Add(new EstudantesInfo
+            {
+                if (mostrarInativos == 1)
                 {
-                    Id = item.Id,
-                    Nome = item.Nome,
-                    PeriodoAtual = item.PeriodoAtual,
-                    Identificador = usuariosEstudantes.Find(x => x.Id ==  item.IdUsuario).IdentificadorUnifenas,
-                });
+                    estudante.Estudantes.Add(new EstudantesInfo
+                    {
+                        Id = item.Id,
+                        Nome = item.Nome,
+                        PeriodoAtual = item.PeriodoAtual,
+                        Identificador = usuariosEstudantes.Find(x => x.Id == item.IdUsuario).IdentificadorUnifenas,
+                        Ativo = item.Ativo == 1 ? true : false
+                    });
+                }
+                else if (item.Ativo == 1)
+                {
+                    estudante.Estudantes.Add(new EstudantesInfo
+                    {
+                        Id = item.Id,
+                        Nome = item.Nome,
+                        PeriodoAtual = item.PeriodoAtual,
+                        Identificador = usuariosEstudantes.Find(x => x.Id == item.IdUsuario).IdentificadorUnifenas,
+                        Ativo = item.Ativo == 1 ? true : false
+                    });
+                }
+
+                
+            }
+                
             
             return Ok(new { estudante.Estudantes });
         }
@@ -49,6 +69,7 @@ namespace Odon.Track.Application.Services
             detalhesEstudante.Identificador = usuariosEstudantes.IdentificadorUnifenas;
             detalhesEstudante.PeriodoAtual = estudante.PeriodoAtual;
             detalhesEstudante.Nome = estudante.Nome;
+            detalhesEstudante.Ativo = estudante.Ativo == 1 ? true: false;
 
             return Ok(detalhesEstudante);
         }
@@ -71,9 +92,12 @@ namespace Odon.Track.Application.Services
             var estudante = await _context.Estudantes.FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
             if (estudante == null)
                 return BadRequest(OdonTrackErrors.EstudanteNotFound);
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == estudante.IdUsuario);
 
             estudante.Nome = request.Nome;
             estudante.PeriodoAtual = request.Periodo;
+            estudante.Ativo = request.Ativo ? 1 :0;
+            usuario.Blocked = estudante.Ativo;
 
             await _context.SaveChangesAsync();
 

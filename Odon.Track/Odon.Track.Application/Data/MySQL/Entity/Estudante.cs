@@ -21,5 +21,5 @@ public class Estudante
     [ForeignKey(nameof(IdUsuario))]
     public virtual Usuario Usuario { get; set; } = null!;
     public virtual ICollection<PacienteEstudante> PacienteEstudantes { get; } = new List<PacienteEstudante>();
-    public virtual ICollection<ProntuarioPmEstudante> ProntuarioPmEstudantes { get; } = new List<ProntuarioPmEstudante>();
+    //public virtual ICollection<ProntuarioPmEstudante> ProntuarioPmEstudantes { get; } = new List<ProntuarioPmEstudante>();
 }
