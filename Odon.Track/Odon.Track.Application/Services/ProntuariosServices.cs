@@ -1781,6 +1781,173 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         return Deleted();
     }
+
+    public async Task<IActionResult> GetGrupos()
+    {
+        var grupos = await _context.Grupos.ToListAsync();
+        if (grupos.Count <= 0)
+            return NoContent();
+
+        var perguntas = await _context.Perguntas.ToListAsync();
+
+        var alternativas = await _context.Alternativas.ToListAsync();
+
+        GetGruposResponse response = new GetGruposResponse();
+        foreach(var grupo in grupos)
+        {
+            response.Grupos.Add(new()
+            {
+                Id = grupo.Id,
+                Nome = grupo.Nome,
+                DataPerguntas = GetPerguntasDoGrupo(ref perguntas, alternativas, grupo.Id)
+            });
+        }
+
+        return Ok(response);
+    }
+
+    private List<DataPerguntas> GetPerguntasDoGrupo(ref List<Perguntas> perguntas, List<Alternativas> alternativas, int idGrupo)
+    {
+        List<DataPerguntas> data = new();
+
+        var perguntasGrupo = perguntas.Where(x => x.IdGrupo.Equals(idGrupo)).ToList();
+        foreach (var pergunta in perguntasGrupo)
+        {
+            data.Add(new DataPerguntas
+            {
+                Id = pergunta.Id,
+                Pergunta = pergunta.Pergunta,
+                TipoPergunta = pergunta.TipoPergunta,
+                DataAlternativas = pergunta.TipoPergunta == "alternativa" ? GetAlternativasPergunta(ref alternativas, pergunta.Id) : new List<DataAlternativas>(),
+            });
+        }
+
+        foreach (var removePerguntas in perguntasGrupo)
+            perguntas.Remove(removePerguntas);
+
+        return data;
+    }
+
+    private List<DataAlternativas> GetAlternativasPergunta(ref List<Alternativas> alternativas, int idPergunta)
+    {
+        List<DataAlternativas> data = new();
+        var alternativasPergunta = alternativas.Where(x => x.IdPergunta.Equals(idPergunta)).ToList();
+        foreach (var alternativa in alternativasPergunta)
+        {
+            data.Add(new DataAlternativas
+            {
+                Id = alternativa.Id,
+                Alternativa = alternativa.Alternativa,
+            });
+        }
+
+        foreach (var removerAlternativas in alternativasPergunta)
+            alternativas.Remove(removerAlternativas);
+
+        return data;
+    }
+
+    public async Task<IActionResult> PostResponderQuestionario(PostResponderQuestionarioRequest request, int idUsuario)
+    {
+        if (request.IdProntuario <= 0)
+            return BadRequest(OdonTrackErrors.ProntuarioNotFound);
+
+        if(idUsuario <= 0)
+            return BadRequest(OdonTrackErrors.UsuarioNotFound);
+
+        var prontuario = await _context.Prontuarios.FirstOrDefaultAsync(x => x.Id.Equals(request.IdProntuario));
+        if (prontuario == null)
+            return BadRequest(OdonTrackErrors.ProntuarioNotFound);
+
+        foreach(var resposta in request.PerguntasAbertasRespostas)
+        {
+            var pergunta = await _context.Perguntas.FirstOrDefaultAsync(x => x.Id.Equals(resposta.IdPergunta));
+            if (pergunta == null)
+                return BadRequest(OdonTrackErrors.PerguntaNotFound);
+
+            if(pergunta.TipoPergunta != "aberta")
+                continue;
+
+            var respostaPergunta = await _context.RespostasAbertas.FirstOrDefaultAsync(x => x.IdPergunta.Equals(resposta.IdPergunta) && x.IdProntuario.Equals(prontuario.Id));
+            if(respostaPergunta == null)
+            {
+                respostaPergunta = new RespostasAbertas()
+                {
+                    IdPergunta = resposta.IdPergunta,
+                    IdProntuario = request.IdProntuario,
+                    Resposta = resposta.Resposta,
+                };
+                await _context.RespostasAbertas.AddAsync(respostaPergunta);
+            } else
+            {
+                respostaPergunta.Resposta = resposta.Resposta;
+            }  
+        }
+
+        foreach(var resposta in request.PerguntasAlternativasRespostas)
+        {
+            var pergunta = await _context.Perguntas.FirstOrDefaultAsync(x => x.Id.Equals(resposta.IdPergunta));
+            if (pergunta == null)
+                return BadRequest(OdonTrackErrors.PerguntaNotFound);
+
+            if (pergunta.TipoPergunta != "alternativa")
+                continue;
+
+            var respostaPergunta = await _context.RespostasAlternativa.FirstOrDefaultAsync(x => x.IdPergunta.Equals(resposta.IdPergunta) && x.IdProntuario.Equals(prontuario.Id) && x.IdAlternativa.Equals(resposta.IdAlternativa));
+            if(respostaPergunta == null)
+            {
+                respostaPergunta = new RespostasAlternativa()
+                {
+                    IdPergunta = resposta.IdPergunta,
+                    IdProntuario = request.IdProntuario,
+                    IdAlternativa = resposta.IdAlternativa,
+                    Checked = resposta.Checked,
+                };
+                await _context.RespostasAlternativa.AddAsync(respostaPergunta);
+            } else
+            {
+                respostaPergunta.Checked = resposta.Checked;
+            }
+        }
+
+        await _context.SaveChangesAsync();
+
+        return Updated();
+    }
+
+    public async Task<IActionResult> GetRespostasProntuario(int idProntuario)
+    {
+        var prontuario = await _context.Prontuarios.FirstOrDefaultAsync(x => x.Id.Equals(idProntuario));
+        if (prontuario == null)
+            return BadRequest(OdonTrackErrors.ProntuarioNotFound);
+
+        var respostasAbertas = await _context.RespostasAbertas.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
+        var respostasAlternativas = await _context.RespostasAlternativa.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
+
+        PostResponderQuestionarioRequest response = new();
+        response.IdProntuario = idProntuario;
+        foreach (var resposta in respostasAbertas)
+        {
+            response.PerguntasAbertasRespostas.Add(new PerguntasAbertasResposta
+            {
+                IdPergunta = resposta.IdPergunta,
+                Resposta = resposta.Resposta,
+            });
+        }
+
+        foreach (var resposta in respostasAlternativas)
+        {
+            response.PerguntasAlternativasRespostas.Add(new PerguntasAlternativasResposta
+            {
+                IdAlternativa = resposta.IdAlternativa,
+                Checked = resposta.Checked,
+                IdPergunta = resposta.IdPergunta,
+            }); 
+        }
+
+        return Ok(response);
+    }
+
 }
 
 public class RetornoDelete
