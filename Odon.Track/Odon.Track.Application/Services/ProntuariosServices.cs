@@ -1029,9 +1029,14 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         List<ReavaliacaoDeAnamnese> reavaliacoes = new();
         foreach (var reavaliacao in reavaliacaoAnamneses)
         {
+            var professor = _context.Professors.FirstOrDefault(x => x.Id == reavaliacao.IdProfessorResponsavel);
+            var estudante = _context.Estudantes.FirstOrDefault(x => x.Id == reavaliacao.IdEstudanteVinculado);
+
             reavaliacoes.Add(new ReavaliacaoDeAnamnese
             {
                 Id = reavaliacao.Id,
+                NomeProfessor = professor != null ? professor.Nome : "--",
+                NomeEstudante = estudante != null ? estudante.Nome : "--",
                 DataReavaliacao = reavaliacao.Data,
                 PressaoArterial = reavaliacao.PressaoArterial,
                 Pulso = reavaliacao.Pulso,

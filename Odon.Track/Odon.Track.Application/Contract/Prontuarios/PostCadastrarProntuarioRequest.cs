@@ -28,6 +28,8 @@ public class PostCadastrarProntuarioRequest
 public class ReavaliacaoDeAnamnese
 {
     public int Id { get; set; }
+    public string NomeProfessor { get; set; }
+    public string NomeEstudante { get; set; }
     public DateTime DataReavaliacao { get; set; }
     public string Medicamentos { get; set; } = null;
     public string Observacoes { get; set; } = null;
