@@ -89,7 +89,6 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
     public async Task<IActionResult> PostCadastrarProntuario(PostCadastrarProntuarioRequest request, int idUsuario)
     {
-        
         var paciente = await _context.Pacientes.FirstOrDefaultAsync(x => x.Id.Equals(request.Paciente.Id));
         if (paciente == null)
             return BadRequest(OdonTrackErrors.PacienteNotFound);
@@ -99,7 +98,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             return BadRequest(OdonTrackErrors.UsuarioNotFound);
 
         var prontuario = await _context.Prontuarios.FirstOrDefaultAsync(x => x.IdPaciente.Equals(request.Paciente.Id));
-        if (prontuario == null)
+        if (prontuario == null && request.IdProntuario == 0)
         {
             prontuario = new Prontuario();
             prontuario.IdPaciente = request.Paciente.Id;
@@ -114,11 +113,12 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             else
                 prontuario.IdEstudanteVinculado = idUsuario;
 
-            
-
             await _context.Prontuarios.AddAsync(prontuario);
             await _context.SaveChangesAsync();
         }
+
+        if(request.IdProntuario == 0 && prontuario != null)
+            return BadRequest(OdonTrackErrors.ProntuarioJaExiste);
 
         if (prontuario.IdProntuarioStatus == 3000)
             prontuario.IdProntuarioStatus = 1000;
@@ -203,6 +203,22 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
     private async Task InsertRetorno(int idEndodontia, List<Retorno> retornos)
     {
+        var result = from r in _context.RetornosEntity
+                     join e in _context.Endodontias on r.IdEndodontia equals e.Id into joined
+                     from e in joined.DefaultIfEmpty()
+                     where r.IdEndodontia == idEndodontia
+                     select new RetornoDelete
+                     {
+                         Retorno = r,
+                         IdEndodontia = e == null ? null : e.Id
+                     };
+        
+        foreach(var retornoValid in result)
+            if (retornoValid.IdEndodontia == null)
+                _context.RetornosEntity.Remove(retornoValid.Retorno);
+
+        await _context.SaveChangesAsync();
+
         foreach (var item in retornos)
         {
             RetornoEntity retorno = null;
@@ -1543,4 +1559,10 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         return Deleted();
     }
+}
+
+public class RetornoDelete
+{
+    public RetornoEntity Retorno { get; set; }
+    public int? IdEndodontia { get; set; }
 }

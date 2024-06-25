@@ -31,5 +31,6 @@
         public static string ImagemInvalid = "Tipo de arquivo não permitido.";
         public static string ImagemNotFound = "Imagem não existe ou não encontrada.";
         public static string ProntuarioNotFound = "Esse prontuário não foi encontrado ou não existe.";
+        public static string ProntuarioJaExiste = "Esse paciente já possui um prontuário.";
     }
 }
