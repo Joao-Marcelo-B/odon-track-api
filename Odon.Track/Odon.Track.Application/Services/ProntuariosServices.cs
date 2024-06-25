@@ -226,30 +226,38 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         if(request.Endodontia == null || request.Endodontia.Count <= 0)
             return;
 
-        List<int> idsEndos = new();
-        foreach(var endo in request.Endodontia)
-            if(endo.Id != null && endo.Id > 0)
-                idsEndos.Add(endo.Id.GetValueOrDefault());
-        
-        var endodontiaOld = await _context.Endodontias.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
-        var deleteEndodontia = endodontiaOld.Where(x => !idsEndos.Contains(x.Id)).ToList();
-        if (deleteEndodontia != null && deleteEndodontia.Count >= 0)
-            _context.Endodontias.RemoveRange(deleteEndodontia);
+        var idsExcluir = await DeleteEndodontia(request.Endodontia, idProntuario);
 
-        if(endodontiaOld != null && endodontiaOld.Count > 0)
-            _context.Endodontias.RemoveRange(endodontiaOld);
+        await DeleteOdontometriaAndRetorno(idsExcluir);
 
         await _context.SaveChangesAsync();
 
         foreach (var endo in request.Endodontia)
         {
-            EndodontiaEntity endodontia = new EndodontiaEntity
+            EndodontiaEntity endodontia = null;
+            if (endo.Id > 0)
             {
-                IdProntuario = idProntuario,
-                Dente = endo.Dente
-            };
-            await _context.Endodontias.AddAsync(endodontia);
+                endodontia = new EndodontiaEntity
+                {
+                    IdProntuario = idProntuario,
+                    Dente = endo.Dente
+                };
+                await _context.Endodontias.AddAsync(endodontia);
+            } else
+            {
+                endodontia = await _context.Endodontias.FirstOrDefaultAsync(x => x.Id.Equals(endo.Id));
+                if(endodontia == null)
+                {
+                    endodontia = new EndodontiaEntity
+                    {
+                        IdProntuario = idProntuario,
+                        Dente = endo.Dente
+                    };
+                    await _context.Endodontias.AddAsync(endodontia);
+                } 
+            }
             await _context.SaveChangesAsync();
+
 
             var updateEndodontia = InsertDataEndodontia(endo);
 
@@ -259,6 +267,37 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
             await InsertRetorno(endodontia.Id, endo.Retornos);
         }
+    }
+
+    public async Task<List<int>> DeleteEndodontia(List<Endodontia> endodontias, int idProntuario)
+    {
+        List<int> idsEndos = endodontias.Where(x => x.Id != null || x.Id > 0).Select(x => x.Id.GetValueOrDefault()).ToList();
+
+        var endodontiaOld = await _context.Endodontias.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
+        List<int> idsEndosDB = endodontiaOld.Select(x => x.Id).ToList();
+
+        List<int> idsExcluir = idsEndosDB.Where(x => !idsEndos.Contains(x)).ToList();
+
+        var deleteEndodontia = endodontiaOld.Where(x => idsExcluir.Contains(x.Id)).ToList();
+        if (deleteEndodontia != null && deleteEndodontia.Count >= 0)
+            _context.Endodontias.RemoveRange(deleteEndodontia);
+
+        await _context.SaveChangesAsync();
+
+        return idsExcluir;
+    }
+
+    public async Task DeleteOdontometriaAndRetorno(List<int> idsEndoExclud)
+    {
+        var odontometria = await _context.Odontometrias.Where(x => idsEndoExclud.Contains(x.IdEndodontia)).ToListAsync();
+        if (odontometria != null && odontometria.Count > 0)
+            _context.Odontometrias.RemoveRange(odontometria);
+
+        var retorno = await _context.RetornosEntity.Where(x => idsEndoExclud.Contains(x.IdEndodontia)).ToListAsync();
+        if (retorno != null && retorno.Count > 0)
+            _context.RetornosEntity.RemoveRange(retorno);
+
+        await _context.SaveChangesAsync();
     }
 
     private async Task InsertRetorno(int idEndodontia, List<Retorno> retornos)
