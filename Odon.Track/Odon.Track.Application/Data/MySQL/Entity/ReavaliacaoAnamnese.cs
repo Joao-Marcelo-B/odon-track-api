@@ -34,9 +34,6 @@ public partial class ReavaliacaoAnamnese
     [Column("observacoes")]
     public string Observacoes { get; set; } = null!;
 
-    [ForeignKey(nameof(IdPaciente))]
-    public Paciente Paciente{ get; set; } = null!;
-
     [ForeignKey(nameof(IdProfessorResponsavel))]
     public Professor Professor { get; set; } = null!;
 }
