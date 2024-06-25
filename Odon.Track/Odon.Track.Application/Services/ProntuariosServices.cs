@@ -195,7 +195,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         foreach (var reavaliacao in reavaliacaoDeAnamneses)
         {
             ReavaliacaoAnamnese reavaliacaoAnamnese = null;
-            if (reavaliacao.Id == 0)
+            if (reavaliacao == null || reavaliacao.Id <= 0)
             {
                 reavaliacaoAnamnese = new ReavaliacaoAnamnese
                 {
@@ -214,8 +214,23 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             } else
             {
                 reavaliacaoAnamnese = await _context.ReavaliacaoAnamneses.FirstOrDefaultAsync(x => x.Id.Equals(reavaliacao.Id));
-                if(reavaliacaoAnamnese != null && reavaliacaoAnamnese.IdProfessorResponsavel == null)
-                    reavaliacaoAnamnese.IdProfessorResponsavel = isProf ? idProfessor : null;
+                if(reavaliacaoAnamnese == null)
+                {
+                    reavaliacaoAnamnese = new()
+                    {
+                        IdProntuario = idProntuario,
+                        IdEstudanteVinculado = !isProf ? idEstudante : null,
+                        IdProfessorResponsavel = isProf ? idProfessor : null,
+                        Data = reavaliacao.DataReavaliacao,
+                        FrequenciaRespiratoria = reavaliacao.FrequenciaRespiratoria,
+                        Medicamentos = reavaliacao.Medicamentos,
+                        Observacoes = reavaliacao.Observacoes,
+                        PressaoArterial = reavaliacao.PressaoArterial,
+                        Pulso = reavaliacao.Pulso,
+                        TemperaturaAxilar = reavaliacao.TemperaturaAxilar
+                    };
+                    await _context.ReavaliacaoAnamneses.AddAsync(reavaliacaoAnamnese);
+                }
             }
         }
         await _context.SaveChangesAsync();
