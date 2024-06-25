@@ -180,9 +180,15 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         if (reavaliacaoDeAnamneses == null || reavaliacaoDeAnamneses.Count <= 0)
             return;
 
+        List<int> idsReavaliacao = new();
+        foreach (var reavaliacao in reavaliacaoDeAnamneses)
+            if (reavaliacao.Id > 0)
+                idsReavaliacao.Add(reavaliacao.Id);
+
         var reavaliacaoOld = await _context.ReavaliacaoAnamneses.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
-        if (reavaliacaoOld != null && reavaliacaoOld.Count > 0)
-            _context.ReavaliacaoAnamneses.RemoveRange(reavaliacaoOld);
+        var deleteReavaliacao = reavaliacaoOld.Where(x => !idsReavaliacao.Contains(x.Id)).ToList();
+        if (deleteReavaliacao != null && deleteReavaliacao.Count > 0)
+            _context.ReavaliacaoAnamneses.RemoveRange(deleteReavaliacao);
 
         await _context.SaveChangesAsync();
 
@@ -220,7 +226,16 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         if(request.Endodontia == null || request.Endodontia.Count <= 0)
             return;
 
+        List<int> idsEndos = new();
+        foreach(var endo in request.Endodontia)
+            if(endo.Id != null && endo.Id > 0)
+                idsEndos.Add(endo.Id.GetValueOrDefault());
+        
         var endodontiaOld = await _context.Endodontias.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
+        var deleteEndodontia = endodontiaOld.Where(x => !idsEndos.Contains(x.Id)).ToList();
+        if (deleteEndodontia != null && deleteEndodontia.Count >= 0)
+            _context.Endodontias.RemoveRange(deleteEndodontia);
+
         if(endodontiaOld != null && endodontiaOld.Count > 0)
             _context.Endodontias.RemoveRange(endodontiaOld);
 
@@ -507,8 +522,6 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             Observacoes = request.UsoMedicamentos.Observacoes,
             DadosRelevantesHistoriaMedica = request.UsoMedicamentos.DadosRelevantesHistoriaMedica,
             PlanoCronologicoTratamento = request.PlanoCronologicoTratamento,
-            RestauracaoDefinitivaDoDente = request.RestauracaoDefinitivaDoDente,
-            NumeroDeSessoesRealizadas = request.NumeroDeSessoesRealizadas,
             TeveCatapora = request.HistoriaMedicaPregressaEAtual.DoencaInfancia.Catapora.ConvertBoolForIntNull(),
             TeveCaxumba = request.HistoriaMedicaPregressaEAtual.DoencaInfancia.Caxumba.ConvertBoolForIntNull(),
             TeveSarampo = request.HistoriaMedicaPregressaEAtual.DoencaInfancia.Sarampo.ConvertBoolForIntNull(),
@@ -604,12 +617,6 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             Escovacao = request.HabitoHigieneBucal.Escovacao,
             FioDental = request.HabitoHigieneBucal.FioDental,
             EnxaguatorioBucal = request.HabitoHigieneBucal.EnxaguatorioBucal,
-            CurativoSessao1 = request.Curativos.PrimeiraSessao,
-            CurativoSessao2 = request.Curativos.SegundaSessao,
-            CurativoSessao3 = request.Curativos.TerceiraSessao,
-            CurativoSessao4 = request.Curativos.QuartaSessao,
-            CurativoSessao5 = request.Curativos.QuintaSessao,
-            CurativoSessao6 = request.Curativos.SextaSessao,
             DoouOuRecebeuSangue = request.HistoriaMedicaPregressaEAtual.DisturbiosHematologicos.DoouOuRecebeuSangue.ConvertBoolForIntNull(),
             ObservacoesDentes = request.DescricaoDente.Observacoes,
             ObservacoesDiagnosticoDentes = request.DiagnosticosDente.Observacoes,
@@ -680,6 +687,15 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             QuantidadeDeSodioAPorcentagem = endo.ExameClinico.SolucaoIrrigadora.QuantidadeDeSodioAPorcentagem,
             InicioTratamento = endo.InicioTratamento,
             TerminoTratamento = endo.TerminoTratamento,
+            CurativoSessao1 = endo.Curativos.PrimeiraSessao,
+            CurativoSessao2 = endo.Curativos.SegundaSessao,
+            CurativoSessao3 = endo.Curativos.TerceiraSessao,
+            CurativoSessao4 = endo.Curativos.QuartaSessao,
+            CurativoSessao5 = endo.Curativos.QuintaSessao,
+            CurativoSessao6 = endo.Curativos.SextaSessao,
+            NumeroDeSessoesRealizadas = endo.NumeroDeSessoesRealizadas,
+            RestauracaoDefinitivaDoDente = endo.RestauracaoDefinitivaDoDente,
+            Observacoes = endo.Observacoes
         };
 
         return endodontia;
@@ -1166,6 +1182,17 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                 NumeroDeCanais = endo.NumeroCanais,
                 InicioTratamento = endo.InicioTratamento,
                 TerminoTratamento = endo.TerminoTratamento,
+                NumeroDeSessoesRealizadas = endo.NumeroDeSessoesRealizadas,
+                RestauracaoDefinitivaDoDente = endo.RestauracaoDefinitivaDoDente,
+                Curativos = new()
+                {
+                    PrimeiraSessao = endo.CurativoSessao1,
+                    SegundaSessao = endo.CurativoSessao2,
+                    TerceiraSessao = endo.CurativoSessao3,
+                    QuartaSessao = endo.CurativoSessao4,
+                    QuintaSessao = endo.CurativoSessao5,
+                    SextaSessao = endo.CurativoSessao6,
+                },
                 ExameClinico = new()
                 {
                     DorEntreAsSessoes = endo.DorEntreAsSessoes.ConvertIntNullForBool(),
@@ -1267,8 +1294,6 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             QueixaPrincipal = prontuario.QueixaPrincipal,
             HistoriaDoencaAtual = prontuario.HistoriaDoencaAtual,
             PlanoCronologicoTratamento = prontuario.PlanoCronologicoTratamento,
-            RestauracaoDefinitivaDoDente = prontuario.RestauracaoDefinitivaDoDente,
-            NumeroDeSessoesRealizadas = prontuario.NumeroDeSessoesRealizadas,
             ExameFisico = new()
             {
                 DataPedidoAvaliacaoMedica = prontuario.DataPedidoAvaliacaoMedica,
@@ -1456,15 +1481,6 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                 Escovacao = prontuario.Escovacao,
                 FioDental = prontuario.FioDental,
                 EnxaguatorioBucal = prontuario.EnxaguatorioBucal
-            },
-            Curativos = new Curativos
-            {
-                PrimeiraSessao = prontuario.CurativoSessao1,
-                SegundaSessao = prontuario.CurativoSessao2,
-                TerceiraSessao = prontuario.CurativoSessao3,
-                QuartaSessao = prontuario.CurativoSessao4,
-                QuintaSessao = prontuario.CurativoSessao5,
-                SextaSessao = prontuario.CurativoSessao6,
             },
             DescricaoDente = new DescricaoDente
             {

@@ -7,8 +7,6 @@ public class PostCadastrarProntuarioRequest
     public string Status { get; set; } = null;
     public string QueixaPrincipal { get; set; } = null;
     public string HistoriaDoencaAtual { get; set; } = null;
-    public string RestauracaoDefinitivaDoDente { get; set; } = null;
-    public int? NumeroDeSessoesRealizadas { get; set; } = null;
     public string PlanoCronologicoTratamento { get; set; } = null;
     public HistoriaMedicaPregressaEAtual HistoriaMedicaPregressaEAtual { get; set; } = new();
     public UsoMedicamentos UsoMedicamentos { get; set; } = new();
@@ -20,7 +18,6 @@ public class PostCadastrarProntuarioRequest
     public DiagnosticosDente DiagnosticosDente { get; set; } = new();
     public ExameFisico ExameFisico { get; set; } = new();
     public List<Endodontia> Endodontia { get; set; } = new();
-    public Curativos Curativos { get; set; } = new();
     public List<ReavaliacaoDeAnamnese> ReavaliacaoAnamnese { get; set; }
 
 }
@@ -83,6 +80,10 @@ public class Endodontia
     public ExameClinico ExameClinico { get; set; } = new();
     public List<Odontometria> Odontometria { get; set; } = new();
     public  List<Retorno> Retornos { get; set; } = new();
+    public Curativos Curativos { get; set; } = new();
+    public string RestauracaoDefinitivaDoDente { get; set; } = null;
+    public int? NumeroDeSessoesRealizadas { get; set; } = null;
+    public string Observacoes { get; set; }
 }
 
 public class Retorno

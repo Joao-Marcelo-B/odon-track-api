@@ -117,14 +117,6 @@ public partial class Prontuario
     [Column("observacoes_dentes")] public string ObservacoesDentes { get; set; } = null;
     [Column("observacoes_diagnostico_dentes")] public string ObservacoesDiagnosticoDentes { get; set; } = null;
     [Column("plano_cronologico_tratamento")] public string PlanoCronologicoTratamento { get; set; } = null;
-    [Column("curativo_sessao_1")] public string CurativoSessao1 { get; set; } = null;
-    [Column("curativo_sessao_2")] public string CurativoSessao2 { get; set; } = null;
-    [Column("curativo_sessao_3")] public string CurativoSessao3 { get; set; } = null;
-    [Column("curativo_sessao_4")] public string CurativoSessao4 { get; set; } = null;
-    [Column("curativo_sessao_5")] public string CurativoSessao5 { get; set; } = null;
-    [Column("curativo_sessao_6")] public string CurativoSessao6 { get; set; } = null;
-    [Column("restauracao_definitica_do_dente")] public string RestauracaoDefinitivaDoDente { get; set; } = null;
-    [Column("numero_de_sessoes_realizadas")] public int? NumeroDeSessoesRealizadas { get; set; } = null;
     [Column("gastrite")] public int? Gastrite { get; set; } = null;
     [Column("ulceras")] public int? Ulceras { get; set; } = null;
     [Column("cirrose")] public int? Cirrose { get; set; } = null;

@@ -41,5 +41,14 @@ namespace Odon.Track.Application.Data.MySQL.Entity
         [Column("quantidade_de_sodio_a_porcentagem")] public string QuantidadeDeSodioAPorcentagem { get; set; } = null;
         [Column("inicio_tratamento")] public DateTime? InicioTratamento { get; set; } = null;
         [Column("termino_tratamento")] public DateTime? TerminoTratamento { get; set; } = null;
+        [Column("curativo_sessao_1")] public string CurativoSessao1 { get; set; } = null;
+        [Column("curativo_sessao_2")] public string CurativoSessao2 { get; set; } = null;
+        [Column("curativo_sessao_3")] public string CurativoSessao3 { get; set; } = null;
+        [Column("curativo_sessao_4")] public string CurativoSessao4 { get; set; } = null;
+        [Column("curativo_sessao_5")] public string CurativoSessao5 { get; set; } = null;
+        [Column("curativo_sessao_6")] public string CurativoSessao6 { get; set; } = null;
+        [Column("restauracao_definitica_do_dente")] public string RestauracaoDefinitivaDoDente { get; set; } = null;
+        [Column("numero_de_sessoes_realizadas")] public int? NumeroDeSessoesRealizadas { get; set; } = null;
+        [Column("observacoes")] public string Observacoes { get; set; } = null;
     }
 }
