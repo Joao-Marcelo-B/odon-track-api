@@ -15,9 +15,11 @@ public class Estudante
     public string Nome { get; set; } = null!;
     [Column("periodo_atual")]
     public int PeriodoAtual { get; set; }
+    [Column("ativo")]
+    public int Ativo { get; set; }
 
     [ForeignKey(nameof(IdUsuario))]
     public virtual Usuario Usuario { get; set; } = null!;
     public virtual ICollection<PacienteEstudante> PacienteEstudantes { get; } = new List<PacienteEstudante>();
-    public virtual ICollection<ProntuarioPmEstudante> ProntuarioPmEstudantes { get; } = new List<ProntuarioPmEstudante>();
+    //public virtual ICollection<ProntuarioPmEstudante> ProntuarioPmEstudantes { get; } = new List<ProntuarioPmEstudante>();
 }

@@ -21,6 +21,11 @@ namespace Odon.Track.Application.Data.MySQL.Entity
         public DateTime DataCadastro {  get; set; }
         [Column("descricao")]
         public string Descricao { get; set; }
+        [Column("realizacao")]
+        public string Realizacao { get; set; }
+
+        [Column("bloqueada")]
+        public int Bloqueada { get; set; }
         [ForeignKey(nameof(IdPaciente))]
         public virtual Paciente IdPacienteNavigation { get; set; } = null!;
     }

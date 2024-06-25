@@ -15,6 +15,8 @@ namespace Odon.Track.Application.Contract.Consultas
         public string Descricao { get; set; }
         public string DataConsulta { get; set; }
         public string HoraConsulta { get; set; }
-        
+        public string Realizacao { get; set; }
+        public int Bloqueada { get; set; }
+
     }
 }
