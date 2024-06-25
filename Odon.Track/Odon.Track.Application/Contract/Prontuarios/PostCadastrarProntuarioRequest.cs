@@ -160,7 +160,7 @@ public class DiagnosticoPulpar
 
 public class TesteDePercussao
 {
-    public bool? Insesivel { get; set; } = null;
+    public bool? Insensivel { get; set; } = null;
     public bool? Sensivel { get; set; } = null;
     public bool? MuitoSensivel { get; set; } = null;
 }

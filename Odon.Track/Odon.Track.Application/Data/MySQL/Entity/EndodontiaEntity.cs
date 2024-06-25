@@ -15,7 +15,7 @@ namespace Odon.Track.Application.Data.MySQL.Entity
         [Column("pulpite_irreversivel")] public int? PulpiteIrreversivel { get; set; } = null;
         [Column("necrose")] public int? Necrose { get; set; } = null;
         [Column("dente_ja_tratado")] public int? DenteJaTratado { get; set; } = null;
-        [Column("insesivel")] public int? Insesivel { get; set; } = null;
+        [Column("insensivel")] public int? Insensivel { get; set; } = null;
         [Column("sensivel")] public int? Sensivel { get; set; } = null;
         [Column("muito_sensivel")] public int? MuitoSensivel { get; set; } = null;
         [Column("presenca_de_abcesso")] public int? PresencaDeAbcesso { get; set; } = null;

@@ -654,7 +654,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             PulpiteReversivel = endo.ExameClinico.DiagnosticoPulpar.PulpiteReversivel.ConvertBoolForIntNull(),
             Necrose = endo.ExameClinico.DiagnosticoPulpar.Necrose.ConvertBoolForIntNull(),
             DenteJaTratado = endo.ExameClinico.DiagnosticoPulpar.DenteJaTratado.ConvertBoolForIntNull(),
-            Insesivel = endo.ExameClinico.TesteDePercussao.Insesivel.ConvertBoolForIntNull(),
+            Insensivel = endo.ExameClinico.TesteDePercussao.Insensivel.ConvertBoolForIntNull(),
             Sensivel = endo.ExameClinico.TesteDePercussao.Sensivel.ConvertBoolForIntNull(),
             MuitoSensivel = endo.ExameClinico.TesteDePercussao.MuitoSensivel.ConvertBoolForIntNull(),
             PresencaDeAbcesso = endo.ExameClinico.PresencaDeAbcesso.Presente.ConvertBoolForIntNull(),
@@ -1217,7 +1217,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                     },  
                     TesteDePercussao = new()
                     {
-                        Insesivel = endo.Insesivel.ConvertIntNullForBool(),
+                        Insensivel = endo.Insensivel.ConvertIntNullForBool(),
                         MuitoSensivel = endo.MuitoSensivel.ConvertIntNullForBool(),
                         Sensivel = endo.Sensivel.ConvertIntNullForBool(),
                     }
