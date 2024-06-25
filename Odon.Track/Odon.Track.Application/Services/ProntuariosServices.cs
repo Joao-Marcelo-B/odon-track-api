@@ -172,8 +172,8 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                 reavaliacaoAnamnese = new ReavaliacaoAnamnese
                 {
                     IdProntuario = idProntuario,
-                    IdEstudanteVinculado = !isProf ? idUsuario : null,
-                    IdProfessorResponsavel = isProf ? idUsuario : null,
+                    IdEstudanteVinculado = !isProf ? idEstudante : null,
+                    IdProfessorResponsavel = isProf ? idProfessor : null,
                     Data = reavaliacao.DataReavaliacao,
                     FrequenciaRespiratoria = reavaliacao.FrequenciaRespiratoria,
                     Medicamentos = reavaliacao.Medicamentos,
@@ -187,7 +187,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             {
                 reavaliacaoAnamnese = await _context.ReavaliacaoAnamneses.FirstOrDefaultAsync(x => x.Id.Equals(reavaliacao.Id));
                 if(reavaliacaoAnamnese != null && reavaliacaoAnamnese.IdProfessorResponsavel == null)
-                    reavaliacaoAnamnese.IdProfessorResponsavel = isProf ? idUsuario : null;
+                    reavaliacaoAnamnese.IdProfessorResponsavel = isProf ? idProfessor : null;
             }
         }
         await _context.SaveChangesAsync();
