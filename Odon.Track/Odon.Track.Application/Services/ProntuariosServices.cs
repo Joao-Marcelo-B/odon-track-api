@@ -147,6 +147,8 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         if (reavaliacaoOld != null && reavaliacaoOld.Count > 0)
             _context.ReavaliacaoAnamneses.RemoveRange(reavaliacaoOld);
 
+        await _context.SaveChangesAsync();
+
         foreach (var reavaliacao in reavaliacaoDeAnamneses)
         {
             ReavaliacaoAnamnese reavaliacaoAnamnese = new ReavaliacaoAnamnese
@@ -173,6 +175,8 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         var endodontiaOld = await _context.Endodontias.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
         if(endodontiaOld != null && endodontiaOld.Count > 0)
             _context.Endodontias.RemoveRange(endodontiaOld);
+
+        await _context.SaveChangesAsync();
 
         foreach (var endo in request.Endodontia)
         {
