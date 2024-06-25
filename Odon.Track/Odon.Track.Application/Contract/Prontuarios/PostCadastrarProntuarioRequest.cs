@@ -24,7 +24,7 @@ public class PostCadastrarProntuarioRequest
     public ExameFisico ExameFisico { get; set; } = new();
     public List<Endodontia> Endodontia { get; set; } = new();
     public Curativos Curativos { get; set; } = new();
-    public List<ReavaliacaoDeAnamnese> ReavaliacaoDeAnamnese { get; set; }
+    public List<ReavaliacaoDeAnamnese> ReavaliacaoAnamnese { get; set; }
 
 }
 

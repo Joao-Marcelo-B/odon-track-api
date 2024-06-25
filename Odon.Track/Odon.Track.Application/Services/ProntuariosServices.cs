@@ -130,7 +130,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         await InsertDiagnosticoDente(request.DiagnosticosDente, prontuario.Id);
 
-        await InsertReavaliacaoAnamnese(request.ReavaliacaoDeAnamnese, prontuario.Id);
+        await InsertReavaliacaoAnamnese(request.ReavaliacaoAnamnese, prontuario.Id);
 
         _context.Prontuarios.Update(prontuario);
         await _context.SaveChangesAsync();
@@ -971,7 +971,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         data = DiagnosticoDentes(data, diagnosticoDentes);
 
-        data.ReavaliacaoDeAnamnese = ReavaliacaoDeAnamnesesProntuario(reavaliacaoAnamnese);
+        data.ReavaliacaoAnamnese = ReavaliacaoDeAnamnesesProntuario(reavaliacaoAnamnese);
 
         return Ok(data);
     }
