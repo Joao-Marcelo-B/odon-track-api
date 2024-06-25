@@ -19,9 +19,9 @@ namespace Odon.Track.Api.Controllers
             _services = services;
         }
 
-        [HttpGet("mostrarInativos={mostrarInativos}")]
+        [HttpGet()]
         [Authorize(Roles = RolesForUsers.Professor)]
-        public async Task<IActionResult> GetProfessores(int mostrarInativos)
+        public async Task<IActionResult> GetProfessores([FromQuery] int mostrarInativos)
         {
             return await _services.GetProfessores(mostrarInativos);
         }
