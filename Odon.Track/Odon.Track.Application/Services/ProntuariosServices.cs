@@ -1091,6 +1091,8 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                 Id = endo.Id,
                 Dente = endo.Dente,
                 NumeroDeCanais = endo.NumeroCanais,
+                InicioTratamento = endo.InicioTratamento,
+                TerminoTratamento = endo.TerminoTratamento,
                 ExameClinico = new()
                 {
                     DorEntreAsSessoes = endo.DorEntreAsSessoes.ConvertIntNullForBool(),

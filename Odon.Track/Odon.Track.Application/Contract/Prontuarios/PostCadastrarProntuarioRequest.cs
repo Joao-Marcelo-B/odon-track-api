@@ -79,8 +79,8 @@ public class Endodontia
     public int? Id { get; set; } = null;
     public string Dente { get; set; } = null;
     public int? NumeroDeCanais { get; set; } = null;
-    public DateTime InicioTratamento { get; set; }
-    public DateTime TerminoTratamento { get; set; }
+    public DateTime? InicioTratamento { get; set; }
+    public DateTime? TerminoTratamento { get; set; }
     public ExameClinico ExameClinico { get; set; } = new();
     public List<Odontometria> Odontometria { get; set; } = new();
     public  List<Retorno> Retornos { get; set; } = new();
