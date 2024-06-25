@@ -1042,12 +1042,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             if (usuario == null)
                 return BadRequest("Id do usuário inválido.");
             string tipoUsuario = "";
-
-            
-                
-
-
-            
+         
             prontoAtendimento.DataFichaFeita = DateTime.Now;
             prontoAtendimento.QueixaPrincipal = request.QueixaPrincipal;
             prontoAtendimento.HistoriaMolestiaAtual = request.HistoriaMolestiaAtual;
@@ -1082,7 +1077,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             prontoAtendimento.Observacoes = request.Observacoes;
             prontoAtendimento.PressaoArterialMmMmHg = request.PressaoArterialMmMmHg;
             prontoAtendimento.Diagnostico = request.Diagnostico;
-            prontoAtendimento.IdPaciente = request.IdPaciente;
+            prontoAtendimento.IdPaciente = request.Paciente.IdPaciente;
             prontoAtendimento.AlergiaAlgumMedicamentoSubstancia = request.AlergiaAlgumMedicamentoSubstancia;
             prontoAtendimento.QualMedicamentoSubstancia = request.QualMedicamentoSubstancia;
 
@@ -1119,14 +1114,16 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             {
                 tipoUsuario = "administrador";
                 prontoAtendimento.ProfessorAssinou = 1;
-                prontoAtendimento.IdProfessorVinculado = usuario.Id;
+                var idProfessor = await _context.Professors.FirstOrDefaultAsync(p => p.IdUsuario == usuario.Id);
+                prontoAtendimento.IdProfessorVinculado = idProfessor.Id;
                 _context.ProntuarioProntoAtendimentos.Update(prontoAtendimento);
             }
             else if (usuario.IdTipoUsuario == 2)
             {
                 tipoUsuario = "professor";
                 prontoAtendimento.ProfessorAssinou = 1;
-                prontoAtendimento.IdProfessorVinculado = usuario.Id;
+                var idProfessor = await _context.Professors.FirstOrDefaultAsync(p => p.IdUsuario == usuario.Id);
+                prontoAtendimento.IdProfessorVinculado = idProfessor.Id;
                 _context.ProntuarioProntoAtendimentos.Update(prontoAtendimento);
             }
             else

@@ -2,7 +2,7 @@
 public partial class PostProntuarioProntoAtendimentoRequest
 {
     public int? Id { get; set; }
-    public int? IdPaciente { get; set; }
+    public RequestPaciente Paciente { get; set; }
     public int? IdProfessorVinculado { get; set; }
     public int? IdEstudanteVinculado { get; set; }
     public string QueixaPrincipal { get; set; } = null!;
@@ -51,4 +51,10 @@ public partial class RequestCondutaProntoAtendimento
     public int IdProntuarioProntoAtendimento { get; set; }
     public string CodSus { get; set; } = null!;
     public string Conduta { get; set; } = null!;
+}
+
+public partial class RequestPaciente
+{
+    public int IdPaciente { get; set; }
+    public string Nome { get; set; }
 }
