@@ -195,7 +195,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         foreach (var reavaliacao in reavaliacaoDeAnamneses)
         {
             ReavaliacaoAnamnese reavaliacaoAnamnese = null;
-            if (reavaliacao.Id == 0)
+            if (reavaliacao == null || reavaliacao.Id <= 0)
             {
                 reavaliacaoAnamnese = new ReavaliacaoAnamnese
                 {
@@ -214,8 +214,23 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             } else
             {
                 reavaliacaoAnamnese = await _context.ReavaliacaoAnamneses.FirstOrDefaultAsync(x => x.Id.Equals(reavaliacao.Id));
-                if(reavaliacaoAnamnese != null && reavaliacaoAnamnese.IdProfessorResponsavel == null)
-                    reavaliacaoAnamnese.IdProfessorResponsavel = isProf ? idProfessor : null;
+                if(reavaliacaoAnamnese == null)
+                {
+                    reavaliacaoAnamnese = new()
+                    {
+                        IdProntuario = idProntuario,
+                        IdEstudanteVinculado = !isProf ? idEstudante : null,
+                        IdProfessorResponsavel = isProf ? idProfessor : null,
+                        Data = reavaliacao.DataReavaliacao,
+                        FrequenciaRespiratoria = reavaliacao.FrequenciaRespiratoria,
+                        Medicamentos = reavaliacao.Medicamentos,
+                        Observacoes = reavaliacao.Observacoes,
+                        PressaoArterial = reavaliacao.PressaoArterial,
+                        Pulso = reavaliacao.Pulso,
+                        TemperaturaAxilar = reavaliacao.TemperaturaAxilar
+                    };
+                    await _context.ReavaliacaoAnamneses.AddAsync(reavaliacaoAnamnese);
+                }
             }
         }
         await _context.SaveChangesAsync();
@@ -235,7 +250,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         foreach (var endo in request.Endodontia)
         {
             EndodontiaEntity endodontia = null;
-            if (endo.Id > 0)
+            if (endo.Id == null || endo.Id <= 0)
             {
                 endodontia = new EndodontiaEntity
                 {
@@ -356,7 +371,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             OdontometriaEntity odontometriaEntity = null;
             if (odontometria.Id > 0)
             {
-                odontometriaEntity = await _context.Odontometrias.FirstOrDefaultAsync(x => x.Id.Equals(odontometria.Id));
+                odontometriaEntity = await _context.Odontometrias.FirstOrDefaultAsync(x => x.Id.Equals(odontometria.Id) && x.IdEndodontia.Equals(idEndodontia));
                 if (odontometriaEntity == null)
                 {
                     odontometriaEntity = new OdontometriaEntity
@@ -373,13 +388,6 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                 {
                     IdProntuario = idProntuario,
                     IdEndodontia = idEndodontia,
-                    CAD = odontometria.CAD,
-                    Canal = odontometria.Canal,
-                    CRD = odontometria.CRD,
-                    CRT = odontometria.CRT,
-                    DiametroAnatomico = odontometria.DiametroAnatomico,
-                    DiametroCirurgico = odontometria.DiametroCirurgico,
-                    PontoDeRefencia = odontometria.PontoDeReferenciaPontoDeReferencia
                 };
                 await _context.Odontometrias.AddAsync(odontometriaEntity);
 
