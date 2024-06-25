@@ -64,6 +64,12 @@ public partial class OdontrackContext : DbContext
     public virtual DbSet<Consulta> Consultas { get; set; }
 
 
+    public DbSet<Grupo> Grupos { get; set; }
+    public DbSet<Perguntas> Perguntas { get; set; }
+    public DbSet<Alternativas> Alternativas { get; set; }
+    public DbSet<RespostasAbertas> RespostasAbertas { get; set; }
+    public DbSet<RespostasAlternativa> RespostasAlternativa { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

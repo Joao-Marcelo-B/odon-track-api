@@ -32,5 +32,6 @@
         public static string ImagemNotFound = "Imagem não existe ou não encontrada.";
         public static string ProntuarioNotFound = "Esse prontuário não foi encontrado ou não existe.";
         public static string ProntuarioJaExiste = "Esse paciente já possui um prontuário.";
+        public static string PerguntaNotFound = "Essa pergunta não existe ou não foi encontrada.";
     }
 }

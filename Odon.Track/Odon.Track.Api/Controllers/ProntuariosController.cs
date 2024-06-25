@@ -4,8 +4,8 @@ using Odon.Track.Application.Authorization;
 using Odon.Track.Application.Contract.Prontuarios;
 using Odon.Track.Application.GetToken;
 using Odon.Track.Application.Data.MySQL.Entity;
-using Odon.Track.Application.GetToken;
 using Odon.Track.Application.Services;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace Odon.Track.Api.Controllers
 {
@@ -18,6 +18,18 @@ namespace Odon.Track.Api.Controllers
         [Authorize(Roles = RolesForAccess.CadastrarProntuario)]
         public async Task<IActionResult> PostCadastrarProntuario([FromBody] PostCadastrarProntuarioRequest request) =>
             await _services.PostCadastrarProntuario(request, GetHeaderValues.GetIdUsuario(Request.HttpContext.User.Claims));
+
+        [HttpPost("responder")]
+        public async Task<IActionResult> PostResponderQuestionario([FromBody] PostResponderQuestionarioRequest request) =>
+            await _services.PostResponderQuestionario(request, GetHeaderValues.GetIdUsuario(Request.HttpContext.User.Claims));
+
+        [HttpGet("respostas/{idProntuario}")]
+        public async Task<IActionResult> GetRespostasProntuario([FromRoute] int idProntuario) =>
+            await _services.GetRespostasProntuario(idProntuario);
+
+        [HttpGet("grupos")]
+        public async Task<IActionResult> GetGrupos() =>
+            await _services.GetGrupos();
 
         [HttpPost("imagem")]
         [Authorize(Roles = RolesForAccess.CadastrarProntuario)]
