@@ -659,7 +659,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             MuitoSensivel = endo.ExameClinico.TesteDePercussao.MuitoSensivel.ConvertBoolForIntNull(),
             PresencaDeAbcesso = endo.ExameClinico.PresencaDeAbcesso.Presente.ConvertBoolForIntNull(),
             IntraBucal = endo.ExameClinico.PresencaDeAbcesso.IntraBucal.ConvertBoolForIntNull(),
-            ExtraBucal = endo.ExameClinico.PresencaDeAbcesso.Extrabucal.ConvertBoolForIntNull(),
+            ExtraBucal = endo.ExameClinico.PresencaDeAbcesso.ExtraBucal.ConvertBoolForIntNull(),
             ComFistula = endo.ExameClinico.PresencaDeAbcesso.ComFistula.ConvertBoolForIntNull(),
             SemFistula = endo.ExameClinico.PresencaDeAbcesso.SemFistula.ConvertBoolForIntNull(),
             RegioPeriapicalNormal = endo.ExameClinico.ExameRadiografico.RegiaoPeriapical.Normal.ConvertBoolForIntNull(),
@@ -1172,7 +1172,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                     PresencaDeAbcesso = new()
                     {
                         ComFistula = endo.ComFistula.ConvertIntNullForBool(),
-                        Extrabucal = endo.ExtraBucal.ConvertIntNullForBool(),
+                        ExtraBucal = endo.ExtraBucal.ConvertIntNullForBool(),
                         IntraBucal = endo.IntraBucal.ConvertIntNullForBool(),
                         SemFistula = endo.SemFistula.ConvertIntNullForBool(),
                         Presente = endo.PresencaDeAbcesso.ConvertIntNullForBool()

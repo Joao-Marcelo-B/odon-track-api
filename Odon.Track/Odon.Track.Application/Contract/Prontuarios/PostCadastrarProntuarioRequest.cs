@@ -144,7 +144,7 @@ public class PresencaDeAbcesso
 {
     public bool? Presente { get; set; } = null;
     public bool? IntraBucal { get; set; } = null;
-    public bool? Extrabucal { get; set; } = null;
+    public bool? ExtraBucal { get; set; } = null;
     public bool? ComFistula { get; set; } = null;
     public bool? SemFistula { get; set; } = null;
 }
