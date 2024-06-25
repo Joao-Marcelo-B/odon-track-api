@@ -389,11 +389,16 @@ public class DistubiosGenitourinarias
 {
     public bool? InfeccoesTratoUrinario { get; set; } = null;
     public bool? DoencasGionecologicas { get; set; } = null;
+    public DoencasRenais DoencasRenais { get; set; } = new();
+    public string Outras { get; set; } = null;
+}
+
+public class DoencasRenais
+{
     public bool? Nefrite { get; set; } = null;
     public bool? InsuficienciaRenal { get; set; } = null;
     public bool? FazHemodialise { get; set; } = null;
     public string Quais { get; set; } = null;
-    public string Outras { get; set; } = null;
 }
 
 public class DistubiosEndocrinos
