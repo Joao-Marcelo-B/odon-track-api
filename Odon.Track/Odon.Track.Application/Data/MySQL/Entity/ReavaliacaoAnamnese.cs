@@ -2,6 +2,7 @@
 
 namespace Odon.Track.Application.Data.MySQL.Entity;
 
+[Table("reavaliacao_anamnese")]
 public partial class ReavaliacaoAnamnese
 {
     [Column("id")]

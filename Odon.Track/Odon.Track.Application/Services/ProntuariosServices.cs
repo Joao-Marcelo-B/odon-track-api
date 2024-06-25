@@ -94,13 +94,9 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         if (paciente == null)
             return BadRequest(OdonTrackErrors.PacienteNotFound);
 
-        bool isProfessor = false;
-
         var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.Id.Equals(idUsuario));
         if(usuario == null)
             return BadRequest(OdonTrackErrors.UsuarioNotFound);
-
-        isProfessor = usuario.IdTipoUsuario == 3 ? false : true;
 
         var prontuario = await _context.Prontuarios.FirstOrDefaultAsync(x => x.IdPaciente.Equals(request.Paciente.Id));
         if (prontuario == null)
@@ -109,8 +105,12 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             prontuario.IdPaciente = request.Paciente.Id;
             prontuario.DataCadastro = DateTime.Now;
             prontuario.IdProntuarioStatus = 1000;
-            if(isProfessor)
+
+            if(usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2)
+            {
                 prontuario.IdProfessorVinculado = idUsuario;
+                prontuario.AssinadoProfessor = 1;
+            }
             else
                 prontuario.IdEstudanteVinculado = idUsuario;
 
