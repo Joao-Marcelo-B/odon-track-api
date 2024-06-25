@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Text.Json.Serialization;
-
-namespace Odon.Track.Application.Contract.Prontuarios;
+﻿namespace Odon.Track.Application.Contract.Prontuarios;
 
 public class PostCadastrarProntuarioRequest
 {
@@ -262,7 +259,7 @@ public class  ExameFisico
     public string PressaoArterial { get; set; } = null;
     public string FrequenciaRespiratoria { get; set; } = null;
     public string Pulso { get; set; } = null;
-    public string TemperaturaAxiliar { get; set; } = null;
+    public string TemperaturaAxilar { get; set; } = null;
     public string Ectoscopia { get; set; } = null;
     public string Oroscopia { get; set; } = null;
     public string ExamesComplementaresSolicitados { get; set; } = null;

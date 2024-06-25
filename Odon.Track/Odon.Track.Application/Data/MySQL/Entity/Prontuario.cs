@@ -149,8 +149,8 @@ public partial class Prontuario
     [Column("pulso")]
     public string Pulso { get; set; } = null;
 
-    [Column("temperatura_axiliar")]
-    public string TemperaturaAxiliar { get; set; } = null;
+    [Column("temperatura_axilar")]
+    public string TemperaturaAxilar { get; set; } = null;
 
     [Column("ectoscopia")]
     public string Ectoscopia { get; set; } = null;

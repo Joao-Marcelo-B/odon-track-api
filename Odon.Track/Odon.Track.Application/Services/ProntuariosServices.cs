@@ -119,7 +119,10 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             await _context.Prontuarios.AddAsync(prontuario);
             await _context.SaveChangesAsync();
         }
-        
+
+        if (prontuario.IdProntuarioStatus == 3000)
+            prontuario.IdProntuarioStatus = 1000;
+
         Prontuario updateDataProntuario = InsertDataProntuario(request);
 
         prontuario.UpdateValueProntuario(updateDataProntuario);
@@ -567,7 +570,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             DataPedidoAvaliacaoMedica = request.ExameFisico.DataPedidoAvaliacaoMedica,
             PedidoAvaliacaoMedica = request.ExameFisico.PedidoAvaliacaoMedica,
             PressaoArterial = request.ExameFisico.PressaoArterial,
-            TemperaturaAxiliar = request.ExameFisico.TemperaturaAxiliar,
+            TemperaturaAxilar = request.ExameFisico.TemperaturaAxilar,
             Ectoscopia = request.ExameFisico.Ectoscopia,
             ExamesComplementaresSolicitados = request.ExameFisico.ExamesComplementaresSolicitados,
             FrequenciaRespiratoria = request.ExameFisico.FrequenciaRespiratoria,
@@ -933,6 +936,8 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         var status = idProntuarioStatus switch
         {
             1000 => "Prontuario Incompleto",
+            2000 => "Aprovado",
+            3000 => "Reprovado",
             _ => ""
         };
 
@@ -972,6 +977,8 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         data = DiagnosticoDentes(data, diagnosticoDentes);
 
         data.ReavaliacaoAnamnese = ReavaliacaoDeAnamnesesProntuario(reavaliacaoAnamnese);
+
+        data.Status = prontuario.IdProntuarioStatus == 1000 ? "Prontuario Incompleto" : "Aprovado";
 
         return Ok(data);
     }
@@ -1205,7 +1212,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                 DataPedidoAvaliacaoMedica = prontuario.DataPedidoAvaliacaoMedica,
                 PedidoAvaliacaoMedica = prontuario.PedidoAvaliacaoMedica,
                 PressaoArterial = prontuario.PressaoArterial,
-                TemperaturaAxiliar = prontuario.TemperaturaAxiliar,
+                TemperaturaAxilar = prontuario.TemperaturaAxilar,
                 Ectoscopia = prontuario.Ectoscopia,
                 ExamesComplementaresSolicitados = prontuario.ExamesComplementaresSolicitados,
                 FrequenciaRespiratoria = prontuario.FrequenciaRespiratoria,
