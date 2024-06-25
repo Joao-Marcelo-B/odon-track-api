@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Odon.Track.Application.Authorization;
 using Odon.Track.Application.Contract.Prontuarios;
 using Odon.Track.Application.GetToken;
+using Odon.Track.Application.Data.MySQL.Entity;
+using Odon.Track.Application.GetToken;
 using Odon.Track.Application.Services;
 
 namespace Odon.Track.Api.Controllers
@@ -71,5 +73,10 @@ namespace Odon.Track.Api.Controllers
         [HttpGet("reavaliacao/anamnese")]
         public async Task<IActionResult> GetReavaliacaoAnamnese([FromQuery]int idPaciente, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) =>
             await _services.GetReavaliacaoAnamnese(idPaciente, pageNumber, pageSize);
+
+        [HttpPost("pronto/atendimento")]
+        public async Task<IActionResult> PostCadastrarProntoAtendimento([FromBody] PostProntuarioProntoAtendimentoRequest request) =>
+            await _services.PostCadastrarProntoAtendimento(request,GetHeaderValues.GetIdUsuario(Request.HttpContext.User.Claims));
+
     }   
 }

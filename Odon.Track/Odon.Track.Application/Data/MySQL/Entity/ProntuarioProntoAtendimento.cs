@@ -6,7 +6,7 @@ namespace Odon.Track.Application.Data.MySQL.Entity;
 public partial class ProntuarioProntoAtendimento
 {
     [Column("id")]
-    public int? Id { get; set; }
+    public int Id { get; set; }
 
     [Column("id_paciente")]
     public int? IdPaciente { get; set; }
@@ -66,7 +66,7 @@ public partial class ProntuarioProntoAtendimento
     public int? FazUsoProteseCardiaca { get; set; }
 
     [Column("outros")]
-    public string Outros { get; set; }
+    public string OutrosDisturbiosCardiovascular { get; set; }
 
     [Column("apresenta_historia_hemorragia")]
     public int? ApresentaHistoriaHemorragia { get; set; }
@@ -137,7 +137,7 @@ public partial class ProntuarioProntoAtendimento
     [Column("paciente_assinou")]
     public int? PacienteAssinou { get; set; }
 
-    public ICollection<CondutaProntoAtendimento> CondutaProntoAtendimentos { get; } = new List<CondutaProntoAtendimento>();
+    public List<CondutaProntoAtendimento> CondutaProntoAtendimentos { get; } = new List<CondutaProntoAtendimento>();
 
     [ForeignKey(nameof(IdPaciente))]
     public Paciente Paciente { get; set; } = null!;
@@ -148,5 +148,5 @@ public partial class ProntuarioProntoAtendimento
     //[ForeignKey(nameof(IdEstudanteVinculado))]
     //public Estudante EstudanteVinculado { get; set; } = null!;
 
-    public ICollection<ProntuarioPmEstudante> ProntuarioPmEstudantes { get; } = new List<ProntuarioPmEstudante>();
+    //public ICollection<ProntuarioPmEstudante> ProntuarioPmEstudantes { get; } = new List<ProntuarioPmEstudante>();
 }

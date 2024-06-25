@@ -18,11 +18,11 @@ namespace Odon.Track.Api.Controllers
         {
             _services = services;
         }
-        [HttpGet]
+        [HttpGet("MostrarInativos={mostrarInativos}")]
         [Authorize(Roles = RolesForUsers.Administrador + "," + RolesForUsers.Professor)]
-        public async Task<IActionResult> GetEstudantes()
+        public async Task<IActionResult> GetEstudantes(int mostrarInativos)
         {
-            return await _services.GetEstudantes();
+            return await _services.GetEstudantes(mostrarInativos);
         }
 
         [HttpGet("{id}")]

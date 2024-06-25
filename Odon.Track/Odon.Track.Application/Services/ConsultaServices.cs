@@ -48,7 +48,10 @@ namespace Odon.Track.Application.Services
                     NomePaciente = paciente != null ? paciente.Nome : "",
                     Descricao = consulta.Descricao,
                     DataConsulta = consulta.DataHoraConsulta.ToString("dd/MM/yyyy"),
-                    HoraConsulta = consulta.DataHoraConsulta.ToString("HH:mm")
+                    HoraConsulta = consulta.DataHoraConsulta.ToString("HH:mm"),
+                    Realizacao = consulta.Realizacao,
+                    Bloqueada = consulta.Bloqueada
+                    
                 });
             }
 
@@ -63,12 +66,16 @@ namespace Odon.Track.Application.Services
             string formato = "yyyy-MM-dd HH:mm";
             DateTime dataHoraConsulta = DateTime.ParseExact(dataHoraConsultaString, formato, CultureInfo.InvariantCulture);
 
+            if (dataHoraConsulta < DateTime.Now)
+                return BadRequest("Data e hora não podem ser menores que a data atual.");
+
             var consulta = new Consulta()
             {
                 IdPaciente = request.IdPaciente,
                 Descricao = request.Descricao,
                 DataCadastro = DateTime.Now,
-                DataHoraConsulta = dataHoraConsulta
+                DataHoraConsulta = dataHoraConsulta,
+                Realizacao = "A REALIZAR"
             };
 
             await _context.Consultas.AddAsync(consulta);
@@ -89,9 +96,13 @@ namespace Odon.Track.Application.Services
             string formato = "yyyy-MM-dd HH:mm";
             DateTime dataHoraConsulta = DateTime.ParseExact(dataHoraConsultaString, formato, CultureInfo.InvariantCulture);
 
-            consulta.IdPaciente = request.IdPaciente;
+            if (consulta.DataHoraConsulta != dataHoraConsulta)
+                return BadRequest("Data e hora não podem ser alteradas.");
+
             consulta.Descricao = request.Descricao;
-            consulta.DataHoraConsulta = dataHoraConsulta;
+            consulta.Realizacao = request.Realizacao;
+            if (request.Realizacao != "A REALIZAR")
+                consulta.Bloqueada = 1;
 
             await _context.SaveChangesAsync();
 
