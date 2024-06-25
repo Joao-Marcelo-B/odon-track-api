@@ -24,7 +24,20 @@ public class PostCadastrarProntuarioRequest
     public ExameFisico ExameFisico { get; set; } = new();
     public List<Endodontia> Endodontia { get; set; } = new();
     public Curativos Curativos { get; set; } = new();
+    public List<ReavaliacaoDeAnamnese> ReavaliacaoDeAnamnese { get; set; }
 
+}
+
+public class ReavaliacaoDeAnamnese
+{
+    public int Id { get; set; }
+    public DateTime DataReavaliacao { get; set; }
+    public string Medicamentos { get; set; } = null;
+    public string Observacoes { get; set; } = null;
+    public string PressaoArterial { get; set; } = null;
+    public string FrequenciaRespiratoria { get; set; } = null;
+    public string Pulso { get; set; } = null;
+    public string TemperaturaAxilar { get; set; } = null;
 }
 
 public class Curativos
@@ -66,6 +79,8 @@ public class Endodontia
     public int? Id { get; set; } = null;
     public string Dente { get; set; } = null;
     public int? NumeroDeCanais { get; set; } = null;
+    public DateTime InicioTratamento { get; set; }
+    public DateTime TerminoTratamento { get; set; }
     public ExameClinico ExameClinico { get; set; } = new();
     public List<Odontometria> Odontometria { get; set; } = new();
     public  List<Retorno> Retornos { get; set; } = new();

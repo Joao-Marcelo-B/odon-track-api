@@ -130,10 +130,39 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         await InsertDiagnosticoDente(request.DiagnosticosDente, prontuario.Id);
 
+        await InsertReavaliacaoAnamnese(request.ReavaliacaoDeAnamnese, prontuario.Id);
+
         _context.Prontuarios.Update(prontuario);
         await _context.SaveChangesAsync();
 
         return Updated();
+    }
+
+    private async Task InsertReavaliacaoAnamnese(List<ReavaliacaoDeAnamnese> reavaliacaoDeAnamneses, int idProntuario)
+    {
+        if (reavaliacaoDeAnamneses == null || reavaliacaoDeAnamneses.Count <= 0)
+            return;
+
+        var reavaliacaoOld = await _context.ReavaliacaoAnamneses.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
+        if (reavaliacaoOld != null && reavaliacaoOld.Count > 0)
+            _context.ReavaliacaoAnamneses.RemoveRange(reavaliacaoOld);
+
+        foreach (var reavaliacao in reavaliacaoDeAnamneses)
+        {
+            ReavaliacaoAnamnese reavaliacaoAnamnese = new ReavaliacaoAnamnese
+            {
+                IdProntuario = idProntuario,
+                Data = reavaliacao.DataReavaliacao,
+                FrequenciaRespiratoria = reavaliacao.FrequenciaRespiratoria,
+                Medicamentos = reavaliacao.Medicamentos,
+                Observacoes = reavaliacao.Observacoes,
+                PressaoArterial = reavaliacao.PressaoArterial,
+                Pulso = reavaliacao.Pulso,
+                TemperaturaAxilar = reavaliacao.TemperaturaAxilar
+            };
+            await _context.ReavaliacaoAnamneses.AddAsync(reavaliacaoAnamnese);
+        }
+        await _context.SaveChangesAsync();
     }
 
     private async Task UpdateEndodontia(PostCadastrarProntuarioRequest request, int idProntuario)
@@ -147,30 +176,12 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         foreach (var endo in request.Endodontia)
         {
-            EndodontiaEntity endodontia = null;
-            if (endo.Id == null || endo.Id == 0)
+            EndodontiaEntity endodontia = new EndodontiaEntity
             {
-                endodontia = new EndodontiaEntity
-                {
-                    IdProntuario = idProntuario,
-                    Dente = endo.Dente
-                };
-                await _context.Endodontias.AddAsync(endodontia);
-            }
-            else
-            {
-                endodontia = await _context.Endodontias.FirstOrDefaultAsync(x => x.Id.Equals(endo.Id));
-                if (endodontia == null)
-                {
-                    endodontia = new EndodontiaEntity
-                    {
-                        IdProntuario = idProntuario,
-                        Dente = endo.Dente
-                    };
-                    await _context.Endodontias.AddAsync(endodontia);
-                }
-            }
-
+                IdProntuario = idProntuario,
+                Dente = endo.Dente
+            };
+            await _context.Endodontias.AddAsync(endodontia);
             await _context.SaveChangesAsync();
 
             var updateEndodontia = InsertDataEndodontia(endo);
@@ -187,9 +198,10 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
     {
         foreach (var item in retornos)
         {
+            RetornoEntity retorno = null;
             if (item.Id > 0)
             {
-                var retorno = await _context.RetornosEntity.FirstOrDefaultAsync(x => x.Id.Equals(item.Id));
+                retorno = await _context.RetornosEntity.FirstOrDefaultAsync(x => x.Id.Equals(item.Id));
                 if (retorno == null)
                 {
                     retorno = new RetornoEntity
@@ -200,7 +212,15 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                     await _context.RetornosEntity.AddAsync(retorno);
                 }
                 retorno.DataRetorno = item.DataRetorno;
-                continue;
+            }
+            else
+            {
+                retorno = new RetornoEntity
+                {
+                    IdEndodontia = idEndodontia,
+                    DataRetorno = item.DataRetorno
+                };
+                await _context.RetornosEntity.AddAsync(retorno);
             }
         }
 
@@ -593,6 +613,8 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             OutraTecnicaDeObturação = endo.ExameClinico.TecnicaDeObturacao.Outra,
             MaterialRestauradorProvisorio = endo.ExameClinico.MaterialRestauradorProvisorio,
             QuantidadeDeSodioAPorcentagem = endo.ExameClinico.SolucaoIrrigadora.QuantidadeDeSodioAPorcentagem,
+            InicioTratamento = endo.InicioTratamento,
+            TerminoTratamento = endo.TerminoTratamento,
         };
 
         return endodontia;
@@ -927,6 +949,8 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         var diagnosticoDentes = await _context.ProntuarioDiagnosticosDentes.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
 
+        var reavaliacaoAnamnese = await _context.ReavaliacaoAnamneses.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
+
         var data = CreateResponseProntuaruiDetails(prontuario);
 
         data.Paciente = new()
@@ -941,7 +965,33 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         data = DiagnosticoDentes(data, diagnosticoDentes);
 
+        data.ReavaliacaoDeAnamnese = ReavaliacaoDeAnamnesesProntuario(reavaliacaoAnamnese);
+
         return Ok(data);
+    }
+
+    private List<ReavaliacaoDeAnamnese> ReavaliacaoDeAnamnesesProntuario(List<ReavaliacaoAnamnese> reavaliacaoAnamneses)
+    {
+        if (reavaliacaoAnamneses.Count == 0)
+            return new List<ReavaliacaoDeAnamnese>();
+
+        List<ReavaliacaoDeAnamnese> reavaliacoes = new();
+        foreach (var reavaliacao in reavaliacaoAnamneses)
+        {
+            reavaliacoes.Add(new ReavaliacaoDeAnamnese
+            {
+                Id = reavaliacao.Id,
+                DataReavaliacao = reavaliacao.Data,
+                PressaoArterial = reavaliacao.PressaoArterial,
+                Pulso = reavaliacao.Pulso,
+                FrequenciaRespiratoria = reavaliacao.FrequenciaRespiratoria,
+                TemperaturaAxilar = reavaliacao.TemperaturaAxilar,
+                Medicamentos = reavaliacao.Medicamentos,
+                Observacoes = reavaliacao.Observacoes,
+            });
+        }
+
+        return reavaliacoes;
     }
 
     private PostCadastrarProntuarioRequest DiagnosticoDentes(PostCadastrarProntuarioRequest data, List<ProntuarioDiagnosticosDente> diagnosticosDentes)
@@ -1477,11 +1527,5 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         await _context.SaveChangesAsync();
 
         return Deleted();
-    }
-
-    public async Task<IActionResult> PatchCadastrarReavaliacaoAnamnese()
-    {
-
-        return Updated();
     }
 }

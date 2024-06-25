@@ -17,11 +17,6 @@ namespace Odon.Track.Api.Controllers
         public async Task<IActionResult> PostCadastrarProntuario([FromBody] PostCadastrarProntuarioRequest request) =>
             await _services.PostCadastrarProntuario(request, GetHeaderValues.GetIdUsuario(Request.HttpContext.User.Claims));
 
-        [HttpPatch("reavaliacao/anamnese")]
-        [Authorize(Roles = RolesForAccess.CadastrarProntuario)]
-        public async Task<IActionResult> PatchCadastrarReavaliacaoAnamnese() =>
-            await _services.PatchCadastrarReavaliacaoAnamnese();
-
         [HttpPost("imagem")]
         [Authorize(Roles = RolesForAccess.CadastrarProntuario)]
         [RequestSizeLimit(10048576)]
