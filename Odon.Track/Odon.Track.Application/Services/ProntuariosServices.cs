@@ -371,7 +371,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             OdontometriaEntity odontometriaEntity = null;
             if (odontometria.Id > 0)
             {
-                odontometriaEntity = await _context.Odontometrias.FirstOrDefaultAsync(x => x.Id.Equals(odontometria.Id));
+                odontometriaEntity = await _context.Odontometrias.FirstOrDefaultAsync(x => x.Id.Equals(odontometria.Id) && x.IdEndodontia.Equals(idEndodontia));
                 if (odontometriaEntity == null)
                 {
                     odontometriaEntity = new OdontometriaEntity
@@ -388,13 +388,6 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                 {
                     IdProntuario = idProntuario,
                     IdEndodontia = idEndodontia,
-                    CAD = odontometria.CAD,
-                    Canal = odontometria.Canal,
-                    CRD = odontometria.CRD,
-                    CRT = odontometria.CRT,
-                    DiametroAnatomico = odontometria.DiametroAnatomico,
-                    DiametroCirurgico = odontometria.DiametroCirurgico,
-                    PontoDeRefencia = odontometria.PontoDeReferenciaPontoDeReferencia
                 };
                 await _context.Odontometrias.AddAsync(odontometriaEntity);
 
