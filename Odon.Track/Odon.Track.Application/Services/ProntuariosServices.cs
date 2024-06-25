@@ -180,13 +180,13 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         if (reavaliacaoDeAnamneses == null || reavaliacaoDeAnamneses.Count <= 0)
             return;
 
-        List<int> idsReavaliacao = new();
-        foreach (var reavaliacao in reavaliacaoDeAnamneses)
-            if (reavaliacao.Id > 0)
-                idsReavaliacao.Add(reavaliacao.Id);
+        List<int> idsReavaliacao = reavaliacaoDeAnamneses.Where(x => x.Id > 0).Select(x => x.Id).ToList();
 
         var reavaliacaoOld = await _context.ReavaliacaoAnamneses.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
-        var deleteReavaliacao = reavaliacaoOld.Where(x => !idsReavaliacao.Contains(x.Id)).ToList();
+
+        List<int> idsExluir = reavaliacaoOld.Where(x => !idsReavaliacao.Contains(x.Id)).Select(x => x.Id).ToList();
+
+        var deleteReavaliacao = reavaliacaoOld.Where(x => idsExluir.Contains(x.Id)).ToList();
         if (deleteReavaliacao != null && deleteReavaliacao.Count > 0)
             _context.ReavaliacaoAnamneses.RemoveRange(deleteReavaliacao);
 
