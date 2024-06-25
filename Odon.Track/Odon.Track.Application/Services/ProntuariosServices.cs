@@ -97,6 +97,9 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         if(usuario == null)
             return BadRequest(OdonTrackErrors.UsuarioNotFound);
 
+        var estudante = await _context.Estudantes.FirstOrDefaultAsync(x => x.IdUsuario.Equals(idUsuario));
+        var professor = await _context.Professors.FirstOrDefaultAsync(x => x.IdUsuario.Equals(idUsuario));
+
         var prontuario = await _context.Prontuarios.FirstOrDefaultAsync(x => x.IdPaciente.Equals(request.Paciente.Id));
         if (prontuario == null && request.IdProntuario == 0)
         {
@@ -107,12 +110,12 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
             if(usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2)
             {
-                prontuario.IdProfessorVinculado = idUsuario;
+                prontuario.IdProfessorVinculado = professor.Id;
                 prontuario.AssinadoProfessor = 1;
                 prontuario.IdProntuarioStatus = 2000;
             }
             else
-                prontuario.IdEstudanteVinculado = idUsuario;
+                prontuario.IdEstudanteVinculado = estudante.Id;
 
             await _context.Prontuarios.AddAsync(prontuario);
             await _context.SaveChangesAsync();
@@ -120,7 +123,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         if (prontuario.AssinadoProfessor == 0 && (usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2))
         {
-            prontuario.IdProfessorVinculado = idUsuario;
+            prontuario.IdProfessorVinculado = professor.Id;
             prontuario.AssinadoProfessor = 1;
             prontuario.IdProntuarioStatus = 2000;
         }
@@ -139,7 +142,10 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         await InsertDiagnosticoDente(request.DiagnosticosDente, prontuario.Id);
 
-        await InsertReavaliacaoAnamnese(request.ReavaliacaoAnamnese, prontuario.Id, idUsuario, (usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2));
+        if(estudante == null)
+            await InsertReavaliacaoAnamnese(request.ReavaliacaoAnamnese, prontuario.Id,null, professor.Id,(usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2));
+        else
+            await InsertReavaliacaoAnamnese(request.ReavaliacaoAnamnese, prontuario.Id, estudante.Id, null, (usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2));
 
         _context.Prontuarios.Update(prontuario);
         await _context.SaveChangesAsync();
@@ -147,7 +153,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         return Updated();
     }
 
-    private async Task InsertReavaliacaoAnamnese(List<ReavaliacaoDeAnamnese> reavaliacaoDeAnamneses, int idProntuario, int idUsuario, bool isProf)
+    private async Task InsertReavaliacaoAnamnese(List<ReavaliacaoDeAnamnese> reavaliacaoDeAnamneses, int idProntuario, int? idEstudante = null, int? idProfessor = null, bool isProf = false)
     {
         if (reavaliacaoDeAnamneses == null || reavaliacaoDeAnamneses.Count <= 0)
             return;
