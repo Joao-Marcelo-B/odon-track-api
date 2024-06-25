@@ -8,9 +8,11 @@ public partial class ReavaliacaoAnamnese
 {
     [Key, Column("id")]
     public int Id { get; set; }
+    [Column("id_estudante_vinculado")]
+    public int? IdEstudanteVinculado { get; set; }
 
     [Column("id_professor_responsavel")]
-    public int IdProfessorResponsavel { get; set; }
+    public int? IdProfessorResponsavel { get; set; }
     [Column("id_prontuario")]
     public int IdProntuario { get; set; }
 
