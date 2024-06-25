@@ -105,7 +105,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         if (request.IdProntuario != null && request.IdProntuario == 0 && prontuario != null)
             return BadRequest(OdonTrackErrors.ProntuarioJaExiste);
 
-        if (prontuario == null && request.IdProntuario == 0)
+        if (prontuario == null && request.IdProntuario == 0 || request.IdProntuario == null)
         {
             prontuario = new Prontuario();
             prontuario.IdPaciente = request.Paciente.Id;
