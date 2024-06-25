@@ -101,6 +101,10 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         var professor = await _context.Professors.FirstOrDefaultAsync(x => x.IdUsuario.Equals(idUsuario));
 
         var prontuario = await _context.Prontuarios.FirstOrDefaultAsync(x => x.IdPaciente.Equals(request.Paciente.Id));
+
+        if (request.IdProntuario != null && request.IdProntuario == 0 && prontuario != null)
+            return BadRequest(OdonTrackErrors.ProntuarioJaExiste);
+
         if (prontuario == null && request.IdProntuario == 0)
         {
             prontuario = new Prontuario();
@@ -121,16 +125,17 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             await _context.SaveChangesAsync();
         }
 
-        if (prontuario.AssinadoProfessor == 0 && (usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2))
+        if (prontuario != null && prontuario.AssinadoProfessor == 0 && (usuario.IdTipoUsuario == 1 || usuario.IdTipoUsuario == 2))
         {
             prontuario.IdProfessorVinculado = professor.Id;
             prontuario.AssinadoProfessor = 1;
             prontuario.IdProntuarioStatus = 2000;
+        } else
+        {
+            if(prontuario != null)
+                prontuario.IdEstudanteVinculado = estudante.Id;
         }
         await _context.SaveChangesAsync();
-
-        if (request.IdProntuario == null || request.IdProntuario == 0 && prontuario != null)
-            return BadRequest(OdonTrackErrors.ProntuarioJaExiste);
 
         Prontuario updateDataProntuario = InsertDataProntuario(request);
 
