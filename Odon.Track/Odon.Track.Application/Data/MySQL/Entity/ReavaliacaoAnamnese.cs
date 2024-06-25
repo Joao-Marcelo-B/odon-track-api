@@ -8,9 +8,6 @@ public partial class ReavaliacaoAnamnese
     [Column("id")]
     public int Id { get; set; }
 
-    [Column("id_paciente")]
-    public int IdPaciente { get; set; }
-
     [Column("id_professor_responsavel")]
     public int IdProfessorResponsavel { get; set; }
     [Column("id_prontuario")]
