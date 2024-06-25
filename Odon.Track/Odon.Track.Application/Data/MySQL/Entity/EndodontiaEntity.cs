@@ -47,7 +47,7 @@ namespace Odon.Track.Application.Data.MySQL.Entity
         [Column("curativo_sessao_4")] public string CurativoSessao4 { get; set; } = null;
         [Column("curativo_sessao_5")] public string CurativoSessao5 { get; set; } = null;
         [Column("curativo_sessao_6")] public string CurativoSessao6 { get; set; } = null;
-        [Column("restauracao_definitica_do_dente")] public string RestauracaoDefinitivaDoDente { get; set; } = null;
+        [Column("restauracao_definitiva_do_dente")] public string RestauracaoDefinitivaDoDente { get; set; } = null;
         [Column("numero_de_sessoes_realizadas")] public int? NumeroDeSessoesRealizadas { get; set; } = null;
         [Column("observacoes")] public string Observacoes { get; set; } = null;
     }
