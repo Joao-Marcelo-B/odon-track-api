@@ -18,5 +18,7 @@ namespace Odon.Track.Application.Data.MySQL.Entity
         public string Filename { get; set; }
         [Column("content_type")]
         public string ContentType { get; set; }
+        [Column("e_crianca")]
+        public int ECrianca { get; set; }
     }
 }

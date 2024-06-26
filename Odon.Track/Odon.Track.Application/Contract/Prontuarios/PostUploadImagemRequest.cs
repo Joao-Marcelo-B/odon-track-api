@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Text.Json.Serialization;
 
 namespace Odon.Track.Application.Contract.Prontuarios;
 

@@ -23,6 +23,7 @@ namespace Odon.Track.Api.Controllers
             await _services.GetProntuariosMenores(pageNumber, pageSize, nomePaciente);
 
         [HttpPost("responder")]
+        [Authorize(Roles = RolesForAccess.CadastrarProntuario)]
         public async Task<IActionResult> PostResponderQuestionario([FromBody] PostResponderQuestionarioRequest request) =>
             await _services.PostResponderQuestionario(request, GetHeaderValues.GetIdUsuario(Request.HttpContext.User.Claims));
 

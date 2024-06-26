@@ -1798,9 +1798,19 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         if (request.Imagem == null || request.Imagem.Length <= 0)
             return BadRequest(OdonTrackErrors.ImagemEmpty);
 
-        var prontuario = await _context.Prontuarios.AnyAsync(x => x.Id.Equals(request.IdProntuario));
-        if (!prontuario)
-            return BadRequest(OdonTrackErrors.ProntuarioNotFound);
+        var isCrianca = request.TipoImagem.ToString().Contains("crianca");
+        if (isCrianca)
+        {
+            var prontuarioMenor = await _context.ProntuarioMenor.AnyAsync(x => x.Id.Equals(request.IdProntuario));
+            if (!prontuarioMenor)
+                return BadRequest(OdonTrackErrors.ProntuarioNotFound);
+        }
+        else
+        {
+            var prontuario = await _context.Prontuarios.AnyAsync(x => x.Id.Equals(request.IdProntuario));
+            if (!prontuario)
+                return BadRequest(OdonTrackErrors.ProntuarioNotFound);
+        }
 
         var permittedExtensions = new[] { ".jpg", ".jpeg", ".png" };
         var ext = Path.GetExtension(request.Imagem.FileName).ToLowerInvariant();
@@ -1824,7 +1834,8 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             Path = path,
             TipoImagem = request.TipoImagem.ToString(),
             Filename = fileName,
-            ContentType = request.Imagem.ContentType
+            ContentType = request.Imagem.ContentType,
+            ECrianca = isCrianca ? 1 : 0
         });
         await _context.SaveChangesAsync();
 
@@ -1836,13 +1847,23 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         if (idProntuario <= 0)
             return BadRequest(OdonTrackErrors.ProntuarioNotFound);
 
-        var prontuario = await _context.Prontuarios.AnyAsync(x => x.Id.Equals(idProntuario));
-        if (!prontuario)
-            return BadRequest(OdonTrackErrors.ProntuarioNotFound);
+        var isCrianca = tipoImagem.ToString().Contains("crianca");
+        if (isCrianca)
+        {
+            var prontuarioMenor = await _context.ProntuarioMenor.AnyAsync(x => x.Id.Equals(idProntuario));
+            if (!prontuarioMenor)
+                return BadRequest(OdonTrackErrors.ProntuarioNotFound);
+        }
+        else
+        {
+            var prontuario = await _context.Prontuarios.AnyAsync(x => x.Id.Equals(idProntuario));
+            if (!prontuario)
+                return BadRequest(OdonTrackErrors.ProntuarioNotFound);
+        }
 
         if (!string.IsNullOrEmpty(tipoImagem))
         {
-            var imagensTipo = await _context.ImagensProntuarios.Where(x => x.IdProntuario.Equals(idProntuario) && x.TipoImagem.Equals(tipoImagem)).ToListAsync();
+            var imagensTipo = await _context.ImagensProntuarios.Where(x => x.IdProntuario.Equals(idProntuario) && x.TipoImagem.Equals(tipoImagem) && x.ECrianca.Equals(isCrianca ? 1 : 0)).ToListAsync();
             if (imagensTipo.Count == 0)
                 return NoContent();
 
