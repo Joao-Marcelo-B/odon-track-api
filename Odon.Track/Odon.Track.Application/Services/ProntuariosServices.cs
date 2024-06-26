@@ -2070,6 +2070,10 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         if (prontuario == null)
             return BadRequest(OdonTrackErrors.ProntuarioNotFound);
 
+        var paciente = await _context.Pacientes.FirstOrDefaultAsync(x => x.Id.Equals(prontuario.IdPaciente));
+        if (paciente == null)
+            return BadRequest(OdonTrackErrors.PacienteNotFound);
+
         var respostasAbertas = await _context.RespostasAbertas.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
         var respostasAlternativas = await _context.RespostasAlternativa.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
 
@@ -2093,6 +2097,9 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                 IdPergunta = resposta.IdPergunta,
             }); 
         }
+
+        response.Paciente.Nome = paciente.Nome;
+        response.Paciente.Id = paciente.Id;
 
         return Ok(response);
     }
