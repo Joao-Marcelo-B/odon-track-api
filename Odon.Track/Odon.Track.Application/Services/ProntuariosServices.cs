@@ -1226,7 +1226,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         else
         {
             tipoUsuario = "estudante";
-            prontoAtendimento.ProfessorAssinou = 0;
+            //prontoAtendimento.ProfessorAssinou = 0;
             var idEstudante = await _context.Estudantes.FirstOrDefaultAsync(e => e.IdUsuario == usuario.Id);
             prontoAtendimento.IdEstudanteVinculado = idEstudante.Id;
             prontoAtendimento.Status = "Pendente";
