@@ -2095,6 +2095,12 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         var respostasAbertas = await _context.RespostasAbertas.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
         var respostasAlternativas = await _context.RespostasAlternativa.Where(x => x.IdProntuario.Equals(idProntuario)).ToListAsync();
 
+        var idPerguntasAbertasRespondidas = respostasAbertas.Select(x => x.IdPergunta).ToList();
+        var idAlternativasRespondidas = respostasAlternativas.Select(x => x.IdAlternativa).ToList();
+
+        var perguntas = await _context.Perguntas.Where(x => !idPerguntasAbertasRespondidas.Contains(x.Id)).ToListAsync();
+        var alternativas = await _context.Alternativas.Where(x => !idAlternativasRespondidas.Contains(x.Id)).ToListAsync();
+
         PostResponderQuestionarioRequest response = new();
         response.IdProntuario = idProntuario;
         foreach (var resposta in respostasAbertas)
@@ -2103,6 +2109,15 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             {
                 IdPergunta = resposta.IdPergunta,
                 Resposta = resposta.Resposta,
+            });
+        }
+
+        foreach (var pergunta in perguntas)
+        {
+            response.PerguntasAbertasRespostas.Add(new PerguntasAbertasResposta
+            {
+                IdPergunta = pergunta.Id,
+                Resposta = string.Empty,
             });
         }
 
@@ -2116,10 +2131,27 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             }); 
         }
 
+        foreach (var alternativa in alternativas)
+        {
+            response.PerguntasAlternativasRespostas.Add(new PerguntasAlternativasResposta
+            {
+                IdAlternativa = alternativa.Id,
+                Checked = false,
+                IdPergunta = alternativa.IdPergunta,
+            });
+        }
+
         response.Paciente.Nome = paciente.Nome;
         response.Paciente.Id = paciente.Id;
 
         return Ok(response);
+    }
+
+    public async Task<IActionResult> PostObservacaoMenor(PostObservacaoMenorRequest request)
+    {
+
+
+        return Updated();
     }
 
 }

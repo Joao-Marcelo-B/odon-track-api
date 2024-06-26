@@ -22,6 +22,10 @@ namespace Odon.Track.Api.Controllers
         public async Task<IActionResult> GetProntuariosMenores([FromQuery] string nomePaciente, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) =>
             await _services.GetProntuariosMenores(pageNumber, pageSize, nomePaciente);
 
+        [HttpPost("menores/observacoes")]
+        public async Task<IActionResult> PostObservacaoMenor([FromBody] PostObservacaoMenorRequest request) =>
+            await _services.PostObservacaoMenor(request);
+
         [HttpPost("responder")]
         [Authorize(Roles = RolesForAccess.CadastrarProntuario)]
         public async Task<IActionResult> PostResponderQuestionario([FromBody] PostResponderQuestionarioRequest request) =>
