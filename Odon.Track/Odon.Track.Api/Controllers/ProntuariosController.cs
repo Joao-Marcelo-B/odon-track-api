@@ -18,6 +18,10 @@ namespace Odon.Track.Api.Controllers
         public async Task<IActionResult> PostCadastrarProntuario([FromBody] PostCadastrarProntuarioRequest request) =>
             await _services.PostCadastrarProntuario(request, GetHeaderValues.GetIdUsuario(Request.HttpContext.User.Claims));
 
+        [HttpGet("menores")]
+        public async Task<IActionResult> GetProntuariosMenores([FromQuery] string nomePaciente, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) =>
+            await _services.GetProntuariosMenores(pageNumber, pageSize, nomePaciente);
+
         [HttpPost("responder")]
         public async Task<IActionResult> PostResponderQuestionario([FromBody] PostResponderQuestionarioRequest request) =>
             await _services.PostResponderQuestionario(request, GetHeaderValues.GetIdUsuario(Request.HttpContext.User.Claims));
@@ -71,7 +75,6 @@ namespace Odon.Track.Api.Controllers
         {
             return await _services.GetTriagem(filtro, pageNumber, pageSize, nomePaciente);
         }
-
 
         [HttpGet("triagem/{id}")]
         public async Task<IActionResult> GetTriagemById(int id) =>

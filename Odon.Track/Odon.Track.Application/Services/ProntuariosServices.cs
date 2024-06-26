@@ -812,6 +812,46 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         return Ok();
     }
 
+    public async Task<IActionResult> GetProntuariosMenores(int pageNumber, int pageSize, string nomePaciente)
+    {
+        // Construindo a consulta base
+        var query = _context.ProntuarioMenor
+                            .OrderByDescending(x => x.Id)
+                            .Include(x => x.Paciente)
+                            .Include(x => x.EstudanteVinculado)
+                            .Include(x => x.ProfessorVinculado)
+                            .AsQueryable();
+
+        // Aplicando o filtro de nome do paciente, se fornecido
+        if (!string.IsNullOrEmpty(nomePaciente))
+        {
+            query = query.Where(x => x.Paciente.Nome.Contains(nomePaciente));
+        }
+
+        // Obtendo o número total de prontuários (para paginação)
+        var prontuariosCount = await query.CountAsync();
+
+        // Aplicando paginação
+        var prontuarios = await query
+                                .Skip((pageNumber - 1) * pageSize)
+                                .Take(pageSize)
+                                .ToListAsync();
+
+        // Selecionando os campos desejados para a resposta
+        var response = prontuarios.Select(x => new
+        {
+            x.Id,
+            x.DataCadastro,
+            NomePaciente = x.Paciente.Nome,
+            NomeEstudante = x.EstudanteVinculado != null ? x.EstudanteVinculado.Nome : "--",
+            NomeProfessor = x.ProfessorVinculado != null ? x.ProfessorVinculado.Nome : "--",
+            Status = ParseProntuarioStatus(x.IdProntuarioStatus)
+        });
+
+        // Retornando a resposta com os resultados paginados e a contagem total
+        return Ok(new { Prontuarios = response, Count = prontuariosCount });
+    }
+
     public async Task<IActionResult> GetProntuarios(int pageNumber, int pageSize, string nomePaciente)
     {
         // Construindo a consulta base
@@ -2026,7 +2066,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
     public async Task<IActionResult> GetRespostasProntuario(int idProntuario)
     {
-        var prontuario = await _context.Prontuarios.FirstOrDefaultAsync(x => x.Id.Equals(idProntuario));
+        var prontuario = await _context.ProntuarioMenor.FirstOrDefaultAsync(x => x.Id.Equals(idProntuario));
         if (prontuario == null)
             return BadRequest(OdonTrackErrors.ProntuarioNotFound);
 
