@@ -137,6 +137,11 @@ public partial class ProntuarioProntoAtendimento
     [Column("paciente_assinou")]
     public int? PacienteAssinou { get; set; }
 
+    [Column("id_estudante")]
+    public int? IdEstudanteVinculado { get; set; }
+    [Column("status")]
+    public string Status { get; set; }
+
     public List<CondutaProntoAtendimento> CondutaProntoAtendimentos { get; } = new List<CondutaProntoAtendimento>();
 
     [ForeignKey(nameof(IdPaciente))]
@@ -145,8 +150,8 @@ public partial class ProntuarioProntoAtendimento
     [ForeignKey(nameof(IdProfessorVinculado))]
     public Professor ProfessorVinculado { get; set; } = null!;
 
-    //[ForeignKey(nameof(IdEstudanteVinculado))]
-    //public Estudante EstudanteVinculado { get; set; } = null!;
+    [ForeignKey(nameof(IdEstudanteVinculado))]
+    public Estudante EstudanteVinculado { get; set; } = null!;
 
     //public ICollection<ProntuarioPmEstudante> ProntuarioPmEstudantes { get; } = new List<ProntuarioPmEstudante>();
 }

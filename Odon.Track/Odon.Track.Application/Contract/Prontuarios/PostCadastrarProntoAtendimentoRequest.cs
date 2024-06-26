@@ -1,7 +1,7 @@
 ﻿namespace Odon.Track.Application.Data.MySQL.Entity;
 public partial class PostProntuarioProntoAtendimentoRequest
 {
-    public int? Id { get; set; }
+    public int Id { get; set; }
     public RequestPaciente Paciente { get; set; }
     public int? IdProfessorVinculado { get; set; }
     public int? IdEstudanteVinculado { get; set; }
@@ -42,12 +42,13 @@ public partial class PostProntuarioProntoAtendimentoRequest
     public string Diagnostico { get; set; } = null!;
     public string CidadeFichaFeita { get; set; } = null!;
     public DateTime DataFichaFeita { get; set; }
+    public string Status { get; set; } = "Pendente";
     public List<CondutaProntoAtendimento> CondutaProntoAtendimentos { get; set; } = new List<CondutaProntoAtendimento>();
 }
 
 public partial class RequestCondutaProntoAtendimento
 {
-    public int Id { get; set; }
+    public int? Id { get; set; }
     public int IdProntuarioProntoAtendimento { get; set; }
     public string CodSus { get; set; } = null!;
     public string Conduta { get; set; } = null!;
@@ -55,6 +56,6 @@ public partial class RequestCondutaProntoAtendimento
 
 public partial class RequestPaciente
 {
-    public int IdPaciente { get; set; }
-    public string Nome { get; set; }
+    public int? IdPaciente { get; set; }
+    public string? Nome { get; set; }
 }
