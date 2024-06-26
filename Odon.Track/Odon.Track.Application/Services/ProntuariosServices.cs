@@ -1166,6 +1166,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             return BadRequest("Id do usuário inválido.");
         string tipoUsuario = "";
 
+        prontoAtendimento.IdEstudanteVinculado = request.IdEstudanteVinculado;
         prontoAtendimento.DataFichaFeita = DateTime.Now;
         prontoAtendimento.QueixaPrincipal = request.QueixaPrincipal;
         prontoAtendimento.HistoriaMolestiaAtual = request.HistoriaMolestiaAtual;
