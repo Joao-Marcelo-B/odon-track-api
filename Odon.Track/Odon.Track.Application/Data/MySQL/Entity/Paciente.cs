@@ -102,4 +102,6 @@ public partial class Paciente
     public virtual ICollection<ProntuarioProntoAtendimento> ProntuarioProntoAtendimentos { get; } = new List<ProntuarioProntoAtendimento>();
 
     public virtual ICollection<Prontuario> Prontuarios { get; } = new List<Prontuario>();
+
+    public virtual ICollection<ProntuarioMenor> ProntuarioMenor { get; } = new List<ProntuarioMenor>();
 }

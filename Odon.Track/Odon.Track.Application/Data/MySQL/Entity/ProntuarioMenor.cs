@@ -19,11 +19,11 @@ namespace Odon.Track.Application.Data.MySQL.Entity
         [Column("data_cadastro")]
         public DateTime? DataCadastro { get; set; }
 
-        [ForeignKey("IdPaciente")]
+        [ForeignKey(nameof(IdPaciente))]
         public Paciente Paciente { get; set; }
-        [ForeignKey("IdEstudanteVinculado")]
+        [ForeignKey(nameof(IdProfessorVinculado))]
         public Professor ProfessorVinculado { get; set; }
-        [ForeignKey("IdProfessorVinculado")]
+        [ForeignKey(nameof(IdEstudanteVinculado))]
         public Estudante EstudanteVinculado { get; set; }
     }
 }

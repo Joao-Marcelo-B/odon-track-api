@@ -833,6 +833,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                             .Include(x => x.ProfessorVinculado)
                             .AsQueryable();
 
+
         // Aplicando o filtro de nome do paciente, se fornecido
         if (!string.IsNullOrEmpty(nomePaciente))
         {
@@ -2178,12 +2179,28 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         return Ok(response);
     }
 
-    public async Task<IActionResult> PostObservacaoMenor(PostObservacaoMenorRequest request)
-    {
+    //public async Task<IActionResult> PostObservacaoMenor(PostObservacaoMenorRequest request)
+    //{
+    //    var paciente = await _context.Pacientes.FirstOrDefaultAsync(x => x.Id.Equals(request.IdPaciente));
+    //    if (paciente == null)
+    //        return BadRequest(OdonTrackErrors.PacienteNotFound);
 
+    //    var prontuario = await _context.ProntuarioMenor.FirstOrDefaultAsync(x => x.IdPaciente.Equals(request.IdPaciente));
+    //    if (prontuario == null)
+    //        return BadRequest(OdonTrackErrors.ProntuarioNotFound);
 
-        return Updated();
-    }
+    //    foreach (var observacao in request.Observacoes)
+    //    {
+    //        await _context.ObservacoesMenor.AddAsync(new()
+    //        {
+    //            IdProntuario = prontuario.Id,
+    //            Observacao = observacao.Observacao,
+    //            Data = DateTime.Now,
+    //        });
+    //    }
+
+    //    return Updated();
+    //}
 
 }
 
