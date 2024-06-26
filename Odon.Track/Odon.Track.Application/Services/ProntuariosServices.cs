@@ -1158,8 +1158,10 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         {
             prontoAtendimento.Id = request.Id;       
             _context.ProntuarioProntoAtendimentos.Update(prontoAtendimento);
+            
         }
         await _context.SaveChangesAsync();
+        request.Id = prontoAtendimento.Id;
 
         var ultimoProntoAtendimento = await _context.ProntuarioProntoAtendimentos
             .OrderByDescending(cpa => cpa.Id)
@@ -1179,7 +1181,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             if (item.Id == 0)
             {
                 CondutaProntoAtendimento condutaProntoAtendimento = new();
-                condutaProntoAtendimento.ProntuarioProntoAtendimentoId = idUltimoProntoAtendimento;
+                condutaProntoAtendimento.ProntuarioProntoAtendimentoId = request.Id;
                 condutaProntoAtendimento.CodSus = item.CodSus;
                 condutaProntoAtendimento.Conduta = item.Conduta;
                 lista.Add(condutaProntoAtendimento);
