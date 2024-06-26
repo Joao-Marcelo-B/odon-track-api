@@ -21,7 +21,7 @@ def EnviarCodigo():
 
 @app.route('/LogoOdonTrack')
 def get_logo_odontrack():
-    image_path = './assets/logo_odon_track.png'
+    image_path = '../Odon.Track.Python.API/assets/logo_odon_track.png'
     return send_file(image_path, mimetype='image/png')
 
 if __name__ == '__main__':

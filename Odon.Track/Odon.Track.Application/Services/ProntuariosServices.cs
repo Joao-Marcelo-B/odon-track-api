@@ -1831,9 +1831,9 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         string fileName = $"{request.IdProntuario}_{request.TipoImagem.ToString()}_{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.{request.Imagem.ContentType.Replace("image/", "")}";
 
-        var path = Path.Combine("/app/imagens-prontuario/", fileName);
-        if (!Directory.Exists(Path.Combine("/app", "imagens-prontuario")))
-            Directory.CreateDirectory(Path.Combine("/app/imagens-prontuario"));
+        var path = Path.Combine($"{Directory.GetCurrentDirectory()}/imagens-prontuario/", fileName);
+        if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "imagens-prontuario")))
+            Directory.CreateDirectory(Path.Combine($"{Directory.GetCurrentDirectory()}/imagens-prontuario"));
 
         using (var strem = new FileStream(path, FileMode.Create))
         {
@@ -1882,7 +1882,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
             var imagensResponseTipo = new List<GetImagensProntuarioResponse>();
             foreach (var imagem in imagensTipo)
             {
-                var imagemPath = Path.Combine("/app", imagem.Path);
+                var imagemPath = Path.Combine($"{Directory.GetCurrentDirectory()}", imagem.Path);
                 if (!File.Exists(imagemPath))
                     continue;
 
@@ -1908,7 +1908,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         var imagensResponse = new List<GetImagensProntuarioResponse>();
         foreach (var imagem in imagens)
         {
-            var imagemPath = Path.Combine("/app", imagem.Path);
+            var imagemPath = Path.Combine(Directory.GetCurrentDirectory(), imagem.Path);
             if (!File.Exists(imagemPath))
                 continue;
 
@@ -1936,7 +1936,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         if (imagem == null)
             return BadRequest(OdonTrackErrors.ImagemNotFound);
 
-        var imagemPath = Path.Combine("/app", imagem.Path);
+        var imagemPath = Path.Combine(Directory.GetCurrentDirectory(), imagem.Path);
         if (!File.Exists(imagemPath))
             return BadRequest(OdonTrackErrors.ImagemNotFound);
 
