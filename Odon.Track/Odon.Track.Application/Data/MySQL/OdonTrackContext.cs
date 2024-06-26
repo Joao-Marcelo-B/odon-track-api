@@ -68,6 +68,7 @@ public partial class OdontrackContext : DbContext
     public DbSet<Perguntas> Perguntas { get; set; }
     public DbSet<Alternativas> Alternativas { get; set; }
     public DbSet<RespostasAbertas> RespostasAbertas { get; set; }
+    public DbSet<ProntuarioMenor> ProntuarioMenor { get; set; }
     public DbSet<RespostasAlternativa> RespostasAlternativa { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

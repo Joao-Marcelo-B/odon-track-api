@@ -3,6 +3,7 @@
     public class PostResponderQuestionarioRequest
     {
         public int IdProntuario { get; set; }
+        public Pessoa Paciente { get; set; } = new();
         public List<PerguntasAbertasResposta> PerguntasAbertasRespostas { get; set; } = new();
         public List<PerguntasAlternativasResposta> PerguntasAlternativasRespostas { get; set; } = new();
 

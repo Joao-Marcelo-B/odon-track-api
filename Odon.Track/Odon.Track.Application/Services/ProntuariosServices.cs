@@ -1857,9 +1857,26 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
         if(idUsuario <= 0)
             return BadRequest(OdonTrackErrors.UsuarioNotFound);
 
-        var prontuario = await _context.Prontuarios.FirstOrDefaultAsync(x => x.Id.Equals(request.IdProntuario));
+        if(request.Paciente.Id <= 0)
+            return BadRequest(OdonTrackErrors.PacienteNotFound);
+
+        var paciente = await _context.Pacientes.FirstOrDefaultAsync(x => x.Id.Equals(request.Paciente.Id));
+        if (paciente == null)
+            return BadRequest(OdonTrackErrors.PacienteNotFound);
+
+        var prontuario = await _context.ProntuarioMenor.FirstOrDefaultAsync(x => x.IdPaciente.Equals(request.Paciente.Id));
         if (prontuario == null)
-            return BadRequest(OdonTrackErrors.ProntuarioNotFound);
+        {
+            prontuario = new ProntuarioMenor
+            {
+                IdPaciente = request.Paciente.Id,
+                DataCadastro = DateTime.Now,
+            };
+            await _context.ProntuarioMenor.AddAsync(prontuario);
+            await _context.SaveChangesAsync();
+            request.IdProntuario = prontuario.Id;
+        }
+       
 
         foreach(var resposta in request.PerguntasAbertasRespostas)
         {
