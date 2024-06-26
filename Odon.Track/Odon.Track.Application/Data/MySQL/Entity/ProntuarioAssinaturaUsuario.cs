@@ -10,6 +10,8 @@ namespace Odon.Track.Application.Data.MySQL.Entity
         public int Id { get; set; }
         [Column("id_prontuario")]
         public int IdProntuario { get; set; }
+        [Column("id_prontuario_menor")]
+        public int IdProntuarioMenor { get; set; }
         [Column("id_usuario")]
         public int IdUsuario { get; set; }
     }
