@@ -2053,6 +2053,8 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
         foreach(var resposta in request.PerguntasAlternativasRespostas)
         {
+            var teste = resposta.IdPergunta;
+            Console.WriteLine($"##################### {teste}");
             var pergunta = await _context.Perguntas.FirstOrDefaultAsync(x => x.Id.Equals(resposta.IdPergunta));
             if (pergunta == null)
                 return BadRequest(OdonTrackErrors.PerguntaNotFound);
@@ -2066,7 +2068,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                 respostaPergunta = new RespostasAlternativa()
                 {
                     IdPergunta = resposta.IdPergunta,
-                    IdProntuario = request.IdProntuario,
+                    IdProntuario = prontuario.Id,
                     IdAlternativa = resposta.IdAlternativa,
                     Checked = resposta.Checked,
                 };
