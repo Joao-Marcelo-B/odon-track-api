@@ -82,6 +82,10 @@ namespace Odon.Track.Api.Controllers
         public async Task<IActionResult> GetProntoAtendimento([FromQuery] string nomePaciente, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) =>
             await _services.GetProntoAtendimento(pageNumber, pageSize, nomePaciente);
 
+        [HttpGet("pronto/atendimento/{id}")]
+        public async Task<IActionResult> GetProntuarioProntoAtendimentoById(int id) =>
+            await _services.GetProntoAtendimentoById(id);
+
         [HttpGet("reavaliacao/anamnese")]
         public async Task<IActionResult> GetReavaliacaoAnamnese([FromQuery]int idPaciente, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) =>
             await _services.GetReavaliacaoAnamnese(idPaciente, pageNumber, pageSize);

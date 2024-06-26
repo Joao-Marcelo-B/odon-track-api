@@ -11,6 +11,8 @@ namespace Odon.Track.Application.Contract.Prontuarios
     {
         public int? Id { get; set; }
         public RequestPaciente Paciente { get; set; }
+        public ResponseProfessor Professor { get; set; }
+        public ResponseEstudante Estudante { get; set; }
         public int? IdProfessorVinculado { get; set; }
         public int? IdEstudanteVinculado { get; set; }
         public string QueixaPrincipal { get; set; } = null!;
@@ -71,6 +73,11 @@ namespace Odon.Track.Application.Contract.Prontuarios
     public partial class ResponseEstudante
     {
         public int IdEstudante { get; set; }
+        public string Nome { get; set; }
+    }
+    public partial class ResponseProfessor
+    {
+        public int IdProfessor { get; set; }
         public string Nome { get; set; }
     }
 }
