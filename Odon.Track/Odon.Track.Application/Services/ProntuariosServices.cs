@@ -1981,9 +1981,6 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
 
     public async Task<IActionResult> PostResponderQuestionario(PostResponderQuestionarioRequest request, int idUsuario)
     {
-        if (request.IdProntuario <= 0)
-            return BadRequest(OdonTrackErrors.ProntuarioNotFound);
-
         if(idUsuario <= 0)
             return BadRequest(OdonTrackErrors.UsuarioNotFound);
 
