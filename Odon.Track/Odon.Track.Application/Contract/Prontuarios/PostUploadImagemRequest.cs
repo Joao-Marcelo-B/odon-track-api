@@ -13,5 +13,7 @@ public enum ETipoImagem
 {
     mapa_periodontal,
     controle_placa_bacteriana,
-    outros
+    outros,
+    foto_denticao_crianca,
+    outros_crianca
 }

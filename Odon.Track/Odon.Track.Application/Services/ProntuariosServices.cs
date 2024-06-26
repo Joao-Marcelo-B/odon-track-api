@@ -2020,7 +2020,7 @@ public class ProntuariosServices(OdontrackContext _context) : BaseResponses
                 respostaPergunta = new RespostasAbertas()
                 {
                     IdPergunta = resposta.IdPergunta,
-                    IdProntuario = request.IdProntuario,
+                    IdProntuario = prontuario.Id,
                     Resposta = resposta.Resposta,
                 };
                 await _context.RespostasAbertas.AddAsync(respostaPergunta);
