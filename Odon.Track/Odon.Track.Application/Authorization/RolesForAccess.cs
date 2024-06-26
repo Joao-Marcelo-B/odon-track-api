@@ -9,5 +9,6 @@
         public const string EditTriagem = "edit_triagem";
         public const string CadastrarPaciente = "cadastrar_paciente";
         public const string CadastrarTriagem = "cadastrar_triagem";
+        public const string CadastrarProntoAtendimento = "cadastrar_pronto_atendimento";
     }
 }

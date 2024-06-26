@@ -92,6 +92,7 @@ namespace Odon.Track.Api.Controllers
         public async Task<IActionResult> GetReavaliacaoAnamnese([FromQuery]int idPaciente, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) =>
             await _services.GetReavaliacaoAnamnese(idPaciente, pageNumber, pageSize);
 
+        [Authorize(Roles = RolesForAccess.CadastrarProntoAtendimento)]
         [Authorize(Roles = RolesForUsers.Administrador + "," + RolesForUsers.Professor + "," + RolesForUsers.Estudante)]
         [HttpPost("pronto/atendimento")]
         public async Task<IActionResult> PostCadastrarProntoAtendimento([FromBody] PostProntuarioProntoAtendimentoRequest request) =>
