@@ -29,7 +29,7 @@ CREATE TABLE `alternativas` (
   `id_pergunta` int DEFAULT NULL,
   `alternativa` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=239 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +64,7 @@ CREATE TABLE `conduta_pronto_atendimento` (
   PRIMARY KEY (`id`,`id_prontuario_pronto_atendimento`),
   KEY `id_prontuario_pronto_atendimento` (`id_prontuario_pronto_atendimento`),
   CONSTRAINT `conduta_pronto_atendimento_ibfk_1` FOREIGN KEY (`id_prontuario_pronto_atendimento`) REFERENCES `prontuario_pronto_atendimento` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -85,7 +85,7 @@ CREATE TABLE `consulta` (
   PRIMARY KEY (`id`),
   KEY `paciente_FK_idx` (`id_paciente`),
   CONSTRAINT `paciente_FK` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -138,7 +138,7 @@ CREATE TABLE `endereco` (
   PRIMARY KEY (`id`),
   KEY `id_paciente` (`id_paciente`),
   CONSTRAINT `endereco_ibfk_1` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +162,7 @@ CREATE TABLE `endereco_responsavel` (
   KEY `id_idx` (`id_responsavel`),
   KEY `id_paciente_idx` (`id_paciente`),
   CONSTRAINT `id` FOREIGN KEY (`id_responsavel`) REFERENCES `responsavel` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -218,7 +218,7 @@ CREATE TABLE `endodontia` (
   `restauracao_definitiva_do_dente` text,
   `observacoes` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=141 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -238,7 +238,7 @@ CREATE TABLE `estudante` (
   PRIMARY KEY (`id`),
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `estudante_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -252,7 +252,7 @@ CREATE TABLE `grupo` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -272,7 +272,7 @@ CREATE TABLE `horario_disponivel_atendimento` (
   PRIMARY KEY (`id`),
   KEY `id_triagem` (`id_triagem`),
   CONSTRAINT `horario_disponivel_atendimento_ibfk_1` FOREIGN KEY (`id_triagem`) REFERENCES `triagem` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -289,8 +289,9 @@ CREATE TABLE `imagens_prontuario` (
   `path` varchar(512) DEFAULT NULL,
   `content_type` varchar(45) DEFAULT NULL,
   `filename` varchar(245) DEFAULT NULL,
+  `e_crianca` tinyint DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -308,7 +309,7 @@ CREATE TABLE `necessidade_tratamento` (
   PRIMARY KEY (`id`),
   KEY `id_triagem` (`id_triagem`),
   CONSTRAINT `necessidade_tratamento_ibfk_1` FOREIGN KEY (`id_triagem`) REFERENCES `triagem` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -373,7 +374,7 @@ CREATE TABLE `paciente` (
   PRIMARY KEY (`id`),
   KEY `paicente_usuario_idx` (`id_usuario_cadastro`),
   CONSTRAINT `paicente_usuario` FOREIGN KEY (`id_usuario_cadastro`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -422,7 +423,7 @@ CREATE TABLE `perguntas` (
   `tipo_pergunta` varchar(50) NOT NULL,
   `pergunta` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=311 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -596,7 +597,7 @@ CREATE TABLE `prontuario` (
   KEY `id_professor_vinculado` (`id_professor_vinculado`),
   KEY `estudante_idx` (`id_estudante_vinculado`),
   KEY `status_idx` (`id_prontuario_status`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -610,8 +611,9 @@ CREATE TABLE `prontuario_assinatura_usuario` (
   `id` int NOT NULL AUTO_INCREMENT,
   `id_usuario` int DEFAULT NULL,
   `id_prontuario` int DEFAULT NULL,
+  `id_prontuario_menor` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -643,7 +645,7 @@ CREATE TABLE `prontuario_diagnostico_dentes` (
   `tipo_diagnostico` varchar(245) DEFAULT NULL,
   `dentes` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -660,6 +662,42 @@ CREATE TABLE `prontuario_estudante` (
   PRIMARY KEY (`id`),
   KEY `id_prontuario` (`id_prontuario`),
   CONSTRAINT `prontuario_estudante_ibfk_1` FOREIGN KEY (`id_prontuario`) REFERENCES `prontuario` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `prontuario_menor`
+--
+
+DROP TABLE IF EXISTS `prontuario_menor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `prontuario_menor` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_paciente` varchar(45) DEFAULT NULL,
+  `id_estudante_vinculado` int DEFAULT NULL,
+  `id_professor_vinculado` int DEFAULT NULL,
+  `id_prontuario_status` int DEFAULT NULL,
+  `data_cadastro` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `professorafa_idx` (`id_professor_vinculado`),
+  KEY `estudantealuno_idx` (`id_estudante_vinculado`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `prontuario_menor_observacoes`
+--
+
+DROP TABLE IF EXISTS `prontuario_menor_observacoes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `prontuario_menor_observacoes` (
+  `id` int NOT NULL,
+  `id_prontuario` int DEFAULT NULL,
+  `observacoes` text,
+  `descricao_observacao` text,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -733,13 +771,14 @@ CREATE TABLE `prontuario_pronto_atendimento` (
   `professor_assinou` tinyint DEFAULT NULL,
   `paciente_assinou` tinyint DEFAULT NULL,
   `id_estudante` int DEFAULT NULL,
+  `status` enum('Pendente','Aprovado','Reprovado') DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_paciente` (`id_paciente`),
   KEY `id_professor_vinculado` (`id_professor_vinculado`),
   KEY `prontuario_pronto_atendimento_estudante_idx` (`id_estudante`),
   CONSTRAINT `prontuario_pronto_atendimento_ibfk_1` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id`),
   CONSTRAINT `prontuario_pronto_atendimento_ibfk_2` FOREIGN KEY (`id_professor_vinculado`) REFERENCES `professor` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -797,7 +836,7 @@ CREATE TABLE `responsavel` (
   PRIMARY KEY (`id`),
   KEY `responsavel_paciente_idx` (`id_paciente`),
   CONSTRAINT `responsavel_paciente` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -811,9 +850,9 @@ CREATE TABLE `respostas_abertas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `id_prontuario` int NOT NULL,
   `id_pergunta` int DEFAULT NULL,
-  `anotacao` text,
+  `resposta` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=392 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -828,9 +867,9 @@ CREATE TABLE `respostas_alternativa` (
   `id_prontuario` int NOT NULL,
   `id_pergunta` int DEFAULT NULL,
   `id_alternativa` int DEFAULT NULL,
-  `anotacao` text,
+  `checked` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1129 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -860,7 +899,7 @@ CREATE TABLE `roles` (
   `name` varchar(245) DEFAULT NULL,
   `descricao` varchar(245) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -877,7 +916,7 @@ CREATE TABLE `roles_modulo` (
   PRIMARY KEY (`id`),
   KEY `id_idx` (`id_role`),
   CONSTRAINT `roles_ffk` FOREIGN KEY (`id_role`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -894,7 +933,7 @@ CREATE TABLE `roles_semestre` (
   PRIMARY KEY (`id`),
   KEY `id_idx` (`id_role`),
   CONSTRAINT `roles_fk` FOREIGN KEY (`id_role`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -936,7 +975,7 @@ CREATE TABLE `triagem` (
   CONSTRAINT `estudante_FK` FOREIGN KEY (`id_estudante_assinatura`) REFERENCES `estudante` (`id`),
   CONSTRAINT `triagem_ibfk_1` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id`),
   CONSTRAINT `triagem_ibfk_2` FOREIGN KEY (`id_professor_assinatura`) REFERENCES `professor` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -957,7 +996,7 @@ CREATE TABLE `usuario` (
   `password_salt` blob NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_tipo_usuario` (`id_tipo_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -969,4 +1008,4 @@ CREATE TABLE `usuario` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-08 23:22:36
+-- Dump completed on 2024-11-09 12:57:55
