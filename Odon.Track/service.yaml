@@ -7,7 +7,6 @@ spec:
     app: app-api-odon-track
   ports:
     - protocol: TCP
-      port: 8080
-      targetPort: 8080
-      nodePort: 30001
-  type: NodePort
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
