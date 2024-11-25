@@ -5,9 +5,9 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-COPY ["OdonTrack.Scripts/OdonTrack.Scripts.csproj", "OdonTrack.Scripts/"]
-COPY ["Odon.Track.Application/Odon.Track.Application.csproj", "Odon.Track.Application/"]
-RUN dotnet restore "OdonTrack.Scripts/OdonTrack.Scripts.csproj"
+COPY ["../OdonTrack.Scripts/OdonTrack.Scripts.csproj", "OdonTrack.Scripts/"]
+COPY ["../Odon.Track.Application/Odon.Track.Application.csproj", "Odon.Track.Application/"]
+RUN dotnet restore "../OdonTrack.Scripts/OdonTrack.Scripts.csproj"
 COPY . .
 WORKDIR "/src/OdonTrack.Scripts"
 RUN dotnet build "OdonTrack.Scripts.csproj" -c Release -o /app/build
