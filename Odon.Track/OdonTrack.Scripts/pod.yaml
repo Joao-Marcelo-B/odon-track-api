@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: odon-track-pod
+spec:
+  containers:
+    - name: odon-track-pod
+      image: odon-track-pod:latest
+      ports:
+        - containerPort: 80
