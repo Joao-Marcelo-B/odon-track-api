@@ -6,5 +6,6 @@ spec:
   containers:
     - name: odon-track-pod
       image: odon-track-pod:latest
+      imagePullPolicy: IfNotPresent
       ports:
         - containerPort: 80
