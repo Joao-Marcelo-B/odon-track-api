@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: odon-track-pod
-          image: odon-track-pod-image:latest
+          image: odon-track-pod:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 4500
