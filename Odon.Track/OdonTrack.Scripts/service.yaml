@@ -9,4 +9,4 @@ spec:
     - protocol: TCP
       port: 4500
       targetPort: 4500
-  type: ClusterIP
+  type: LoadBalancer
