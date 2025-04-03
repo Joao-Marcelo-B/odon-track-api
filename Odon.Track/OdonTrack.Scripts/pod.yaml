@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odon-track-pod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: odon-track-pod
+  template:
+    metadata:
+      labels:
+        app: odon-track-pod
+    spec:
+      containers:
+        - name: odon-track-pod
+          image: odon-track-pod:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4500
