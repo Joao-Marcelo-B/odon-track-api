@@ -7,7 +7,7 @@ var password = "teste123";
 PasswordSaltHasher.CreatePasswordHashAndSalt(password, out var passwordHash, out var passwordSalt);
 
 var options = new DbContextOptionsBuilder<OdontrackContext>();
-options.UseMySQL("server=localhost;port=3307;database=odon_track;User=root;Password=root;");
+options.UseMySQL("server=localhost;port=3306;database=odon_track;User=root;Password=Jp28072002;");
 
 using (var context = new OdontrackContext(options.Options))
 {
