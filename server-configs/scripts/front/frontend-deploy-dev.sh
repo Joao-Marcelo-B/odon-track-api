@@ -2,6 +2,5 @@
 cd "$PathOdonTrackWeb"
 git checkout develop
 git pull
-eval $(minikube -p minikube docker-env)
-docker build -t app-web-odon-track-image "$PathOdonTrackWeb"
+docker build -t app-web-odon-track-image -f Dockerfile-dev "$PathOdonTrackWeb"
 kubectl delete pod -l app=app-web-odon-track

@@ -1,6 +1,6 @@
 #! /bin/bash
 echo "Fazendo deploy do backend..."
-"$PathDockerClear"
+"$DockerClear"
 cd "$PathOdonTrackApiPython"
 git checkout main
 git pull
