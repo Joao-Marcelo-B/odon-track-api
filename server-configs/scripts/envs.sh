@@ -1,6 +1,6 @@
-export PathOdonTrackApi="$HOME/odon-track-api/Odon.Track/Odon.Track.Api"
+export PathOdonTrackApi="$HOME/odon-track-api/Odon.Track"
 export PathOdonTrackApiPython="$HOME/odon-track-api/Odon.Track/Odon.Track.Python.API"
 export PathOdonTrackWeb="$HOME/odon-track"
-export PathOdonTrackMySQL="$HOME/odon-track-api/server-configs/mysql/OdonTrackMySQL"
+export PathOdonTrackMySQL="$HOME/odon-track-api/server-configs/mysql"
 export DockerClear="$HOME/odon-track-api/Odon.Track/odon-track-api/server-configs/scripts/docker-clear.sh"
 export PathOdonTrackChatAIApi="$HOME/Odontrack-Chat-API"
