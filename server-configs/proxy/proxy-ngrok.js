@@ -12,6 +12,14 @@ app.use('/api', createProxyMiddleware({
   },
 }));
 
+app.use('/api', createProxyMiddleware({
+  target: 'http://192.168.0.106:5001',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/ai': '/', // Remove a parte /api da URL antes de enviar ao backend
+  },
+}));
+
 // Proxy middleware para redirecionar a rota /web para o front end (porta 4200)
 app.use('/', createProxyMiddleware({
   target: 'http://192.168.0.106:4200',
