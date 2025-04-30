@@ -3,7 +3,7 @@ const net = require('net');
 // Configurar o servidor TCP para escutar no seu endereço IP da VPN
 const server = net.createServer((socket) => {
   // Conectar-se ao banco de dados no Kubernetes
-  const dbSocket = net.connect({ host: '192.168.49.2', port: 30002 });
+  const dbSocket = net.connect({ host: '192.168.0.106', port: 3006 });
 
   // Encaminhar os dados entre o cliente e o banco de dados
   socket.pipe(dbSocket);
@@ -34,6 +34,6 @@ server.on('error', (err) => {
 });
 
 // Iniciar o servidor TCP na porta desejada do seu IP da VPN
-server.listen(3307, '100.100.193.67', () => {
-  console.log('Servidor TCP rodando em 100.100.193.67:3307');
+server.listen(3307, '100.81.41.26', () => {
+  console.log('Servidor TCP rodando em 100.81.41.26:3307');
 });
