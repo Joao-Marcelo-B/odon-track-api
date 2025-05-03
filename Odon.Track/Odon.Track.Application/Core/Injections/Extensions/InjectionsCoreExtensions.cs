@@ -19,6 +19,7 @@ namespace Odon.Track.Application.Core.Injections.Extensions
         {
             services.AddScoped<AppSettings>();
             services.AddScoped<AuthServices>();
+            services.AddScoped<ChatServices>();
             services.AddScoped<ProfessoresServices>();
             services.AddScoped<EstudantesServices>();
             services.AddScoped<UsuariosServices>();

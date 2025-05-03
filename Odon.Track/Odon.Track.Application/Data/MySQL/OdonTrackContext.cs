@@ -70,6 +70,9 @@ public partial class OdontrackContext : DbContext
     public DbSet<RespostasAbertas> RespostasAbertas { get; set; }
     public DbSet<ProntuarioMenor> ProntuarioMenor { get; set; }
     public DbSet<RespostasAlternativa> RespostasAlternativa { get; set; }
+    public DbSet<ChatConfig> ChatConfigs { get; set; }
+    public DbSet<ChatMessage> ChatMessages { get; set; }
+    public DbSet<ChatSession> ChatSessions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
