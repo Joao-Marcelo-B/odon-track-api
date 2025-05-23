@@ -26,9 +26,9 @@ public class ChatController : ControllerBase
     public async Task<IActionResult> GetChatSession() =>
         await _chatServices.GetChatSession();
 
-    [HttpGet("messages/{idChat}")]
-    public async Task<IActionResult> GetChatMessages([FromRoute] int idChat) =>
-        await _chatServices.GetChatMessages(idChat, GetHeaderValues.GetIdUsuario(Request.HttpContext.User.Claims));    
+    [HttpGet("messages/{idSession}")]
+    public async Task<IActionResult> GetChatMessages([FromRoute] int idSession) =>
+        await _chatServices.GetChatMessages(idSession, GetHeaderValues.GetIdUsuario(Request.HttpContext.User.Claims));    
     
     [HttpPatch("messages")]
     public async Task<IActionResult> PatchChatMessages([FromBody] PatchChatMessagesRequest request) =>

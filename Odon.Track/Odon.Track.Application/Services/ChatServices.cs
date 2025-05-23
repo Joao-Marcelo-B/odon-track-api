@@ -35,9 +35,9 @@ public class ChatServices : BaseResponses
         return Ok(response);
     }
 
-    public async Task<IActionResult> GetChatMessages(int idChat, int idUsuario)
+    public async Task<IActionResult> GetChatMessages(int idSession, int idUsuario)
     {
-        var chatSession = await _context.ChatSessions.FirstOrDefaultAsync(x => x.Id == idChat && x.IdUsuario == idUsuario);
+        var chatSession = await _context.ChatSessions.FirstOrDefaultAsync(x => x.Id == idSession && x.IdUsuario == idUsuario);
         if (chatSession == null)
             return BadRequest("Essa sessão não foi encontrada");
 
