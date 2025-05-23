@@ -62,7 +62,6 @@ public class ChatServices : BaseResponses
 
     public async Task<IActionResult> PatchChatMessages(PatchChatMessagesRequest request, int idUsuario)
     {
-        idUsuario = 57;
         ChatSession session = null;
         if (request.IdSession == null || request.IdSession <= 0)
         {
