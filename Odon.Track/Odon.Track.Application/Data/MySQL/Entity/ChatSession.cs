@@ -15,7 +15,8 @@ public class ChatSession
 
     [ForeignKey("IdChatConfig")]
     protected ChatConfig ChatConfig { get; set; }
-
+    [Column("titulo")]
+    public string Titulo { get; set; }
     [Column("id_usuario")]
     public int? IdUsuario { get; set; }
 

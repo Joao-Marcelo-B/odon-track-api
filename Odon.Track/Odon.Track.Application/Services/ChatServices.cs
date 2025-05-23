@@ -22,6 +22,19 @@ public class ChatServices : BaseResponses
         return Ok(new { Prompt = chatConfig.PromptInicial }); 
     }
 
+    public async Task<IActionResult> GetChatSession()
+    {
+        var chatSession = await _context.ChatSessions.ToListAsync();
+
+        var response = chatSession.Select(x => new
+        {
+            IdSession = x.Id,
+            Titulo = x.Titulo
+        });
+
+        return Ok(response);
+    }
+
     public async Task<IActionResult> GetChatMessages(int idChat, int idUsuario)
     {
         var chatSession = await _context.ChatSessions.FirstOrDefaultAsync(x => x.Id == idChat && x.IdUsuario == idUsuario);
