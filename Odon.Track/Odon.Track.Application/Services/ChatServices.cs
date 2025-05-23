@@ -62,6 +62,7 @@ public class ChatServices : BaseResponses
 
     public async Task<IActionResult> PatchChatMessages(PatchChatMessagesRequest request, int idUsuario)
     {
+        idUsuario = 57;
         ChatSession session = null;
         if (request.IdSession == null || request.IdSession <= 0)
         {
@@ -70,6 +71,8 @@ public class ChatServices : BaseResponses
                 IdChatConfig = 1,
                 IdUsuario = idUsuario,
             };
+            await _context.ChatSessions.AddAsync(session);
+            await _context.SaveChangesAsync();
 
             var chatMessage = new ChatMessage
             {
@@ -80,7 +83,7 @@ public class ChatServices : BaseResponses
                 DataCriacao = DateTime.Now
             };
 
-            _context.ChatSessions.Add(session);
+
             _context.ChatMessages.Add(chatMessage);
             await _context.SaveChangesAsync();
 
@@ -100,7 +103,7 @@ public class ChatServices : BaseResponses
             IdChatSession = session.Id,
             PromptPergunta = request.PromptPergunta,
             PromptResposta = request.PromptResposta,
-            Ordem = chatMessageLast.Ordem++,
+            Ordem = chatMessageLast.Ordem + 1,
             DataCriacao = DateTime.Now
         };
 
