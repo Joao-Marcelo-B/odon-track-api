@@ -63,7 +63,7 @@ public class ChatServices : BaseResponses
     public async Task<IActionResult> PatchChatMessages(PatchChatMessagesRequest request, int idUsuario)
     {
         ChatSession session = null;
-        if (request.IdChat == null || request.IdChat <= 0)
+        if (request.IdSession == null || request.IdSession <= 0)
         {
             session = new()
             {
@@ -84,10 +84,10 @@ public class ChatServices : BaseResponses
             _context.ChatMessages.Add(chatMessage);
             await _context.SaveChangesAsync();
 
-            return Ok(new { IdChat = session.Id });
+            return Ok(new { IdSession = session.Id });
         }
 
-        session = await _context.ChatSessions.FirstOrDefaultAsync(x => x.Id == request.IdChat && x.IdUsuario == idUsuario);
+        session = await _context.ChatSessions.FirstOrDefaultAsync(x => x.Id == request.IdSession && x.IdUsuario == idUsuario);
         if (session == null)
             return BadRequest("Essa sessão não foi encontrada");
 
