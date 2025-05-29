@@ -15,7 +15,8 @@ public class ChatSession
 
     [ForeignKey("IdChatConfig")]
     protected ChatConfig ChatConfig { get; set; }
-
+    [Column("titulo")]
+    public string Titulo { get; set; }
     [Column("id_usuario")]
     public int? IdUsuario { get; set; }
 
@@ -25,6 +26,4 @@ public class ChatSession
     [Column("data_criacao")]
     public DateTime DataCriacao { get; set; } = DateTime.Now;
 
-    [Column("titulo")]
-    public string Titulo { get; set; }
 }

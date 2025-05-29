@@ -22,9 +22,22 @@ public class ChatServices : BaseResponses
         return Ok(new { Prompt = chatConfig.PromptInicial }); 
     }
 
-    public async Task<IActionResult> GetChatMessages(int idChat, int idUsuario)
+    public async Task<IActionResult> GetChatSession()
     {
-        var chatSession = await _context.ChatSessions.FirstOrDefaultAsync(x => x.Id == idChat && x.IdUsuario == idUsuario);
+        var chatSession = await _context.ChatSessions.ToListAsync();
+
+        var response = chatSession.Select(x => new
+        {
+            IdSession = x.Id,
+            Titulo = x.Titulo
+        });
+
+        return Ok(response);
+    }
+
+    public async Task<IActionResult> GetChatMessages(int idSession, int idUsuario)
+    {
+        var chatSession = await _context.ChatSessions.FirstOrDefaultAsync(x => x.Id == idSession && x.IdUsuario == idUsuario);
         if (chatSession == null)
             return BadRequest("Essa sessão não foi encontrada");
 
@@ -50,7 +63,7 @@ public class ChatServices : BaseResponses
     public async Task<IActionResult> PatchChatMessages(PatchChatMessagesRequest request, int idUsuario)
     {
         ChatSession session = null;
-        if (request.IdChat == null || request.IdChat <= 0)
+        if (request.IdSession == null || request.IdSession <= 0)
         {
             session = new()
             {
@@ -58,6 +71,8 @@ public class ChatServices : BaseResponses
                 IdUsuario = idUsuario,
                 Titulo = request.Titulo,
             };
+            await _context.ChatSessions.AddAsync(session);
+            await _context.SaveChangesAsync();
 
             var chatMessage = new ChatMessage
             {
@@ -68,14 +83,14 @@ public class ChatServices : BaseResponses
                 DataCriacao = DateTime.Now
             };
 
-            _context.ChatSessions.Add(session);
+
             _context.ChatMessages.Add(chatMessage);
             await _context.SaveChangesAsync();
 
-            return Ok(new { IdChat = session.Id });
+            return Ok(new { IdSession = session.Id });
         }
 
-        session = await _context.ChatSessions.FirstOrDefaultAsync(x => x.Id == request.IdChat && x.IdUsuario == idUsuario);
+        session = await _context.ChatSessions.FirstOrDefaultAsync(x => x.Id == request.IdSession && x.IdUsuario == idUsuario);
         if (session == null)
             return BadRequest("Essa sessão não foi encontrada");
 
@@ -88,7 +103,7 @@ public class ChatServices : BaseResponses
             IdChatSession = session.Id,
             PromptPergunta = request.PromptPergunta,
             PromptResposta = request.PromptResposta,
-            Ordem = chatMessageLast.Ordem++,
+            Ordem = chatMessageLast.Ordem + 1,
             DataCriacao = DateTime.Now
         };
 

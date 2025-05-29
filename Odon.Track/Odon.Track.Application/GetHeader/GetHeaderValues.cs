@@ -12,14 +12,20 @@ namespace Odon.Track.Application.GetToken
     {
         public static int GetIdUsuario(IEnumerable<Claim> claims)
         {
-            var idUsuarioHash = claims.First(claim => claim.Type == ClaimTypes.NameIdentifier);
-            if(idUsuarioHash == null)
+            try
+            {
+                var idUsuarioHash = claims.First(claim => claim.Type == ClaimTypes.NameIdentifier);
+                if (idUsuarioHash == null)
+                    return 0;
+
+                int idUsuario = int.Parse(EncryptionHelper.Decrypt(idUsuarioHash.Value));
+
+                return idUsuario;
+            }
+            catch
+            {
                 return 0;
-
-            int idUsuario = int.Parse(EncryptionHelper.Decrypt(idUsuarioHash.Value));
-
-            return idUsuario;
-
+            }
         }
     }
 }
