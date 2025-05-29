@@ -28,31 +28,55 @@ services.AddServices();
 services.AddContexts(appSettings);
 services.AddCustomControllers();
 services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
-builder.Services.AddSwaggerGen(c =>
+services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "OdonTrack API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo()
+    {
+        Title = "Catalogo API",
+        Version = "v1",
+        Description = "Catalogo de Produtos e Categorias",
+        TermsOfService = new Uri("https://google.com"),
+        Contact = new OpenApiContact()
+        {
+            Name = "Joao Marcelo",
+            Email = "joaomarcelobn157@hotmail.com",
+            Url = new Uri("https://google.com")
+        },
+        License = new OpenApiLicense()
+        {
+            Name = "License",
+            Url = new Uri("https://google.com")
+        }
+    });
 
-    var securityScheme = new OpenApiSecurityScheme
+    var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Insira o token JWT no formato: Bearer {seu token}"
-    };
-
-    c.AddSecurityDefinition("Bearer", securityScheme);
-
+        Description = "Bearer JWT"
+    });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
-            securityScheme,
-            new string[] {}
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
         }
     });
 });
+
 
 services.AddCustomAuthorization();
 services.AddCustomAuthentication(appSettings);
@@ -61,16 +85,8 @@ var app = builder.Build();
 
 //if (app.Environment.IsDevelopment())
 //{
-app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "OdonTrack API v1");
-    c.RoutePrefix = "swagger";
-    c.DisplayRequestDuration();
-    c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
-    c.DefaultModelsExpandDepth(-1);
-});
-
+    app.UseSwagger();
+    app.UseSwaggerUI();
 //}
 app.UseRouting();
 app.UseExceptionHandler(error => error.UseCustomError());
