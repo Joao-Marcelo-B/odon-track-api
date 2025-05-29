@@ -56,6 +56,7 @@ public class ChatServices : BaseResponses
             {
                 IdChatConfig = 1,
                 IdUsuario = idUsuario,
+                Titulo = request.Titulo,
             };
 
             var chatMessage = new ChatMessage

@@ -24,4 +24,7 @@ public class ChatSession
 
     [Column("data_criacao")]
     public DateTime DataCriacao { get; set; } = DateTime.Now;
+
+    [Column("titulo")]
+    public string Titulo { get; set; }
 }
